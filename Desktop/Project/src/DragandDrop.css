@@ -1,0 +1,22 @@
+*{
+    margin: 0%;
+    padding: 0%;
+}
+.drag_box{
+    border: 2px dashed #1877f2;
+    align-items: center;
+    margin: 0.5px;
+    display: flex;
+    width: 25em;
+    padding: 15px;
+    border-radius: 5px;
+
+}
+.drag_box span{
+    display: flex;
+    color: #1877f2;
+    font-size: 40px;
+}
+.drag_box input{
+    visibility: hidden;
+}

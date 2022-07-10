@@ -1,0 +1,25 @@
+.flex{
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: auto;
+    justify-content: space-around !important;
+}
+
+.label{
+    display: block;
+    text-align: left;
+    font-weight: 500;
+    margin-bottom: 8px;
+}
+
+.form_control{
+    display: block;
+    width: 100%;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #4b4b4b;
+    background-color: #eeeeee;
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+}

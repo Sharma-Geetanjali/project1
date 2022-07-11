@@ -232,16 +232,43 @@
   @media (max-width:550px) {
     .top{
         margin-left:5px;
+        font-size: small;
+    }
+
+    .top_left {
+      
+      padding-left: 10px;
+      
+    }
+    
+    .top_left span {
+      color: yellow;
+    }
+
+    .top_right {
+      margin-top: 0;
+      margin-right: 30px;
+    }
+    
+    .top_right button {
+      width: 100%;
+       }
+    
+    .top img {
+      height: 45px;
+      width: 45px;
+      margin-top: 10px;
     }
     .header {
        padding-left: 30px;
+       margin-top: 20px;
       }
     .header h1{
         margin-top: 10px;
-        font-size: 30px;
+        font-size: 20px;
     }
     .container {
-        margin: 30px;
+        margin: 20px;
                
       }
     
@@ -257,17 +284,35 @@
         display: inline-block;
         
       }
+      .inputField {
+        padding: 2px;
+        font-size: smaller;
+        /* display: inline-\;
+        flex-direction: column; */
+      }
+      .inputField input {
+        padding-left: 5px;
+            
+        border-radius: 5px;
+        
+        width: 17vw;
+        font-size: small;
+      }
+
+
 
       .form_footer {
-        padding-left: 60px;
+        padding-left: 0;
         display: inline-block;
-        margin: 50px;
+        margin: 40px;
       }
       .drag_box {
         align-items: center;
         display: flexbox;
         width: 15em;
         padding: 5px;
+
               
       }
+
   }

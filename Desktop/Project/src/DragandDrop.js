@@ -35,11 +35,11 @@ function DragandDrop() {
          onDragEnter = {dragEnter}
          onDragLeave = {dragLeave}
          onDrop= {fileDrop}> */}
-         
+        <input type="file" /> 
         <span><BiCloudUpload/></span>
         
         <h5>Click to upload or drag and drop the file</h5>
-        {/* <input type="file" /> */}
+        
         </div>
     // </div>
   )

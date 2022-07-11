@@ -1,86 +1,87 @@
-*{
+* {
     margin: 0;
     padding: 0;
-    font-family:Arial, Helvetica, sans-serif;
-}
-.container{
-
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  .container {
     background: white;
     margin-top: 20px;
-    /* height: 90vh; */
+    height: 90vh;
     width: 95vw;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     margin-left: 20px;
     padding-left: 10px;
-    clip-path: polygon(0% 0%, 15% 0%, 19% 7%, 81% 7%, 85% 0%, 100% 0%, 100% 100%, 0% 100%);
-       
-}
-
-.top{
+    clip-path: polygon(
+      0% 0%,
+      15% 0%,
+      19% 7%,
+      81% 7%,
+      85% 0%,
+      100% 0%,
+      100% 100%,
+      0% 100%
+    );
+  }
+  
+  .top {
     height: 40px;
     display: flex;
     justify-content: space-between;
-    /* margin: 10px; */
     
-}
-
-.top_left{
+  }
+  
+  .top_left {
     display: flex;
     padding-left: 20px;
     margin-left: 10px;
-
-}
-.top_left h2{
-    margin-top: 15px;
-    
-}
-.top_left span{
+  }
+  .top_left h2 {
+    margin-top: 20px;
+  }
+  .top_left span {
     color: yellow;
-}
-
-.top_right{ 
+  }
+  
+  .top_right {
     align-items: right;
     margin-right: 90px;
-
-    
-}
-
-.top_right button{
-   width: 150%; 
-   box-shadow: 7px 10px #c8c1c1;
-   
-}
-
-.top img{
+  }
+  
+  .top_right button {
+    width: 150%;
+    box-shadow: 3px 8px 7px rgb(0 0 0 / 33%);
+  }
+  
+  .top img {
     height: 60px;
-    width: 60px; 
-}
-
-.header{
+    width: 60px;
+    margin-top: 5px;
+  }
+  
+  .header {
     color: rgb(76, 74, 74);
     text-align: left;
     padding-left: 60px;
-}
-
-.header button{
+  }
+  
+  .header button {
     background: none;
     border: 1px solid rgb(181, 174, 174);
-    width: 13%;
-    margin-top: 30px;
-
-}
-.header h1{
-    margin: 0;  
-    padding: 10px;  
-    
-}
-.form_container{
+    margin-top: 40px;
+  }
+  .header h1 {
+    margin: 0;
+    padding: 10px;
+  }
+  .header h2 {
+      margin: 15px 0 0 0;
+      padding: 10px;
+    }
+  .form_container {
     margin: 5px 60px;
-    width: 80vw;
-    height: 55vh;
-    background-color:white;
+    background-color: white;
     display: flex;
     flex-direction: column;
     color: rgb(46, 10, 25);
@@ -91,98 +92,182 @@
     align-items: center;
     font-size: 12px;
     font-weight: 600;
-    
-
-}
-
-.formInput{
+  }
+  
+  .formInput {
     color: rgb(27, 0, 55);
     display: flex;
     /* align-items: flex-start; */
-    
-}
-.Fields{
+  }
+  .Fields {
     display: flex;
     justify-content: space-between;
-    
+  
     /* padding-left: 0px; */
-}
-.first{
+  }
+  .first {
     margin-top: 20px;
-}
-.last{
+  }
+  .last {
     visibility: hidden;
-}
-
-.inputField{
+  }
+  
+  .inputField {
     padding: 8px;
     margin-top: 2px;
     display: flex;
     flex-direction: column;
-}
-.inputField input{
-   padding-left: 10px;
-   color: black;
-   border: none;
-   background: rgb(236, 230, 230);
-   height: 1.8rem;
-   border-radius: 5px;
-   width: 18rem;
-   margin-right:10px;
-   margin-top: 5px;
-   font-size:small;
-}
-.h3{
+  }
+  .inputField input {
+    padding-left: 10px;
+    color: black;
+    border: none;
+    background: rgb(236, 230, 230);
+    height: 1.8rem;
+    border-radius: 5px;
+    /* width: 18rem; */
+    width: 18vw;
+    margin-right: 10px;
+    margin-top: 5px;
+    font-size: small;
+  }
+  .h3 {
     color: grey;
-}
-.button{
+  }
+  .button {
     background-color: yellow;
-}
-.form_footer{
+  }
+  .form_footer {
     margin-top: 10px;
     color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .form_footer h5 {
     
-      
-}
-.form_footer h5{
-    /* padding-top: 20px; */
     font-weight: 600;
     color: gray !important;
     font-size: small;
     margin: 5px;
-}
-
- button{
-  display: inline-block;
-  margin-top: 1rem;
-  border-radius: 5rem;
-  background-image:linear-gradient(to right,rgb(255, 204, 0),rgb(255, 204, 0) );
-  padding: 1rem 2rem;
-  font-size: 1rem;
-  color: black;
-  border: none;
-  align-items: center;
-  font-weight: 600;
-}
-.output{
-   display: flex;
-   background: white;
-   border-radius: 8px;
-   margin: 5px;
-   color: rgb(5, 133, 114);
-    
-}
-.showData{
+  }
+  
+  button {
+    display: inline-block;
+    margin-top: 1rem;
+    border-radius: 5rem;
+    background-image: linear-gradient(
+      to right,
+      rgb(255, 204, 0),
+      rgb(255, 204, 0)
+    );
+    /* padding: 1rem 2rem;
+    font-size: 1rem; */
+    padding: 14px 21px;
+    font-size: 12px;
+    color: black;
+    border: none;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .output {
+    display: flex;
+    background: white;
+    border-radius: 8px;
+    margin: 5px;
+    color: rgb(5, 133, 114);
+  }
+  .showData {
     display: flex;
     justify-content: space-between;
     padding: 5px 10px;
     font-size: medium;
     margin: 5px;
+  }
+  .showData p {
+    font-weight: 400;
+    margin: 5px;
+  }
+  .drag_box {
+    border: 2px dashed #1877f2;
+    align-items: center;
+    margin: 0.5px;
+    display: flex;
+    width: 25em;
+    padding: 5px;
+    border-radius: 5px;
+    background:rgb(255, 246, 246);
     
-}
-.showData p{
-    font-weight:400;  
-}
+  }
+  .drag_box input {
+    width: 0;
+    height: 0;
+  }
+  .drag_box span{
+   font-size: 35px;
+   color: #1877f2 ;
+  }
+  .drag_box p{
+    color: gray !important;
+    margin-left: 5px;
+  }
+
+
+
+  /*--------- Media Queries -------- */
+  @media (max-width:980px) {
+    .container {
+        
+        margin: 30px;
+        clip-path: polygon(
+          0% 0%,
+          100% 0%,
+          100% 100%,
+          0% 100%
+        );
+      }
+  }
+
+  @media (max-width:550px) {
+    .top{
+        margin-left:5px;
+    }
+    .header {
+       padding-left: 30px;
+      }
+    .header h1{
+        margin-top: 10px;
+        font-size: 30px;
+    }
+    .container {
+        margin: 30px;
+               
+      }
+    
+    .form_container {
+        margin: 5px 40px;
+        display: block;
+        padding: 10px;
+        font-weight: 500;
+        height: 60%;
+      }
+
+      .Fields {
+        display: inline-block;
+        
+      }
+
+      .form_footer {
+        padding-left: 60px;
+        display: inline-block;
+        margin: 50px;
+      }
+      .drag_box {
+        align-items: center;
+        display: flexbox;
+        width: 15em;
+        padding: 5px;
+              
+      }
+  }

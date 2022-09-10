@@ -1,0 +1,207 @@
+<mat-toolbar class="header" [formGroup]="filterForm" >
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" formControlName="filterVehicle" placeholder="Search Device ID"
+      (keyup.enter)="apply()">
+
+  </div>
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+    style="outline: none !important; ">
+
+    <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+    <span style="display: block; line-height: 0;"> Filter </span>
+  </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before">
+
+    <span mat-menu-item (click)="$event.stopPropagation();"
+    style="outline: none !important; height: 180px !important; border-top: none !important;">
+    <span style="display: block; font-size: 12px;">
+      <span>
+        Date
+      </span>
+      <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+        Clear
+      </span>
+    </span>
+    <span style="display: block;">
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate" [max]="maxDate"
+          placeholder="From date & time" disabled>
+
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+        <ngx-mat-datetime-picker  #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+      </mat-form-field>
+    </span>
+
+    <span>
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time"  [max]="maxDate"
+          formControlName="toDate" disabled >
+
+        <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+        <ngx-mat-datetime-picker  #pickerTo [enableMeridian]="true" style="border-top: none !important;" disabled="false"></ngx-mat-datetime-picker>
+      </mat-form-field>
+
+    </span>
+  </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+      <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+        <span>
+          <button mat-stroked-button class="btnStrBasic" style="outline: none !important;" (click)="clearAll()">Clear
+            All</button>
+        </span>
+        <span style="float: right !important;">
+          <button type="submit" mat-raised-button class=" basicRaisedbtn" style="outline: none !important;"
+            (click)="apply()">
+            Apply
+          </button>
+        </span>
+      </span>
+    </span>
+  </mat-menu>
+
+  <span class="spacer"></span>
+
+
+</mat-toolbar>
+
+<div class="container-fluid p-0">
+  <div class="mapRow">
+    <div class="cardWidth">
+      <div class="d-flex p-2 " style="overflow: hidden;">
+        <div class="col-12">
+          <!-- <div class="row mt-3 ">
+            <div class="col-12">
+              <button type="button" mat-stroked-button class="mapBtn" (click)="back()">
+                <img src="assets/images/back_icon.svg"
+                  style="margin-right: 6px !important; padding-bottom: 2px !important;">
+                Go Back
+              </button>
+            </div>
+          </div> -->
+          <div class="row mt-3">
+            <div class="col-5">
+              <span class="currStatusMap" style="font-size: 18px !important;">
+                DEVICE ID
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus" style="font-size: 18px !important;">
+                {{specificArr[0]?.deviceId}}
+              </span>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap" style="font-size: 9px !important;">
+                Last Packet recived at
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus " style="font-size: 9px !important;">
+                {{specificArr[0]?.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <span class="currStatusMap">
+                Last known packet location
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <span class="liveStatus" style="font-size: 14px !important;">
+                {{specificArr[0]?.lastKnownAddress}}
+
+              </span>
+            </div>
+          </div>
+          <div class="row mt-5 pl-4 pr-4">
+            <div class="col-12 mapcard">
+              <span class="currStatusMap" style="display: block; margin-top: 20px; text-align: center;">
+                TOTAL PACKET RECEIVED
+              </span>
+              <span class="liveStatus" style="font-size: 28px !important; display: flex; justify-content: center; margin-top: 15px;">
+                {{specificArr[0]?.receivedPacketCountTotal}}
+
+              </span>
+            </div>
+
+          </div>
+          <div class="row mt-3 pl-4 pr-4">
+            <div class="col-12 mapcard" >
+              <div class="currStatusMap" style="width: 50% !important; display: inline-block !important; margin-top: 20px;" >
+                <span style="display: block; text-align: center;">
+                  WITH GPS
+
+                </span>
+                <span class="liveStatus" style="font-size: 28px !important; display: flex; justify-content: center; margin-top: 15px;" >
+                  {{specificArr[0]?.receivedPacketCountWithGps}}
+
+                </span>
+              </div>
+              <div class="currStatusMap" style="width: 50% !important; display: inline-block !important; margin-top: 20px;">
+                <span style="display: block; text-align: center;">
+                WITHOUT GPS
+
+                </span>
+                <span class="liveStatus" style="font-size: 28px !important; display: flex; justify-content: center; margin-top: 15px;">
+                  {{specificArr[0]?.receivedPacketCountWithoutGps}}
+
+                </span>
+              </div>
+            </div>
+
+          </div>
+          <div class="row mt-3 pl-4 pr-4">
+            <div class="col-12 mapcard">
+              <div class="currStatusMap" style="width: 50% !important; display: inline-block !important; margin-top: 20px;" >
+                <span style="display: block; text-align: center;">
+                  HISTORY PACKET
+
+                </span>
+                <span class="liveStatus" style="font-size: 28px !important; display: flex; justify-content: center; margin-top: 15px;" >
+                  {{specificArr[0]?.historyPacketCount}}
+
+                </span>
+              </div>
+              <div class="currStatusMap" style="width: 50% !important; display: inline-block !important; margin-top: 20px;">
+                <span style="display: block; text-align: center;">
+                LIVE PACKET
+
+                </span>
+                <span class="liveStatus" style="font-size: 28px !important; display: flex; justify-content: center; margin-top: 15px;">
+                  {{specificArr[0]?.livePacketCount}}
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mapWidth  p-0 m-0">
+      <agm-map #AgmMap [latitude]='28.6139' [longitude]='77.2090'  [fullscreenControl]='true'
+        [mapTypeControl]='true'>
+        <agm-marker [latitude]="28.6139" [longitude]="77.2090">
+
+        </agm-marker>
+
+
+
+      </agm-map>
+    </div>
+  </div>
+
+</div>

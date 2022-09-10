@@ -1,0 +1,567 @@
+<ngx-spinner size="small" bdColor="rgba(255,255,255,0)" [fullScreen]="true"> <img src='assets/images/cfpro.gif'
+  style="margin-bottom: 30px; height: 90px; width: 90px; background-color: white;"> </ngx-spinner>
+<mat-toolbar class="header">
+  <div class="row heading align-items-center">
+    <div class="col-lg-12 headContent">
+      Add Device
+    </div>
+  </div>
+
+</mat-toolbar>
+
+<div class="container-fluid" style="height: calc(100vh - 88px); overflow-y: auto;">
+
+  <div class="row header p-0">
+    <div class="col-12 p-0" style="overflow-x: hidden !important;">
+      <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTabChanged($event);">
+        <mat-tab label="Scan QR-code">
+          <ng-template matTabContent>
+            <div class="row mt-3" id="MobileView">
+              <div class="col-12 d-flex justify-content-center align-items-center">
+                <!-- <img class="blink-image" src="assets/images/QR-Code scanner.png"  style="height: 60px !important; width: 60px !important;"> -->
+                <p style="font-size: 20px; margin-top: 10px; color: var(--black); margin-left: 10px;">Available on desktop only</p>
+              </div>
+            </div>
+            <div class="row mt-3" id="desktopView">
+              <div class="col-12 d-flex justify-content-center align-items-center">
+                <img  [ngClass]="{'blink-image' : !imeiFlag}" src="assets/images/QR-Code scanner.png"  style="height: 60px !important; width: 60px !important;">
+                <p style="font-size: 20px; margin-top: 10px; color: var(--black); margin-left: 10px;">SCAN IMEI</p>
+              </div>
+            </div>
+            <div class="row mt-3" id="desktopView">
+              <div class="col-8 d-flex justify-content-end align-items-center" [formGroup]="imeiForm">
+                <mat-form-field appearance="outline" style="min-width: 50%;" >
+                  <mat-label>SCAN IMEI</mat-label>
+                  <input type="text" matInput #imeiNo="matInput"  formControlName="imeiField">
+                </mat-form-field>
+              </div>
+              <div class="col-1 d-flex justify-content-start align-items-center">
+                <div [class.noneClass]="!imeiFlag" style="margin-bottom: 20px;">
+                  <mat-icon [ngStyle]="{'color':'green'}" >check_circle_outline</mat-icon>
+                  </div>
+              </div>
+
+            </div>
+            <mat-divider id="desktopView" style="color: var(--black) !important; background-color: var(--black) !important;"></mat-divider>
+            <div class="container-fluid mt-4 pr-0" id="desktopView" [formGroup]="addScanData">
+              <div class="row mb-4">
+                <div class="col-6 pl-5" style="font-size: 20px; color: var(--black);">
+                  Scan static QR code
+                </div>
+              </div>
+              <div class="row mt-3" id="desktopView" >
+                <div class="col-6 d-flex justify-content-end align-items-center " style="margin: 0 !important; padding-right: 28px !important; ">
+                  <img [ngClass]="{'blink-image' : imeiFlag}" src="assets/images/QR-Code scanner.png"  style="height: 60px !important; width: 60px !important;">
+                </div>
+                <div class="col-6 d-flex justify-content-start align-items-center" style="margin-left: -32px !important; ">
+                  <p style="font-size: 20px; margin-top: 10px; color: var(--black); ">SCAN QR-code</p>
+
+                </div>
+              </div>
+
+              <div class="row mt-3" >
+                <div class="col-8 d-flex justify-content-end align-items-center pl-0">
+                  <mat-form-field appearance="outline" style="min-width: 50%;" >
+                    <mat-label>SCAN QR-code</mat-label>
+                    <input type="text" matInput [readonly]="!imeiFlag" #qrCode="matInput" (keyup.enter)="getValueFromImei()" formControlName="QrField" >
+                  </mat-form-field>
+                </div>
+                <div class="col-1 d-flex justify-content-start align-items-center">
+                  <div style=" margin-bottom: 20px;">
+                  <mat-icon [class.noneClass]="!qrFlag" [ngStyle]="{'color':'green'}" >check_circle_outline</mat-icon>
+                  </div>
+                </div>
+                <!-- [class.noneClass]="!qrFlag" -->
+              </div>
+              <div>
+              <div class="row ">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device type</mat-label>
+                    <mat-select  formControlName="deviceType">
+                      <mat-option value="SINOCASTLE">
+                        SINOCASTLE
+                      </mat-option>
+                      <mat-option value="SCOPE">
+                        SCOPE
+                      </mat-option>
+                      <mat-option value="DANLAW">
+                        DANLAW
+                      </mat-option>
+                      <mat-option value="ERM">
+                        ERM
+                      </mat-option>
+                      <mat-option value="CONCOX">
+                        CONCOX
+                      </mat-option>
+                      <mat-option value="AIS140">
+                        AIS140
+                      </mat-option>
+                      <mat-option value="ITRIANGLE">
+                        ITRIANGLE
+                      </mat-option>
+                      <mat-option value="BAJAJ">
+                        BAJAJ
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Model Code</mat-label>
+                    <input type="text" matInput  formControlName="modelCode">
+                  </mat-form-field>
+                </div>
+
+                <!-- <div class="col-3 ">
+                  <mat-form-field appearance="outline" style="width: 100%;" >
+                    <mat-label>Customer code</mat-label>
+                    <input type="email" matInput  >
+                  </mat-form-field>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Firmware version</mat-label>
+                    <input type="text" matInput  formControlName="firmWare">
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Customer code</mat-label>
+                    <input type="text" matInput  formControlName="customerCode">
+                  </mat-form-field>
+
+                </div>
+
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12  d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Serial number</mat-label>
+                    <input type="text" matInput  formControlName="serialNumber">
+                  </mat-form-field>
+
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device mode
+                    </mat-label>
+                    <input type="text" matInput  formControlName="deviceMode">
+                  </mat-form-field>
+                </div>
+
+                <!-- <div class="col-4">
+
+
+                </div> -->
+              </div>
+              <div class="row">
+
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Is Dummy
+                    </mat-label>
+                    <mat-select  formControlName="isDummy">
+                      <mat-option value="true">
+                        Yes
+                      </mat-option>
+                      <mat-option value="false">
+                        No
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+
+
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Sim status</mat-label>
+                    <input type="text" matInput  formControlName="simStatus">
+                  </mat-form-field>
+
+
+                </div>
+
+                <!-- <div class="col-4">
+
+
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>SIM number</mat-label>
+                    <input type="text" matInput  formControlName="simNumber">
+                  </mat-form-field>
+
+
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Phone number</mat-label>
+                    <input type="text" matInput  formControlName="phnoneNumber">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Dealer code</mat-label>
+                    <input type="email" matInput  formControlName="dealerCode">
+                  </mat-form-field>
+
+
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <!-- <mat-form-field appearance="outline" style="width: 100%;"> -->
+                    <mat-label>Protocol</mat-label>
+                    <mat-select  formControlName="protocol">
+                      <mat-option value="MQTT">
+                        MQTT
+                      </mat-option>
+                      <mat-option value="TCP">
+                        TCP
+                      </mat-option>
+                    </mat-select>
+                    <!-- </mat-form-field> -->
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Network operator</mat-label>
+                    <!-- <input type="email" matInput  > -->
+                    <mat-select  formControlName="networkOperator">
+                      <mat-option value="VODAFONE">
+                        VODAFONE
+                      </mat-option>
+                      <mat-option value="AIRTEL">
+                        AIRTEL
+                      </mat-option>
+                      <mat-option value="SENSORISE">
+                        SENSORISE
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device current state</mat-label>
+                    <input type="text" matInput  formControlName="deviceCurrentState">
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device marketing bundle</mat-label>
+                    <!-- <input type="email" matInput  > -->
+                    <mat-select  formControlName="deviceMarketingBundle">
+                      <mat-option value="Bundled">
+                        Bundled
+                      </mat-option>
+                      <mat-option value="Perpetual">
+                        Perpetual
+                      </mat-option>
+                      <mat-option value="Standalone">
+                        Standalone
+                      </mat-option>
+
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center mt-3 mb-5">
+                <div class="col-lg-2 col-3" >
+                  <button mat-stroked-button class="btnStrBasic" (click)="resetAddForm()" style="width: 90% !important; outline: none !important;">Reset</button>
+                </div>
+                <div class="col-lg-2 col-3">
+                  <button mat-raised-button class="basicRaisedbtn" [disabled]="!this.addScanData.valid || !qrFlag" (click)="addScanQrCode()" style="width: 90% !important; outline: none !important;">Submit</button>
+                </div>
+              </div>
+            </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Add Manually">
+          <ng-template matTabContent>
+            <div class="container-fluid mt-5" [formGroup]="addFormGroup">
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device type</mat-label>
+                    <mat-select formControlName="deviceType">
+                      <mat-option value="SINOCASTLE">
+                        SINOCASTLE
+                      </mat-option>
+                      <mat-option value="SCOPE ">
+                        SCOPE
+                      </mat-option>
+                      <mat-option value="DANLAW">
+                        DANLAW
+                      </mat-option>
+                      <mat-option value="ERM">
+                        ERM
+                      </mat-option>
+                      <mat-option value="CONCOX">
+                        CONCOX
+                      </mat-option>
+                      <mat-option value="AIS140">
+                        AIS140
+                      </mat-option>
+                      <mat-option value="ITRIANGLE">
+                        ITRIANGLE
+                      </mat-option>
+                      <mat-option value="BAJAJ">
+                        BAJAJ
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="deviceType.errors?.required && deviceType.touched">Device type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Model Code</mat-label>
+                    <input type="text" matInput formControlName="modelCode">
+                    <mat-error *ngIf="modelCode.errors?.required && modelCode.touched">Model Code type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <!-- <div class="col-3 ">
+                  <mat-form-field appearance="outline" style="width: 100%;" >
+                    <mat-label>Customer code</mat-label>
+                    <input type="email" matInput  >
+                  </mat-form-field>
+                </div> -->
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Firmware version</mat-label>
+                    <input type="text" matInput formControlName="firmWare">
+                    <mat-error *ngIf="firmWare.errors?.required && firmWare.touched">Firmware version type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Customer code</mat-label>
+                    <input type="text" matInput formControlName="customerCode">
+                    <mat-error *ngIf="customerCode.errors?.required && customerCode.touched">Customer code type is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Serial number</mat-label>
+                    <input type="text" matInput formControlName="serialNumber">
+                    <mat-error *ngIf="serialNumber.errors?.required && serialNumber.touched">Serial number type is required</mat-error>
+
+                  </mat-form-field>
+
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device mode
+                    </mat-label>
+                    <input type="text" matInput formControlName="deviceMode">
+                    <mat-error *ngIf="deviceMode.errors?.required && deviceMode.touched">Device mode type is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Is Dummy
+                    </mat-label>
+                    <mat-select formControlName="isDummy" >
+                      <mat-option value="true">
+                        Yes
+                      </mat-option>
+                      <mat-option value="false">
+                        No
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="isDummy.errors?.required && isDummy.touched">Is Dummy type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Sim status</mat-label>
+                    <input type="text" matInput formControlName="simStatus">
+                    <mat-error *ngIf="simStatus.errors?.required && simStatus.touched">Sim status type is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>SIM number</mat-label>
+                    <input type="email" matInput formControlName="simNumber">
+                    <mat-error *ngIf="simNumber.errors?.required && simNumber.touched">SIM number  is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                  <!-- <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Phone number</mat-label>
+                    <input type="number" matInput formControlName="phnoneNumber">
+                    <mat-error *ngIf="phnoneNumber.errors?.required && phnoneNumber.touched">Phone number type is required</mat-error>
+                  </mat-form-field> -->
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Phone number</mat-label>
+                    <input type="text" matInput formControlName="phnoneNumber">
+                    <mat-error *ngIf="phnoneNumber.errors?.required && phnoneNumber.touched">Phone number is required</mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Dealer code</mat-label>
+                    <input type="text" matInput formControlName="dealerCode">
+                    <mat-error *ngIf="dealerCode.errors?.required && dealerCode.touched">Dealer code type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>IMEI</mat-label>
+                    <input type="text" matInput formControlName="imei">
+                    <mat-error *ngIf="imei.errors?.required && imei.touched">IMEI type is required</mat-error>
+                  </mat-form-field>
+                </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                    <mat-form-field appearance="outline" style="width: 90%;">
+                      <!-- <mat-form-field appearance="outline" style="width: 100%;"> -->
+                      <mat-label>Protocol</mat-label>
+                      <mat-select formControlName="protocol">
+                        <mat-option value="MQTT">
+                          MQTT
+                        </mat-option>
+                        <mat-option value="TCP">
+                          TCP
+                        </mat-option>
+                      </mat-select>
+                      <!-- </mat-form-field> -->
+                      <mat-error *ngIf="protocol.errors?.required && protocol.touched">Protocol type is required</mat-error>
+
+
+                    </mat-form-field>
+                  </div>
+                  <div class="col-lg-6 col-sm-12 d-flex justify-content-center ">
+                    <mat-form-field appearance="outline" style="width: 90%;">
+                      <mat-label>Network operator</mat-label>
+                      <!-- <input type="email" matInput  > -->
+                      <mat-select formControlName="networkOperator">
+                        <mat-option value="VODAFONE">
+                          VODAFONE
+                        </mat-option>
+                        <mat-option value="AIRTEL">
+                          AIRTEL
+                        </mat-option>
+                        <mat-option value="SENSORISE">
+                          SENSORISE
+                        </mat-option>
+
+
+                      </mat-select>
+                      <mat-error *ngIf="networkOperator.errors?.required && networkOperator.touched">Network operator type is required</mat-error>
+
+                    </mat-form-field>
+                  </div>
+
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device current state</mat-label>
+                    <input type="text" matInput formControlName="deviceCurrentState">
+                    <mat-error *ngIf="deviceCurrentState.errors?.required && deviceCurrentState.touched">Device current state is required</mat-error>
+
+                  </mat-form-field>
+                </div>
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Device marketing bundle</mat-label>
+                    <!-- <input type="email" matInput  > -->
+                    <mat-select formControlName="deviceMarketingBundle">
+                      <mat-option value="Bundled">
+                        Bundled
+                      </mat-option>
+                      <mat-option value="Perpetual">
+                        Perpetual
+                      </mat-option>
+                      <mat-option value="Standalone">
+                        Standalone
+                      </mat-option>
+                    </mat-select>
+                      <mat-error *ngIf="deviceMarketingBundle.errors?.required && deviceMarketingBundle.touched">Device marketing bundle is required</mat-error>
+
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center mt-5 mb-5">
+                <div class="col-lg-2 col-3" >
+                  <button mat-stroked-button class="btnStrBasic" (click)="resetAddForm()" style="width: 100% !important;">Reset</button>
+                </div>
+                <div class="col-lg-2 col-3">
+                  <button mat-raised-button class="basicRaisedbtn" [disabled]="!this.addFormGroup.valid" (click)="addManuallySubmit()" style="width: 100% !important;">Submit</button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Bulk Upload">
+          <ng-template matTabContent>
+            <div class="row mt-3" id="MobileView">
+              <div class="col-12 d-flex justify-content-center align-items-center">
+                <!-- <img class="blink-image" src="assets/images/QR-Code scanner.png"  style="height: 60px !important; width: 60px !important;"> -->
+                <p style="font-size: 20px; margin-top: 10px; color: var(--black); margin-left: 10px;">Available on desktop only</p>
+              </div>
+            </div>
+            <div class="modal-dialog modal-xl" id="desktopView" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="modal-title Drop-zone" >Drop zone</div>
+                </div>
+                <div class="modal-body">
+                  <div class="center">
+                    <ngx-file-drop contentClassName="Drop-files-here-or-c" dropZoneClassName="my-style"
+                      dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+                      (onFileLeave)="fileLeave($event)">
+                      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                        <div (click)="openFileSelector()" style="height: 100%; width: 100%;padding: 10%;">
+
+                          <img src="assets/images/upload.png" class="upload">
+                          <p style="cursor: pointer;" *ngIf="dropZoneMessage==0">Drop files here or click to upload</p>
+                          <p style="cursor: pointer;" *ngIf="dropZoneMessage==1">{{files[0].relativePath}}</p>
+                          <p style="cursor: pointer;" *ngIf="dropZoneMessage==2" class="text-danger">Only Excel Files
+                            are
+                            allowed.
+                          </p>
+                        </div>
+
+                      </ng-template>
+                    </ngx-file-drop>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                  <!-- <button type="button" [disabled]="dropZoneMessage!=1" class="modalUploadButton">Upload</button> -->
+                  <button mat-raised-button [disabled]="dropZoneMessage!=1" (click)="uploadExcel()" class="basicRaisedbtn modalUploadButton">Upload</button>
+
+                  <!-- <input type="file" name="test" id="" (change)="fileChange($event)"> -->
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

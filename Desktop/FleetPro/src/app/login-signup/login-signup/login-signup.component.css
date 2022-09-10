@@ -1,0 +1,156 @@
+.mainCont{
+  /* background-color: var(--backGround); */
+  height: 100vh;
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  overflow-x: hidden !important;
+
+}
+
+::ng-deep .mat-form-field-label {
+  color: var(--black)!important;
+  font-size: 14px !important;
+
+}
+
+.login-form {
+  min-width: 100px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.input-full-width {
+  width: 100%;
+}
+
+
+.material:hover{
+
+  pointer-events: none !important;
+
+}
+.signToggle{
+  border-radius: 3px;
+  padding-bottom: 20px;
+  border-bottom: 5px solid var(--clor) !important;
+  font-size: 34px;
+  font-weight: normal;
+}
+.colorchng{
+  color:var(--Grey);
+  font-weight: normal;
+}
+
+.signup-form {
+  min-width: 100px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.nopadding {
+  padding: 0 !important;
+  color: var(--clor) !important;
+  /* margin: 0 !important; */
+}
+
+.logoimg {
+  min-width: 100px;
+  max-width: 130px;
+  width: 100%;
+}
+
+.logo-full-width {
+  width: 100%;
+  box-shadow: 0 2px 10px 4px rgba(0, 0, 0, 0.1);
+}
+
+td {
+  padding-right: 8px;
+}
+
+.backGroundColor{
+  height: 90vh;
+  background-image: linear-gradient(145deg, #ffffff -3%, #bce1f9 146%);
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  z-index: -1;
+}
+
+.heading{
+  font-size: 37px;
+  font-weight: normal;
+
+}
+
+.belowLine{
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.link{
+  font-size: 16px;
+  font-weight: normal;
+  color: var(--black);
+  /* margin: 0 6px 6px 0; */
+}
+
+.arrow-circle_right{
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+}
+
+.sliderRow{
+  display: flex;
+  justify-content: center;
+}
+
+.head{
+  display: flex;
+  flex-direction: column;
+  max-width: 31vw;
+}
+
+
+
+@media only screen and (max-width: 1680px)  {
+  .heading{
+    font-size: 25px;
+  }
+
+}
+
+@media only screen and (max-width: 991.98px)  {
+  .login-form {
+
+    max-width: 350px;
+
+  }
+  .signup-form {
+
+    max-width: 350px;
+
+  }
+  .backGroundColor{
+    margin-top: 10px !important;
+
+  }
+  .sliderRow{
+    display: flex;
+    justify-content: flex-start !important;
+    margin-left: 30px;
+  }
+  .head{
+    max-width: 75vw !important;
+  }
+
+
+}
+
+
+
+
+
+
+
+

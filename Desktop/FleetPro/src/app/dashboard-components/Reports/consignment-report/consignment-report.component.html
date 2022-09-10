@@ -1,0 +1,704 @@
+<mat-toolbar class="header">
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Consignment Code"
+      (keyup.enter)="search()">
+  </div>
+  <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+        class="badgedisplay1">filter_list</mat-icon>
+      <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+      <span style="display: block; line-height: 0.8; color: var(--headerText);"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+    <span mat-menu-item (click)="$event.stopPropagation();"
+      style="outline: none !important; height: 150px !important; border-top: none !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Date
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+          Clear
+        </span>
+      </span>
+      <span style="display: block;">
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate" [max]="maxDate" (dateChange)="headerS.setStartDate($event.value)"
+            placeholder="From date & time" disabled>
+
+          <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+          <ngx-mat-datetime-picker  #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+        </mat-form-field>
+      </span>
+
+      <span>
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time" [min]="minDate" [max]="maxDate"
+            formControlName="toDate" disabled (dateChange)="headerS.setEndDate($event.value)">
+
+          <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+          <ngx-mat-datetime-picker  #pickerTo [enableMeridian]="true" style="border-top: none !important;" disabled="false"></ngx-mat-datetime-picker>
+        </mat-form-field>
+
+      </span>
+    </span>
+
+    <mat-divider style="margin-top: 10px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;"> Registration Number</span>
+      <input placeholder="Registration Number" formControlName="registraionNo" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;"> Dispatcher Code</span>
+
+      <input placeholder="Dispatcher Code" formControlName="dispatchCode" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;"> Receiver Code</span>
+
+      <input placeholder="Receiver Code" formControlName="receiverCode" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 180px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Creation flag
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearFlag()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="flag">
+        <mat-radio-button value="RED">Red</mat-radio-button>
+        <mat-radio-button value="GREEN">Green</mat-radio-button>
+        <mat-radio-button value="GREY">Grey</mat-radio-button>
+
+      </mat-radio-group>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 130px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          KPI
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearKpi()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="kpi">
+        <mat-radio-button value="ROUTE_DEVIATION">Route Deviation</mat-radio-button>
+        <mat-radio-button value="EN_ROUTE_STOPPAGE">En Route Stoppage</mat-radio-button>
+      </mat-radio-group>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Single Stage
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearSingleStage()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="singleStage">
+        <mat-radio-button value="true">Yes</mat-radio-button>
+        <mat-radio-button style="margin-left: 100px;" value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 300px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearStatus()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="status">
+        <mat-radio-button value="CREATED">Created</mat-radio-button>
+        <mat-radio-button value="COMPLETED">Completed</mat-radio-button>
+        <mat-radio-button value="CLOSED">Closed</mat-radio-button>
+        <mat-radio-button value="FORCE_CLOSE">Force close</mat-radio-button>
+        <mat-radio-button value="RUNNING">Running</mat-radio-button>
+        <mat-radio-button value="INVALID">Invalid</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important; margin-bottom: 75px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Proximity Status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearProxStatus()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="proxStatus">
+        <mat-radio-button value="ENTERED">Entered</mat-radio-button>
+        <mat-radio-button style="margin-left: 80px;" value="EXITED">Exited</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <div style="position:absolute; bottom: 0; background-color: white; width: 100%;" >
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+        <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+          <span>
+            <button mat-stroked-button class="btnStrBasic" (click)="clearAll()">Clear All</button>
+          </span>
+          <span style="float: right !important;">
+            <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+              Apply
+            </button>
+          </span>
+        </span>
+      </span>
+    </div>
+
+
+  </mat-menu>
+
+  <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+    <span>{{numberFilter.length}} Filters</span>
+    <a (click)="reomveFilter()">
+      <img src="assets/images/ic-close.png" height="10px" width="10px"
+        style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+    </a>
+
+
+  </span>
+
+
+
+  <span class="spacer"></span>
+
+  <div class="badgedisplay" style="margin-right: 20px;">
+    <button mat-menu-item style="outline: none !important; color: var(--headerText);" (click)="downloadReport()">
+      Download Excel
+      <img src="assets/images/download.png" style="margin-left: 4px;">
+    </button>
+  </div>
+
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style="margin-right: 22px; outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <!-- <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+      Upload Excel
+      <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+    </button> -->
+      <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </mat-menu>
+  </div>
+
+  <!-- <div class="dateInput" [formGroup]="filterForm">
+
+
+    <mat-form-field appearance="outline" class="eol1 input-full-width " >
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate" style="font-size: 16px !important; ">
+        <input matStartDate placeholder="Start date" formControlName="fromDate">
+        <input matEndDate placeholder="End date" formControlName="toDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker" class="iconBtn" style="outline: none !important;">
+      </mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+  </div>
+  <div style="margin-left: -50px ">
+
+    <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn">GO</button>
+  </div> -->
+
+
+
+</mat-toolbar>
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+  <div style="position: relative !important;">
+    <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+      <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+    </ngx-spinner>
+  </div>
+  <!-- <div class="row">
+    <div class="col-12 header"  >
+      <div class="searchBox">
+        <mat-icon class="searchIcon">search</mat-icon>
+        <input type="text" class="search_input" placeholder="search ">
+      </div>
+    </div>
+  </div> -->
+  <div class="row mt-3" style="padding-left: 10px !important;">
+    <div class="col-lg-12 table-responsive eol"
+      [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+      style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+      [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getConsignmentReport()"
+      [scrollWindow]="false">
+
+      <table class="table table-bordered bordered rounded">
+        <thead>
+          <tr class="thead-dark">
+            <th scope="col" style="width: 70px !important;">S.No</th>
+            <th scope="col" style="width: 120px !important;">Creation Flag</th>
+            <th scope="col" style="width: 132px !important;">Registration Number</th>
+            <th scope="col" style="width: 162px !important;">Consignment Code</th>
+            <th scope="col" style="width: 172px !important;">Dispatcher</th>
+            <th scope="col" style="width: 192px !important;">Receiver</th>
+            <th scope="col" style="width: 112px !important;">Created On</th>
+            <th scope="col" style="width: 112px !important;">Created Inside Geofence </th>
+            <th scope="col" style="width: 112px !important;">Start Time</th>
+            <th scope="col" style="width: 112px !important;">End Time/Last Reported Time </th>
+            <th scope="col" style="width: 300px !important;">Last Known Location</th>
+            <th scope="col" style="width: 132px !important;">KPI</th>
+            <th scope="col" style="width: 132px !important;">Single Stage</th>
+            <th scope="col" style="width: 132px !important;">Status</th>
+            <th scope="col" style="width: 132px !important;">Closure Message</th>
+            <th scope="col" style="width: 132px !important;">Proximity Status</th>
+            <th scope="col" style="width: 132px !important;">Distance Travelled</th>
+            <th scope="col" style="width: 132px !important;">Mapped Time</th>
+            <th scope="col" style="width: 132px !important;">Mapped Distance</th>
+            <th scope="col" style="width: 132px !important;">RO ID</th>
+            <th scope="col" style="width: 182px !important;">Receiving Person ID </th>
+            <th scope="col" style="width: 132px !important;">Source Agency</th>
+            <th scope="col" style="width: 132px !important;">Dispatch Month</th>
+            <th scope="col" style="width: 132px !important;">Dispatch to Godown </th>
+            <th scope="col" style="width: 132px !important;">Transporter</th>
+            <th scope="col" style="width: 132px !important;">Vehicle Type</th>
+            <th scope="col" style="width: 132px !important;">Driver Name</th>
+            <th scope="col" style="width: 132px !important;">Driver Mobile Number</th>
+            <th scope="col" style="width: 132px !important;">Vehicle Challan Number</th>
+            <th scope="col" style="width: 132px !important;">Challan Date</th>
+            <th scope="col" style="width: 132px !important;">Memo Number</th>
+            <th scope="col" style="width: 132px !important;">Memo Date</th>
+            <th scope="col" style="width: 132px !important;">Gatepass Number</th>
+            <th scope="col" style="width: 132px !important;">Gatepass Date</th>
+            <th scope="col"  style="width: 182px !important; z-index: 99;">Mark Critical</th>
+          </tr>
+        </thead>
+        <tbody class="eol">
+          <tr *ngFor="let obj of consignmentArr; index as i" id="{{ i }}">
+            <td class="align-middle" style="font-weight: 500;" scope="row">{{i+1}}</td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.createdInsideGeofence != false && obj.createdInsideGeofence != true">
+                <img src="assets/images/flag_gray_20.png" style="height: 24px; width: 24px" />
+              </span>
+              <span *ngIf="obj.createdInsideGeofence == true || obj.createdInsideGeofence == false">
+                <span *ngIf="obj.createdInsideGeofence">
+                  <img src="assets/images/green_flag_mid.png" style="height: 24px; width: 24px" />
+                </span>
+                <span *ngIf="!obj.createdInsideGeofence">
+                  <img src="assets/images/red_flag_mid.png" style="height: 24px; width: 24px" />
+                </span>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.vehicle.name" style="border-bottom: 1px solid #008ce8; color: #008ce8; font-weight: 500; cursor: pointer;" routerLink="/dashboard/map/{{obj.consignmentCode}}">
+                {{obj.vehicle.name}}
+              </span>
+              <span *ngIf="!obj.vehicle.name">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" *ngIf="!obj.singleStage" style="font-weight: 500;">
+              <span *ngIf="obj.consignmentCode" >
+                {{obj.consignmentCode}}
+              </span>
+              <span *ngIf="!obj.consignmentCode">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle" *ngIf="obj.singleStage" (click)="waypointsToggle(i, obj.groupId)" style="font-weight: 500;">
+              <span *ngIf="obj.consignmentCode">
+                {{obj.consignmentCode}}
+                <img id="{{ 'object-' + i }}"
+                      src="assets/images/expand.png"
+                      style="height: 24px; width: 24px"
+                  />
+              </span>
+              <span *ngIf="!obj.consignmentCode">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.consignor.name">
+                {{obj.consignor.name}}<br />
+                (consignor code: {{obj.consignor.code}})
+              </span>
+              <span *ngIf="!obj.consignor.name">
+                <h1>--</h1>
+              </span>
+
+            </td>
+
+            <td class="align-middle" style="font-weight: 500; word-break: break-all;">
+              <span *ngIf="obj.metas[0].targetDepartmentName">
+                {{obj.metas[0].targetDepartmentName}}<br />
+                (receiver code: {{obj.metas[0].targetDepartmentCode}})
+              </span>
+              <span *ngIf="!obj.metas[0].targetDepartmentName">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.createdOn">
+                {{obj.createdOn | date:'hh:mm a'}} <br>
+                {{obj.createdOn | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.createdOn">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.createdInsideGeofence != false && obj.createdInsideGeofence != true">
+                <h1>--</h1>
+              </span>
+              <span *ngIf="obj.createdInsideGeofence == true || obj.createdInsideGeofence == false">
+                <span *ngIf="obj.createdInsideGeofence">
+                  Yes
+                </span>
+                <span *ngIf="!obj.createdInsideGeofence">
+                  No
+                </span>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.startTime">
+                {{obj.startTime | date:'hh:mm a'}} <br>
+                {{obj.startTime | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.startTime">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.lastReportedTime">
+                {{obj.lastReportedTime | date:'hh:mm a'}} <br>
+                {{obj.lastReportedTime | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.lastReportedTime">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.lastReportedLocation?.address">
+                {{obj.lastReportedLocation?.address}}
+              </span>
+              <span *ngIf="!obj.lastReportedLocation?.address">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.kpi">
+                <span *ngFor="let kpiList of obj.kpi">
+                  {{kpiList.desc}} ({{kpiList.count}})
+                </span>
+              </span>
+              <span *ngIf="!obj.kpi">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.singleStage">
+                Yes
+              </span>
+              <span *ngIf="!obj.singleStage">
+                No
+              </span>
+              <span *ngIf="obj.singleStage==null">
+                No
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.currentStatus">
+                {{obj.currentStatus}}
+              </span>
+              <span *ngIf="!obj.currentStatus">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.closureMessage">
+                {{obj.extraFields.closureMessage}}
+              </span>
+              <span *ngIf="!obj.extraFields.closureMessage">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.proximityStatus">
+                {{obj.proximityStatus}}
+              </span>
+              <span *ngIf="!obj.proximityStatus">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.distance">
+                {{obj.distance}}
+              </span>
+              <span *ngIf="!obj.distance">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.metas[0] && obj.metas[0].expectedTravelTime">
+                {{obj.metas[0].expectedTravelTime}}
+              </span>
+              <span *ngIf="!obj.metas[0] || !obj.metas[0].expectedTravelTime">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.metas[0] && obj.metas[0].expectedDistanceUnit">
+                <span *ngIf="obj.metas[0].expectedDistanceUnit != 'KILOMETER'">
+                  {{obj.metas[0].expectedDistance/1000}}Km
+                </span>
+                <span *ngIf="obj.metas[0].expectedDistanceUnit == 'KILOMETER'">
+                  {{obj.metas[0].expectedDistance}}Km
+                </span>
+              </span>
+              <span *ngIf="!obj.metas[0] || !obj.metas[0].expectedDistanceUnit">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.roID">
+                {{obj.extraFields.roID}}
+              </span>
+              <span *ngIf="!obj.extraFields.roID">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.receiverID">
+                {{obj.extraFields.receiverID}}
+              </span>
+              <span *ngIf="!obj.extraFields.receiverID">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.consignor.name">
+                {{obj.consignor.name}}
+              </span>
+              <span *ngIf="!obj.consignor.name">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.dispatchMonth">
+                {{obj.extraFields.dispatchMonth | date:'MMMM' }}
+              </span>
+              <span *ngIf="!obj.extraFields.dispatchMonth">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.metas[0].targetDepartmentName">
+                {{obj.metas[0].targetDepartmentName}}
+              </span>
+              <span *ngIf="!obj.metas[0].targetDepartmentName">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.transporterCode">
+                {{obj.transporterCode}}
+              </span>
+              <span *ngIf="!obj.transporterCode">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.vehicleType">
+                {{obj.vehicleType}}
+              </span>
+              <span *ngIf="!obj.vehicleType">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.driverDetails[0].name">
+                {{obj.driverDetails[0].name}}
+              </span>
+              <span *ngIf="!obj.driverDetails[0].name">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.driverDetails[0].phone">
+                {{obj.driverDetails[0].phone}}
+              </span>
+              <span *ngIf="!obj.driverDetails[0].phone">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.vehicleChallanNo">
+                {{obj.extraFields.vehicleChallanNo}}
+              </span>
+              <span *ngIf="!obj.extraFields.vehicleChallanNo">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.challanDateTime">
+                {{obj.extraFields.challanDateTime | date: 'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.extraFields.challanDateTime">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.memoNumber">
+                {{obj.extraFields.memoNumber}}
+              </span>
+              <span *ngIf="!obj.extraFields.memoNumber">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.memoDateTime">
+                {{obj.extraFields.memoDateTime | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.extraFields.memoDateTime">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.gatepassNumber">
+                {{obj.extraFields.gatepassNumber}}
+              </span>
+              <span *ngIf="!obj.extraFields.gatepassNumber">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" style="font-weight: 500;">
+              <span *ngIf="obj.extraFields.gatepassDateTime">
+                {{obj.extraFields.gatepassDateTime | date:'hh:mm a' }} <br>
+                {{obj.extraFields.gatepassDateTime | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.extraFields.gatepassDateTime">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="(obj.currentStatus=='RUNNING'|| obj.currentStatus=='CREATED') && !obj.critical">
+                <button mat-stroked-button class="btnStrBasic" data-toggle="modal" data-target="#exampleModalCenter"
+                  (click)="markCritical(obj.consignmentCode)">Mark Critical</button>
+
+              </span>
+              <span *ngIf="(obj.currentStatus=='RUNNING'|| obj.currentStatus=='CREATED') && obj.critical==true">
+                Critical
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="consignmentArr.length === 0">
+            <td class="align-middle" colspan="11">
+              No Result Found
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title Drop-zone" id="exampleModalLabel">Drop zone</div>
+        <button (click)="modalClose()" type="button" class="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="center">
+          <ngx-file-drop contentClassName="Drop-files-here-or-c" dropZoneClassName="my-style"
+            dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+            (onFileLeave)="fileLeave($event)">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+              <div (click)="openFileSelector()" style="height: 100%; width: 100%;padding: 10%;">
+
+                <img src="assets/images/upload.png" class="upload">
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==0">Drop files here or click to upload</p>
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==1">{{files[0].relativePath}}</p>
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==2" class="text-danger">Only Excel Files are
+                  allowed.
+                </p>
+              </div>
+
+            </ng-template>
+          </ngx-file-drop>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" (click)="uploadExcel()" [disabled]="dropZoneMessage!=1" class="modalUploadButton"><span
+            class="Upload">Upload</span></button>
+        <!-- <input type="file" name="test" id="" (change)="fileChange($event)"> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- marck critcal modal -->
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title" id="exampleModalLongTitle">Mark Critical</h3>
+
+      </div>
+      <div class="modal-body">
+        Are you sure you want to mark it as Critical?
+      </div>
+      <div class="modal-footer">
+        <button mat-raised-button class="btn basicRaisedbtn" (click)="critical()">
+          Yes
+        </button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">No</button>
+      </div>
+    </div>
+  </div>
+</div>

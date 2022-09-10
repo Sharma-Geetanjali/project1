@@ -1,0 +1,495 @@
+<mat-toolbar class="header">
+    <div class="searchBox">
+      <mat-icon class="searchIcon">search</mat-icon>
+      <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search Consignment"
+        (keyup.enter)="search()">
+    </div>
+    <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+    <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+        style="outline: none !important; ">
+        <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+          class="badgedisplay1">filter_list</mat-icon>
+        <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+        <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+        <span style="display: block; line-height: 0; color: var(--headerText);"> Filter </span>
+      </button>
+    </div>
+
+    <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+      <span mat-menu-item (click)="$event.stopPropagation();"
+  style="outline: none !important; height: 150px !important; border-top: none !important;">
+  <span style="display: block; font-size: 12px;">
+    <span>
+      Date
+    </span>
+    <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+      Clear
+    </span>
+  </span>
+  <span style="display: block;">
+    <mat-form-field appearance="outline" style="width: 100% !important;">
+      <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate" [max]="maxDate"
+        placeholder="From date & time" disabled>
+
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+      <ngx-mat-datetime-picker  #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+    </mat-form-field>
+  </span>
+
+  <span>
+    <mat-form-field appearance="outline" style="width: 100% !important;">
+      <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time" [min]="minDate" [max]="maxDate"
+        formControlName="toDate" disabled>
+
+      <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+      <ngx-mat-datetime-picker  #pickerTo [enableMeridian]="true" style="border-top: none !important;" disabled="false"></ngx-mat-datetime-picker>
+    </mat-form-field>
+
+  </span>
+  <!-- <span style="display: block; font-size: 12px;">
+    <span>
+      Date
+    </span>
+    <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+      Clear
+    </span>
+  </span>
+  <span style="display: block;">
+    <mat-form-field appearance="outline" style="width: 100% !important;">
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+        <input matStartDate formControlName="start" placeholder="Start date" formControlName="fromDate">
+        <input matEndDate formControlName="end" placeholder="End date" formControlName="toDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker" style="outline: none !important;"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker style="outline: none !important;"></mat-date-range-picker>
+    </mat-form-field>
+  </span> -->
+
+</span>
+
+
+      <mat-divider style="margin-top: 10px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+        <span style="display: block; font-size: 12px;"> Registration Number</span>
+        <input placeholder="Registration Number" formControlName="registrationNo" class="filterInput">
+      </span>
+
+      <mat-divider style="margin-top: 10px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+        <span style="display: block; font-size: 12px;"> Region</span>
+
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <mat-select placeholder="Select Region" #singleSelect formControlName="region"
+            (selectionChange)="onChangeRegion($event.value)">
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Select Region'" [noEntriesFoundLabel]="'No match found'"
+                formControlName="regionGroupFilter"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let obj of UnqiueGroupID" value="{{obj}}">
+              {{obj}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </span>
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+        <span style="display: block; font-size: 12px;"> Select District</span>
+
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <mat-select placeholder="Select District" #singleSelect formControlName="district">
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Select District'" formControlName="regionFilter"
+                [noEntriesFoundLabel]="'No match found'">
+              </ngx-mat-select-search>
+            </mat-option>
+
+            <mat-option *ngFor="let obj of filteredArr" value="{{obj.groupId}}"
+              (click)="toSelectConsignmentDeptt(obj.groupName)">
+              {{obj.groupName}}
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </span>
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+        <span style="display: block; font-size: 12px;"> Dispatcher Code</span>
+
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <mat-select placeholder="Select Dispatcher" #singleSelect formControlName="consignorCode">
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Dispatcher Code'" [noEntriesFoundLabel]="'No match found'"
+                formControlName="consignorCodeFilter">
+              </ngx-mat-select-search>
+            </mat-option>
+            <div *ngFor="let obj of filteredCnorArr">
+              <mat-option *ngFor="let obj1 of obj.detail" value="{{obj1.code}}">
+                {{obj1.name}}
+              </mat-option>
+            </div>
+
+
+          </mat-select>
+        </mat-form-field>
+      </span>
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+        <span style="display: block; font-size: 12px;"> Receiver Code</span>
+
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <mat-select placeholder="Select Receiver" #singleSelect formControlName="consigneeCode">
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Receiver Code'" [noEntriesFoundLabel]="'No match found'"
+                formControlName="consigneeCodeFilter">
+              </ngx-mat-select-search>
+            </mat-option>
+            <div *ngFor="let obj of filteredCneeArr">
+              <mat-option *ngFor="let obj1 of obj.detail" value="{{obj1.code}}">
+                {{obj1.name}}
+              </mat-option>
+            </div>
+
+
+          </mat-select>
+        </mat-form-field>
+      </span>
+      <!-- <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+        <span style="display: block; font-size: 12px;">
+          <span>
+            Vehicle My Group
+          </span>
+          <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearMyvehicle()">
+            Clear
+          </span>
+        </span>
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <mat-select placeholder="Select Group" #singleSelect formControlName="myvehicle">
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'search Group'" formControlName="myfilterVehicle"
+                [noEntriesFoundLabel]="'No match found'">
+              </ngx-mat-select-search>
+            </mat-option> -->
+
+            <!-- <mat-option *ngFor="let obj of myOrganization[0]?.groups" value="{{obj.groupName}}">
+            {{obj.groupName}}
+          </mat-option> -->
+            <!-- <mat-optgroup *ngFor="let obj of myOrganization[0]?.groups" [label]="obj.groupName" [disabled]="obj.disabled">
+              <mat-option *ngFor="let obj1 of obj.vehicles" [value]="obj1.id">
+                {{ obj1.name }}
+              </mat-option> -->
+
+              <!-- <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name"
+                    [disabled]="group.disabled">
+        </mat-optgroup> -->
+
+            <!-- </mat-optgroup>
+
+          </mat-select>
+        </mat-form-field>
+      </span> -->
+      <!-- <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Vehicle Shared with me</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select Group" #singleSelect formControlName="vehicle">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'search Group'" formControlName="filterVehicle"
+              [noEntriesFoundLabel]="'No match found'">
+            </ngx-mat-select-search>
+          </mat-option>
+
+          <mat-option *ngFor="let obj of myOrganization[0]?.groups" value="{{obj.groupName}}">
+            {{obj.groupName}}
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </span> -->
+      <!-- <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+        <span style="display: block; font-size: 12px;">
+          <span>
+            Consignment My Group
+          </span>
+          <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearMyconsign()">
+            Clear
+          </span>
+        </span>
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <mat-select placeholder="Select Group" #singleSelect formControlName="myconsign">
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'search group'" formControlName="filterMyconsign"
+                [noEntriesFoundLabel]="'No match found'">
+              </ngx-mat-select-search>
+            </mat-option>
+
+            <mat-option *ngFor="let obj of consignmentMyGroup[0]?.groups" value="{{obj.groupId}}">
+              {{obj.groupName}}
+            </mat-option>
+
+          </mat-select>
+        </mat-form-field>
+      </span>
+      <mat-divider style="margin-top: 10px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+        <span style="display: block; font-size: 12px;"> Registration Number</span>
+        <input placeholder="Registration Number" formControlName="registraionNo" class="filterInput">
+      </span>
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+        <span style="display: block; font-size: 12px;"> Consignor</span>
+
+        <input placeholder="Consignor Code" formControlName="consignorCode" class="filterInput">
+      </span>
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+        <span style="display: block; font-size: 12px;"> Consignee</span>
+
+        <input placeholder="Consignee Code" formControlName="consigneeCode" class="filterInput">
+      </span>
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+        <span style="display: block; font-size: 12px;">
+          <span>
+            Proximity Status
+          </span>
+          <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearproxStatus()">
+            clear
+          </span>
+        </span>
+
+        <mat-radio-group aria-label="Select an option" formControlName="proxStatus">
+          <mat-radio-button value="ENTERED">Entered</mat-radio-button>
+          <mat-radio-button style="margin-left: 80px;" value="EXITED">Exited</mat-radio-button>
+        </mat-radio-group>
+      </span> -->
+
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+        <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+          <span>
+            <button mat-stroked-button class="btnStrBasic" (click)="clearAll()">Clear All</button>
+          </span>
+          <span style="float: right !important;">
+            <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+              Apply
+            </button>
+          </span>
+        </span>
+      </span>
+    </mat-menu>
+
+    <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+      <span>{{numberFilter.length}} Filters</span>
+      <a (click)="reomveFilter()">
+        <img src="assets/images/ic-close.png" height="10px" width="10px"
+          style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+      </a>
+
+
+    </span>
+
+
+
+    <span class="spacer"></span>
+
+    <div class="badgedisplay" style="margin-right: 20px;">
+      <button mat-menu-item style="outline: none !important; color: var(--headerText);" (click)="downloadReport()" >
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </div>
+
+    <div class="badgedisplay1">
+      <button mat-icon-button [matMenuTriggerFor]="menu2" style="margin-right: 22px; outline: none !important;"
+        aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu2="matMenu">
+        <!-- <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+      Upload Excel
+      <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+    </button> -->
+        <button mat-menu-item style="outline: none !important;" (click)="downloadReport()" >
+          Download Excel
+          <img src="assets/images/download.png" style="margin-left: 4px;">
+        </button>
+      </mat-menu>
+    </div>
+
+    <!-- <div class="dateInput" [formGroup]="filterForm">
+
+
+    <mat-form-field appearance="outline" class="eol1 input-full-width " >
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate" style="font-size: 16px !important; ">
+        <input matStartDate placeholder="Start date" formControlName="fromDate">
+        <input matEndDate placeholder="End date" formControlName="toDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker" class="iconBtn" style="outline: none !important;">
+      </mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+  </div>
+  <div style="margin-left: -50px ">
+
+    <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn">GO</button>
+  </div> -->
+
+
+
+  </mat-toolbar>
+
+
+
+<!-- table starts here......................... -->
+
+
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+    <div style="position: relative !important;">
+        <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+            <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+        </ngx-spinner>
+    </div>
+    <div class="row mt-3" style="padding-left: 10px !important;">
+        <div class="col-lg-12 table-responsive eol"
+            [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+            style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+            [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="getCommodityReport()">
+
+            <table class="table table-bordered bordered rounded">
+                <thead>
+                    <tr class="thead-dark">
+                        <th scope="col" style="width: 70px !important;">Sr. No.</th>
+                        <th scope="col" style="width: 132px !important;">Registration Number</th>
+                        <th scope="col" style="width: 132px !important;">Consignment Code</th>
+                        <th scope="col" style="width: 172px !important;">Dispatcher</th>
+                        <th scope="col" style="width: 192px !important;">Reciever</th>
+                        <th scope="col" style="width: 112px !important;">Goods Name</th>
+                        <th scope="col" style="width: 112px !important;">Goods Weight</th>
+                        <th scope="col" style="width: 112px !important;">Weight Unit</th>
+                        <th scope="col" style="width: 132px !important;">Package Type</th>
+                        <th scope="col" style="width: 172px !important;">Package Count</th>
+                        <th scope="col" style="width: 170px !important;">Empty Package Weight</th>
+                        <th scope="col" style="width: 132px !important;">Scheme</th>
+                    </tr>
+                </thead>
+                <tbody class="eol">
+                    <tr *ngFor="let obj of commodityArr; index as i">
+                        <td class="align-middle" scope="row">{{i+1}}</td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.vehicleName">
+                                {{obj.vehicleName}}
+                            </span>
+                            <span *ngIf="!obj.vehicleName">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.consignmentCode">
+                                {{obj.consignmentCode}}
+                            </span>
+                            <span *ngIf="!obj.consignmentCode">
+                                <h1>--</h1>
+                            </span>
+
+                        </td>
+
+                        <td class="align-middle">
+                            <span *ngIf="obj.consignorName">
+                                {{obj.consignorName}}
+                            </span>
+                            <span *ngIf="!obj.consignorName">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.consigneeName">
+                                {{obj.consigneeName}}
+                            </span>
+                            <span *ngIf="!obj.consigneeName">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.goodsName">
+                                {{obj.goods[0]?.goodsName}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.goodsName">
+                                <h1>--</h1>
+                            </span>
+
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.goodsWeight">
+                                {{obj.goods[0]?.goodsWeight}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.goodsWeight">
+                                <h1>--</h1>
+                            </span>
+
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.goodsWeightUnit">
+                                {{obj.goods[0]?.goodsWeightUnit}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.goodsWeightUnit">
+                              <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.packageType">
+                                {{obj.goods[0]?.packageType}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.packageType">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.packageCount">
+                                {{obj.goods[0]?.packageCount}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.packageCount">
+                                <h1>--</h1>
+                            </span>
+
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.emptyPackageWeight">
+                                {{obj.goods[0]?.emptyPackageWeight}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.emptyPackageWeight">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.goods[0]?.scheme">
+                                {{obj.goods[0]?.scheme}}
+                            </span>
+                            <span *ngIf="!obj.goods[0]?.scheme">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="commodityArr.length === 0">
+                        <td class="align-middle" colspan="12">
+                            No Result Found
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

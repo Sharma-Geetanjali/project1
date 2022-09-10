@@ -1,0 +1,579 @@
+<div class="container-fluid p-0">
+  <div class="mapRow">
+    <div class="cardWidth eol">
+      <div class="d-flex p-2 " style="overflow: hidden;">
+        <div class="col-12">
+          <div class="row mt-3 ">
+            <div class="col-12">
+              <button type="button" mat-stroked-button class="mapBtn"
+                style="position: relative; outline: none !important;" (click)="back()">
+                <!-- <img src="assets/images/back_icon.svg"
+      style="margin-right: 6px !important; padding-bottom: 2px !important;"> -->
+                <mat-icon>chevron_left</mat-icon>
+                Go Back
+              </button>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <span class="congCode">
+                {{vehicleData?.vehicleName}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-6">
+              <span class="currStatusMap">
+                Last Known Location
+              </span>
+            </div>
+            <div class="col-6 d-flex justify-content-end">
+              <span class="liveStatus">
+                {{vehicleData.date | date: 'hh:mm a dd/MM/yy'}}
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <span class="liveStatus">
+                {{endLocation?.address}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Ignition Status
+              </span>
+            </div>
+            <div class="col-7">
+              <div *ngIf="vehicleData.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle ">
+                <span class="liveStatus">
+                  ON
+                </span>
+              </div>
+              <div *ngIf="!vehicleData.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle ">
+                <span class="liveStatus">
+                  OFF
+                </span>
+              </div>
+              <!-- <span class="liveStatus " *ngIf="vehicleData.ignitionStatus">
+                ON
+              </span>
+              <span class="liveStatus " *ngIf="!vehicleData.ignitionStatus">
+                OFF
+              </span> -->
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Travelled Today
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{vehicleData.todayskm}} km
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Speed
+              </span>
+            </div>
+            <div class="col-7 ">
+              <span class="liveStatus ">
+                {{vehicleData.speed}} km/hr
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Loading Status
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus " *ngIf="vehicleData.loaded">
+                Loaded
+              </span>
+              <span class="liveStatus " *ngIf="!vehicleData.loaded">
+                Unloaded
+              </span>
+            </div>
+          </div>
+
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Group
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{vehicleData.groupName | uppercase}}
+              </span>
+            </div>
+          </div>
+
+
+
+
+          <div class="row mt-2">
+            <div class="col-12">
+              <span class=" currStatusMap">
+                <!-- <mat-checkbox (change)="toggle($event)" >Auto center ON/OFF</mat-checkbox> -->
+                Auto Center
+              </span>
+              <div class="mt-2">
+                <mat-radio-group aria-label="Select an option" class="example-radio-group">
+                  <mat-radio-button class="col-6 p-0" (click)="toggle(false)" [checked]="!boundbool" value="RED">On
+                  </mat-radio-button>
+                  <mat-radio-button class="col-6 p-0" (click)="toggle(true)" [checked]="boundbool" value="GREEN">Off
+                  </mat-radio-button>
+                </mat-radio-group>
+              </div>
+            </div>
+          </div>
+          <div *ngIf="!playMap" class="col-12 p-0 d-flex justify-content-center"
+            style="margin-top: 25px; font-size: 15px; color: white;">
+            <button mat-stroked-button class="btnStrBasic" (click)="replay();playback(true)"
+              style="width: 100%; height: 40 px; background-color: var(--clor);">Play route</button>
+          </div>
+          <div *ngIf="playMap">
+            <div *ngIf="currentPlaying" class="col-12 p-0 d-flex justify-content-center"
+              style="margin-top: 25px; font-size: 15px; color: white;">
+              <button mat-stroked-button class="btnStrBasic" (click)="stopInterval();playback(false)"
+                style="width: 100%; height: 40 px; background-color: var(--clor);">Stop</button>
+            </div>
+            <div *ngIf="!currentPlaying" class="col-12 p-0 d-flex justify-content-center"
+              style="margin-top: 25px; font-size: 15px; color: white;">
+              <button mat-stroked-button class="btnStrBasic" (click)="replay();playback(true)"
+                style="width: 100%; height: 40 px; background-color: var(--clor);">Play route</button>
+            </div>
+          </div>
+
+          <div class="col-12 p-0 d-flex justify-content-center"
+            style="margin-top: 20px; font-size: 15px; color: var(--black);">
+            <button mat-stroked-button class="btnStrBasic" data-toggle="modal"
+              (click)=" patchValueSOS(vehicleData.vehicleId)" data-target="#exampleModal"
+              style="width: 100%; height: 40 px; background-color: white;">Report an issue</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <button class="recenterMapBtn" (click)="recenterMap()">Recenter Map</button> -->
+
+    <div class="mapWidth  p-0 m-0 " *ngIf="!playMap">
+      <agm-map *ngIf="boundbool && !cardLoadingFlag" id="map1" #AgmMap [fullscreenControl]='true'
+        [mapTypeControl]='true' (mapReady)="mapReady($event)" (zoomChange)="getMapZoom($event)">
+        <agm-marker [latitude]="startLocation?.latitude"
+          [longitude]="startLocation?.longitude" [iconUrl]="{
+            url: flagIcon,
+            scaledSize: {
+              width: 45,
+              height: 45
+            },
+            origin:{
+              x:-18,
+              y:-19
+            },
+            size:{
+              width: 55,
+              height: 55
+            }
+    }">
+          <agm-info-window>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Start Address:</span> &nbsp;
+                <Span class="liveStatus">{{startLocation?.address}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Time:</span>&nbsp;
+                <Span class="liveStatus"> {{startLocation?.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+
+        </agm-marker>
+
+        <agm-overlay [latitude]="endLocation?.latitude" [longitude]="endLocation?.longitude">
+          <div>
+            <img [src]="pathdraw?.icon" style="transform: rotate({{endLocation?.orientation}}deg);  margin:-7px">
+          </div>
+          <agm-info-window>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Address:</span> &nbsp;
+                <Span class="liveStatus">{{endLocation?.address}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Time:</span>&nbsp;
+                <Span class="liveStatus"> {{endLocation?.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+        </agm-overlay>
+        <agm-marker [latitude]="endLocation?.latitude" [longitude]="endLocation?.longitude" [visible]="false"
+          ></agm-marker>
+
+
+        <agm-polyline [visible]="true" [strokeWeight]="4" [strokeColor]="theme.polylineColor">
+          <agm-polyline-point *ngFor="let coordinate of pathdraw.path; let i=index" [latitude]="coordinate?.latitude"
+            [longitude]="coordinate?.longitude">
+
+          </agm-polyline-point>
+        </agm-polyline>
+      </agm-map>
+
+      <agm-map *ngIf="!boundbool" id="map1" #AgmMap [latitude]='28.6139' [longitude]='77.2090' [zoom]='currentZoom'
+        (zoomChange)="getMapZoom($event)" [fullscreenControl]='true' [mapTypeControl]='true'
+        (mapReady)="mapReady2($event)">
+        <agm-marker [latitude]="startLocation?.latitude" [longitude]="startLocation?.longitude" [iconUrl]="{
+            url: flagIcon,
+            scaledSize: {
+              width: 45,
+              height: 45
+            },
+            origin:{
+              x:-18,
+              y:-19
+            },
+            size:{
+              width: 55,
+              height: 55
+            }
+    }">
+          <agm-info-window>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Start Address:</span> &nbsp;
+                <Span class="liveStatus">{{startLocation?.address}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Time:</span>&nbsp;
+                <Span class="liveStatus"> {{startLocation?.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+
+        </agm-marker>
+
+        <agm-overlay [latitude]="endLocation?.latitude" [longitude]="endLocation?.longitude">
+          <div>
+            <img [src]="pathdraw?.icon" style="transform: rotate({{endLocation?.orientation}}deg);  margin:-7px">
+          </div>
+          <agm-info-window>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Address:</span> &nbsp;
+                <Span class="liveStatus">{{endLocation?.address}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Time:</span>&nbsp;
+                <Span class="liveStatus"> {{endLocation?.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+        </agm-overlay>
+        <agm-marker [latitude]="endLocation?.latitude" [longitude]="endLocation?.longitude" [visible]="false">
+        </agm-marker>
+
+
+        <agm-polyline [visible]="true" [strokeWeight]="4" [strokeColor]="theme.polylineColor">
+          <agm-polyline-point *ngFor="let coordinate of pathdraw.path; let i=index" [latitude]="coordinate?.latitude"
+            [longitude]="coordinate?.longitude">
+
+          </agm-polyline-point>
+        </agm-polyline>
+      </agm-map>
+    </div>
+
+    <div class="mapWidth  p-0 m-0 " *ngIf="playMap">
+
+      <!-- <div style="position: relative !important;">
+        <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+          <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+        </ngx-spinner>
+      </div> -->
+
+      <agm-map #AgmMap id="map2" [latitude]="returnStartFocusLatitude()" [longitude]="returnStartFocusLongitude()" (mapReady)="mapReady($event)"
+        [zoom]='currentZoom' [fullscreenControl]='true' [mapTypeControl]='true' [usePanning]="true">
+
+        <agm-marker [latitude]="returnStartFocusLatitude()" [longitude]="returnStartFocusLongitude()"
+          (markerClick)="clickedMarker(infoWindowStart)" [iconUrl]="{
+              url: flagIcon,
+              scaledSize: {
+                width: 45,
+                height: 45
+              },
+              origin:{
+                x:-18,
+                y:-19
+              },
+              size:{
+                width: 55,
+                height: 55
+              }
+          }">
+
+          <agm-info-window #infoWindowStart>
+            <!-- <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+              <mat-icon>close</mat-icon>
+            </span> -->
+            <div class="iw-content">
+              <!-- <div class="iw-subTitle">
+                <span class="currStatus">Vehicle Name:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[0]?.vehicleName}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Distance Covered:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[0]?.distanceRun/1000}}KM</Span>
+              </div> -->
+              <div class="iw-subTitle">
+                <span class="currStatus">Speed:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[0]?.speed}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Date & Time:</span>&nbsp;
+                <Span class="liveStatus"> {{pathdrawPlayRoute[0]?.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Address:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[0]?.address}}</Span>
+              </div>
+
+            </div>
+          </agm-info-window>
+
+        </agm-marker>
+
+        <agm-overlay [latitude]="returnEndFocusLatitude()" [longitude]="returnEndFocusLongitude()">
+          <div>
+            <img [src]="theme.onLoaded"
+              style="transform: rotate({{returnEndFocusOrientation()?.orientation}}deg); margin:-7px">
+          </div>
+        </agm-overlay>
+        <agm-marker [visible]="false" [latitude]="returnEndFocusLatitude()" [longitude]="returnEndFocusLongitude()"
+          (markerClick)="clickedMarker(infoWindowEnd)">
+
+
+          <agm-info-window #infoWindowEnd>
+            <!-- <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+              <mat-icon>close</mat-icon>
+            </span> -->
+            <div class="iw-content">
+              <!-- <div class="iw-subTitle">
+                <span class="currStatus">Vehicle Name:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.vehicleName}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Distance Covered:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.distanceRun/1000}}KM</Span>
+              </div> -->
+              <div class="iw-subTitle">
+                <span class="currStatus">Speed:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.speed}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Date & Time:</span>&nbsp;
+                <Span class="liveStatus"> {{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.timeStamp | date: 'hh:mm a
+                  dd/MM/yy'}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Address:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.address}}</Span>
+              </div>
+
+            </div>
+          </agm-info-window>
+        </agm-marker>
+
+
+        <!-- <agm-marker *ngIf="!currentPlaying" [latitude]="pathdrawPlayRoute[0]?.lat" [longitude]="pathdrawPlayRoute[0]?.lng" (markerClick)="clickedMarker(infoWindowStart)"
+        [iconUrl]="{
+          url: 'assets/images/start_icon.png',
+          scaledSize: {
+            width: 30,
+            height: 30
+          }
+        }"> 
+
+        
+        </agm-marker>-->
+
+
+        <!-- <agm-marker *ngIf="!currentPlaying" [latitude]="pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.lat" [longitude]="pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.lng" (markerClick)="clickedMarker(infoWindowEnd)"
+        [iconUrl]="{
+          url: 'assets/images/end_icon.png',
+          scaledSize: {
+            width: 30,
+            height: 30
+          }
+        }"> 
+
+        
+
+        </agm-marker>-->
+
+        <div *ngIf="playMap">
+          <agm-overlay *ngFor="let item of pathdrawPlayRoute" [latitude]="item.lat" [longitude]="item.lng"
+            (markerClick)="clickedMarker(infoWindow)">
+            <div style="width:5px;height:5px;background-color:transparent; border-radius: 50%;"></div>
+            <agm-info-window #infoWindow>
+              <!-- <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span> -->
+              <div class="iw-content">
+                <!-- <div class="iw-subTitle">
+                  <span class="currStatus">Vehicle Name:</span> &nbsp;
+                  <Span class="liveStatus">{{item.vehicleName}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Distance Covered:</span> &nbsp;
+                  <Span class="liveStatus">{{item.distance/1000}}KM</Span>
+                </div> -->
+                <div class="iw-subTitle">
+                  <span class="currStatus">Speed:</span> &nbsp;
+                  <Span class="liveStatus">{{item.speed}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Date & Time:</span>&nbsp;
+                  <Span class="liveStatus"> {{item.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Address:</span> &nbsp;
+                  <Span class="liveStatus">{{item.location}}</Span>
+                </div>
+
+              </div>
+            </agm-info-window>
+          </agm-overlay>
+        </div>
+
+
+
+        <agm-polyline [visible]="true" [strokeWeight]="4" [strokeColor]="theme.polylineColor">
+          <agm-polyline-point *ngFor="let coordinate of filterPathdraw;" [latitude]="coordinate.lat"
+            [longitude]="coordinate.lng">
+          </agm-polyline-point>
+        </agm-polyline>
+
+      </agm-map>
+
+      <div class="videoBar d-flex justify-content-center" style="flex-direction: column;">
+        <!-- <input [(ngModel)]="seekBarVal" class="seekbar m-2" (change)="seek()" type="range" min="1"
+          [max]="noOfDisplayChunks" style=" width: auto !important;" step="1" /> -->
+
+          <mat-slider class="seekbar mb-4" min="1" aria-label="units" [max]="noOfDisplayChunks" step="1" [value]="seekBarVal" (input)="seek($event)"></mat-slider>
+        <div class="row m-2">
+          <div class="col-5" style="font-size: 18 px;color: white; font-weight: 500;">
+            Trip Start <br>
+            {{pathdraw1[0]?.timeStamp | date: 'hh:mm a dd/MM/yy'}}
+          </div>
+          <div class="col-2 d-flex justify-content-center">
+            <mat-icon *ngIf="!currentPlaying" class="material-icons mx-auto" (click)="drawPath()"
+              style="height: 58px; width: 58px; font-size: 54px; color: white; cursor: pointer;">
+              play_circle_outline</mat-icon>
+
+            <mat-icon *ngIf="currentPlaying" class="material-icons mx-auto" (click)="stopInterval()"
+              style="height: 58px; width: 58px; font-size: 54px; color: white; cursor: pointer;">
+              pause_circle_outline</mat-icon>
+          </div>
+          <div class="col-5 justify-content-end"
+            style="font-size: 18 px;color: white; text-align: right;font-weight: 500;">
+            Trip End <br>
+            {{pathdraw1[pathdraw1.length - 1]?.timeStamp | date: 'hh:mm a dd/MM/yy'}}
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade " id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
+      aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+        <div class="modal-content">
+          <div class="row mb-5" [formGroup]="requestSubmitForm">
+            <div class="col-11 pr-0 pt-3  ">
+              <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Report</span>
+              <div class="row">
+                <div class="col-12 pr-5 pl-5 pt-3 ">
+                  <div class="row">
+                    <div class="col-12" style="padding-left: 42px;">
+                      <span class="sub-heading">
+                        Please fill up the form to report the issue associated with the vehicle.
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-12" style="padding-left: 42px;">
+                      <span style="font-size: 12px; font-weight: 400;">Vehicle Name</span>
+                      <span style="font-size: 18px; font-weight: 600; padding-left: 12px;">
+                        {{vehicleName.value}}
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-12" style="padding-left: 42px;">
+                      <span style="font-size: 12px; font-weight: 400;">Issue Type</span> <br>
+                      <span class="reportIssue">
+                        <mat-form-field appearance="outline" style="width: 100% !important;">
+                          <mat-select placeholder="Choose Issue" #singleSelect style=" z-index: 2 !important;"
+                            formControlName="issueType">
+                            <mat-option value="Disconnected">Disconnected</mat-option>
+                            <mat-option value="Tampered">Tampered</mat-option>
+                            <mat-option value="Data Not Reporting">Data Not Reporting</mat-option>
+                            <mat-option value="GPS Bounce">GPS Bounce</mat-option>
+                            <mat-option value="Others">Others</mat-option>
+                          </mat-select>
+                          <mat-error class="issueTypeErr" *ngIf="issueType.errors?.required && issueType.touched">Issue
+                            type is required
+                          </mat-error>
+                        </mat-form-field>
+                      </span>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12" style="padding-left: 42px;">
+                      <span style="font-size: 12px; font-weight: 400;">Issue Description</span> <br>
+                      <span>
+                        <textarea class="filterInput" formControlName="issueDescription"></textarea>
+                        <mat-error class="issueDescriptionErr"
+                          *ngIf="issueDescription.errors?.required && issueDescription.touched">Issue description is
+                          required
+                        </mat-error>
+                        <mat-error class="issueDescriptionErr"
+                          *ngIf="issueDescription.errors?.frontSpace && issueDescription.touched && !issueDescription.errors?.required">
+                          Issue description is required
+                        </mat-error>
+                      </span>
+
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12 " style="padding-left: 42px;">
+                      <button type="button" class="btn btn-secondary submitDialog" (click)="submitRequest();">Submit
+                        Request</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-1 pl-0">
+              <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;"
+                (click)="closeReportModal()">clear
+              </mat-icon>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

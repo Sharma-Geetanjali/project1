@@ -1,0 +1,70 @@
+<mat-toolbar class="header" [formGroup]="filterForm">
+  <button mat-icon-button class="iconBtn" (click)="expandSideNav()">
+    <mat-icon class="whiteIcon" *ngIf="!login.isExpanded">menu</mat-icon>
+    <mat-icon class="whiteIcon" *ngIf="login.isExpanded">clear</mat-icon>
+  </button>
+  <div class="customBreadcrumbs">
+    <span class="individualBreadcrumb" *ngFor="let el of arr; index as i" [routerLink]="el.path"
+      style="color: var(--topHeaderText); text-transform: capitalize; font-size: 12px !important;">
+      {{el.breadcrumbString}}
+      <!-- <p *ngIf="i < arr.length-1">></p> -->
+    <mat-icon *ngIf="i < arr.length-1" class="whiteIcon" style="vertical-align: middle; font-size: 20px !important; line-height: 1.1 !important;">keyboard_arrow_right</mat-icon>
+    </span>
+  </div>
+  <span class="spacer"></span>
+  <button mat-icon-button class="refreshIco d-flex align-items-center mr-2" aria-label="Example icon-button with heart icon"
+    (click)="headerS.refreshCall(); updateDate();reload()">
+    <mat-icon class="whiteIcon" >loop</mat-icon>
+  </button>
+  <span style="color: var(--topHeaderText); font-size: 12px; line-height: 1.3; margin-right: 16px; text-align: center;">{{today | date:'medium'}}  </span>
+  <!-- <span class="abc" *ngIf="headerS.showDateFilter">
+    <mat-form-field appearance="outline">
+      <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate"
+        (dateChange)="headerS.setStartDate($event.value)" placeholder="From date & time">
+
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+      <ngx-mat-datetime-picker #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+    </mat-form-field>
+  </span>
+
+  <span class="abc" *ngIf="headerS.showDateFilter">
+    <mat-form-field appearance="outline">
+      <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time" formControlName="toDate"
+        (dateChange)="headerS.setEndDate($event.value)">
+
+      <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+      <ngx-mat-datetime-picker #pickerTo [enableMeridian]="true" style="border-top: none !important;" disabled="false">
+      </ngx-mat-datetime-picker>
+    </mat-form-field>
+
+  </span>
+  <span class="abc1" *ngIf="headerS.showDateFilter">
+    <button mat-raised-button style="outline: none !important; margin-right: 15px; line-height: 16px !important; height: 30px !important; " class="basicRaisedbtn"
+      (click)="headerS.setApiCAll()">Go</button>
+  </span> -->
+  <div [matMenuTriggerFor]="settingMenu" *ngIf="global.checkAction('MANAGE_VEHICLE_HIERARCHY') || global.checkAction('MANAGE_DEPARTMENT_HIERARCHY')" style="margin-right: 15px;">
+    <!-- <img src="assets/images/settings-white.svg" class="image"> -->
+    <mat-icon  style="margin-top: 11px; color: var(--topHeaderText); cursor: pointer;">settings</mat-icon>
+  </div>
+  <!--  -->
+
+  <mat-menu #settingMenu="matMenu">
+    <button mat-menu-item class="heading2" *ngIf="global.checkAction('MANAGE_VEHICLE_HIERARCHY')" routerLink="/dashboard/setting/Group-Management">Vehicle Groups</button>
+    <button mat-menu-item class="heading2" *ngIf="global.checkAction('MANAGE_DEPARTMENT_HIERARCHY')" routerLink="/dashboard/setting/Department-Groups">Department Groups</button>
+    <!-- <button mat-menu-item class="heading2" *ngIf="global.checkAction('MANAGE_USERS')" routerLink="/dashboard/setting/User-Management">User Management</button> -->
+    <!-- <button mat-menu-item class="heading2" *ngIf="global.checkAction('MANAGE_ROLES')" routerLink="/dashboard/setting/Role-Management">Role Management</button> -->
+    <!-- <button mat-menu-item class="heading2" (click)="logout()">Log out</button> -->
+  </mat-menu>
+
+  <div [matMenuTriggerFor]="menu" style="margin-right: 15px;">
+    <!-- <img src="assets/images/user.svg" class="image"> -->
+    <mat-icon  style="margin-top: 11px; color: var(--topHeaderText); cursor: pointer;">account_circle</mat-icon>
+  </div>
+
+  <mat-menu #menu="matMenu">
+    <!-- <button mat-menu-item class="heading2">User Profile</button> -->
+    <button mat-menu-item class="heading2" (click)="logout()">Log out</button>
+  </mat-menu>
+</mat-toolbar>

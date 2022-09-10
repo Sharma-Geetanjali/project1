@@ -1,0 +1,150 @@
+.headingRow{
+  height: 5vh;
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.contentRow{
+  margin-top: 10px;
+  height: 89vh;
+}
+
+.flex-container{
+  display: flex;
+  flex-direction: row;
+  height: 98%;
+  margin-top: 5px !important;
+}
+
+.flex-container > div {
+  background-color: #f1f1f1;
+  margin: 10px !important;
+}
+.box{
+  /* flex: 1; */
+  display: flex;
+  flex-direction: row;
+  width: 80vw;
+  height: 97% !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+
+
+}
+
+.boxDiv{
+  background-color: #e9e9e9;
+  margin-right: 20px;
+  /* padding: 15px !important; */
+  padding-top: 0px !important;
+  min-width: 197px !important;
+
+
+}
+
+/* .classScroll{
+
+} */
+
+.groupHeading{
+  height: 44px;
+  background-color: var(--black);
+  border-radius: 4px;
+  font-size: 18px;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 6px !important;
+  font-weight: 500;
+  /* width: 194px !important; */
+}
+
+.groupContent{
+  min-height: 42px !important;
+  background-color: white;
+  border-radius: 8px;
+  margin: 10px 8px 0px 6px;
+  max-width: 185px !important;
+  padding-left: 9px !important;
+  display: flex;
+  align-items: center;
+  word-break: break-all !important;
+
+}
+
+.groupContentChecked{
+  background-color: #A8CFE9 !important;
+  border: 1px solid #008ce8 !important;
+
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.departmentHeading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  background-color: var(--black);
+  border-radius: 4px;
+  font-size: 13px;
+  color: white;
+text-align: center;
+  padding: 6px !important;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.departmentContent{
+  min-height: 40px !important;
+  max-width: 280px !important;
+  display: flex;
+  align-items: center;
+  word-break: break-all !important;
+  border: solid 1px #ffffff;
+  background-color: #cde2f0;
+
+}
+
+.modalHeading{
+  font-size: 34px !important;
+  background-color: #ffffff ;
+  color:  var(--black);
+  font-weight: 500 !important;
+}
+
+.sub-heading{
+  font-size: 16px;
+  background-color: #ffffff ;
+  color:  var(--black);
+  font-weight: 500 !important;
+}
+
+
+.filterInput{
+  min-height: 44px !important;
+  width: 100%;
+  font-size: 14px;
+  border: 1px solid #f2f2f2 !important;
+  outline: none !important;
+  border-radius: 4px !important;
+  /* text-align: center;   */
+  padding-left: 21px;
+  padding-right: 21px;
+  font-weight: 500;
+  background-color: #f2f2f2 ;
+
+}
+
+.submitDialog{
+  background-color: var(--clor);
+    font-weight: 500 !important;
+     width: 100% !important;
+      outline: none;
+       border: none !important;
+       height: 44px !important;
+}
+

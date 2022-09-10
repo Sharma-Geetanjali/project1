@@ -1,0 +1,292 @@
+<mat-toolbar class="header">
+    <!-- <div class="searchBox">
+        <mat-icon class="searchIcon">search</mat-icon>
+        <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search Consignment"
+            (keyup.enter)="search()">
+    </div> -->
+    <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+            style="outline: none !important; margin-bottom: 15px !important;">
+            <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+                class="badgedisplay1">filter_list</mat-icon>
+            <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+            <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+            <span style="display: block; line-height: 0.8; color: var(--headerText)"> Filter </span>
+        </button>
+    </div>
+
+    <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+        <span mat-menu-item (click)="$event.stopPropagation();"
+            style="outline: none !important; height: 80px !important;">
+            <span style="display: block; font-size: 12px;"> Consignor Code</span>
+
+            <input placeholder="Consignor Code" formControlName="consignorCode" class="filterInput">
+        </span>
+        <mat-divider style="margin-top: 5px;"></mat-divider>
+        <span mat-menu-item (click)="$event.stopPropagation();"
+            style="outline: none !important; height: 80px !important;">
+            <span style="display: block; font-size: 12px;"> Consignee Code</span>
+
+            <input placeholder="Consignee Code" formControlName="consigneeCode" class="filterInput">
+        </span>
+
+        <mat-divider style="margin-top: 5px;"></mat-divider>
+        <span mat-menu-item (click)="$event.stopPropagation();"
+            style="outline: none !important; height: 75px !important;">
+            <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+                <span>
+                    <button mat-stroked-button class="btnStrBasic" (click)="clearAll()">Clear All</button>
+                </span>
+                <span style="float: right !important;">
+                    <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+                        Apply
+                    </button>
+                </span>
+            </span>
+        </span>
+
+    </mat-menu>
+
+    <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+        <span>{{numberFilter.length}} Filters</span>
+        <a (click)="reomveFilter()">
+            <img src="assets/images/ic-close.png" height="10px" width="10px"
+                style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+        </a>
+    </span>
+
+
+
+    <span class="spacer"></span>
+
+    <div class="badgedisplay" style="height: 100%;" >
+      <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger" style="margin-right: 30px">
+        <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"  routerLink="/dashboard/departments/createRoute"
+            style="outline: none !important; ">
+            <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+                class="badgedisplay1">add</mat-icon>
+            <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">add</mat-icon>
+
+            <mat-icon class="badgedisplay">add</mat-icon>
+
+            <span style="display: block; line-height: 0.9; color: var(--headerText)"> Routes </span>
+        </button>
+    </div>
+
+    <div class="FilterIcon">
+      <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+            aria-label="Example icon-button with a menu">
+            <mat-icon>more_vert</mat-icon>
+            <span style="display: block; line-height: 0.9; color: var(--headerText)"> More </span>
+
+        </button>
+        <mat-menu #menu3="matMenu">
+            <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+                <mat-icon style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+              <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+              Download Route
+            </button>
+            <button mat-menu-item style="outline: none !important;" routerLink="/dashboard/departments/createRoute" >
+                <mat-icon style="margin-left: 4px; color: var(--clor); margin-right: 0px;">upload</mat-icon>
+              <!-- <img src="assets/images/upload-orange.png" style="margin-left: 4px;"> -->
+              Upload Route
+            </button>
+        </mat-menu>
+    </div>
+       </div>
+
+    <!-- </div> -->
+
+    <div class="badgedisplay1">
+      <div class="FilterIcon">
+        <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+              aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+              <span style="display: block; line-height: 0.9;"> More </span>
+
+          </button>
+          <mat-menu #menu3="matMenu">
+              <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+                <img src="assets/images/download.png" style="margin-left: 4px;">
+                Download Route
+              </button>
+              <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+                <img src="assets/images/upload-orange.png" style="margin-left: 4px;">
+                Upload Route
+              </button>
+          </mat-menu>
+      </div>
+    </div>
+
+</mat-toolbar>
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+    <div style="position: relative !important;">
+        <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+            <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+        </ngx-spinner>
+    </div>
+    <div class="row mt-3" style="padding-left: 10px !important;">
+        <div class="col-lg-12 table-responsive eol"
+            [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+            style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+            [infiniteScrollDistance]="2" [infiniteScrollThrottle]="100" [scrollWindow]="false" (scrolled)="getRoutes()">
+
+            <table class="table table-bordered bordered rounded">
+                <thead>
+                    <tr class="thead-dark">
+                        <th scope="col" style="width: 60px !important;">S.No</th>
+                        <th scope="col" style="width: 302px !important;">Consignor Name(Code)</th>
+                        <th scope="col" style="width: 312px !important;">Consignee Name(Code) </th>
+                        <th scope="col" style="width: 132px !important;">Expected Time</th>
+                        <th scope="col" style="width: 132px !important;">Distance</th>
+                        <th scope="col" style="width: 122px !important;">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="eol">
+                    <tr *ngFor="let obj of routesArr; index as i">
+                        <td class="align-middle" scope="row">{{i+1}}</td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.consignorName">
+                                {{obj?.consignorName}}
+                            </span>
+                            <span *ngIf="!obj.consignorName">
+                                <h1>--</h1>
+                            </span>
+                            <span *ngIf="obj.consignorCode">
+                                ({{obj?.consignorCode}})
+                            </span>
+                            <span *ngIf="!obj.consignorCode">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle">
+                            <span *ngIf="obj.consigneeName">
+                                {{obj?.consigneeName}}
+                            </span>
+                            <span *ngIf="!obj.consigneeName">
+                                <h1>--</h1>
+                            </span>
+                            <span *ngIf="obj.consigneeCode">
+                                ({{obj?.consigneeCode}})
+                            </span>
+                            <span *ngIf="!obj.consigneeCode">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+
+                        <td class="align-middle">
+                            <span
+                                *ngIf="obj.routeMappingModel[0].expectedTime && obj.routeMappingModel[0].expectedTimeUnit == 'SECOND' ">
+                                {{(obj?.routeMappingModel[0]?.expectedTime)/60 | number: '1.0-0' }} mins
+                            </span>
+                            <span
+                                *ngIf="obj.routeMappingModel[0].expectedTime && obj.routeMappingModel[0].expectedTimeUnit == 'MILLISECOND' ">
+                                {{(obj?.routeMappingModel[0]?.expectedTime)/60000 | number: '1.0-0' }} mins
+                            </span>
+                            <span *ngIf="!obj.routeMappingModel[0].expectedTime">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+
+                        <td class="align-middle">
+                            <span *ngIf="obj.routeMappingModel[0].expectedDistance">
+                                {{(obj?.routeMappingModel[0]?.expectedDistance)/1000}} km
+                            </span>
+                            <span *ngIf="!obj.routeMappingModel[0].expectedDistance">
+                                <h1>--</h1>
+                            </span>
+                        </td>
+                        <td class="align-middle ">
+                            <span style=" cursor: pointer;">
+                                <img src="assets/images/ic-edit.svg" (click)="editRoute(obj)" alt="">
+                            </span>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <span style=" cursor: pointer;">
+                                <img src="assets/images/ic-delete.svg"(click)="getCode(obj.routeMappingModel[0].routeMasterId,obj.routeMappingModel[0].routeId)" data-toggle="modal"
+                                data-target="#exampleModal1"  alt="">
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="routesArr.length === 0">
+                        <td class="align-middle" colspan="6">
+                            No Result Found
+
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " style="width: 576px !important;" role="document">
+    <div class="modal-content p-4">
+      <div class="row mb-3">
+        <div class="col-12 ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Delete</span>
+          <div class="row mt-3 d-flex justify-content-center">
+            <div class="col-12" style="text-align: center !important;">
+              <span class="sub-heading">
+                Are you sure u want to delete ?
+              </span> <br> <br>
+              <span class="sub-heading" style="margin-top: 15px !important;">
+                This action is not reversible.
+              </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-6" style="display: flex; justify-content: center;">
+              <button type="button" mat-stroked-button class="btnStrBasic" style="width:90% ;"
+                data-dismiss="modal">No</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn btn-secondary submitDialog" (click)="deleteRoute()"
+                data-dismiss="modal">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="errorInput" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/ic-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  Deleted Successfully
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                (click)="closeModal()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

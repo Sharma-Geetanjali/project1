@@ -1,0 +1,429 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css?family=Montserrat:200,300,400,500,700");
+
+*{
+  font-family: 'Montserrat';
+  /* transform: scale(1,1); */
+}
+:root {
+  --clor: #EF4A27;
+  --LightClor: blue;
+  --backGround: #F2F2F2;
+  --black: #3e3e3e;
+  --Grey: #aeaeae;
+  --darkGrey: #838383;
+  --topHeader: #000000;
+  --sideNav: #000000;
+  --topHeaderText: #FFFFFF;
+  --header:#FFFFFF;
+  --headerText: #000000;
+  --sideNavIcon: #000000;
+  --dropdownColor:#3e3e3e;
+  --dropdownColorText: #939CAF;
+  --dropdownColorTextHover:#901F1A;
+  --dropdownBackgroundHover: #39FF14;
+  --dropcolor: #CFCFCF;
+  --dropText: #ff0000;
+}
+
+.noneClass{
+display: none;
+}
+
+html, body { height: 100%; overflow: hidden;}
+body { margin: 0;   }
+
+.mat-list-item-content{
+  padding: 10px 24px !important;
+}
+
+.material-icons-new {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.icon-white {
+  -webkit-filter: contrast(4) invert(1);
+  -moz-filter: contrast(4) invert(1);
+  -o-filter: contrast(4) invert(1);
+  -ms-filter: contrast(4) invert(1);
+  filter: contrast(4) invert(1);
+}
+
+ /* button css */
+/* .eol::-webkit-scrollbar-track
+{
+	box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	background-color: transparent;
+} */
+
+
+/* .cdk-overlay-connected-position-bounding-box{
+  right: 1269px !important;
+} */
+
+.eol::-webkit-scrollbar-thumb
+{
+	background-color: var(--Grey);
+      border-radius: 10rem;
+}
+
+.element::-webkit-scrollbar
+{
+	width: 0 !important;
+}
+
+.eol::-webkit-scrollbar{
+  width: 4px !important;
+  height: 4px !important;
+  /* z-index: -11; */
+}
+.eol::-webkit-scrollbar-track-piece:start {
+  background: transparent;
+}
+
+.eol::-webkit-scrollbar-track-piece:end {
+  background: transparent;
+}
+
+.noneClass{
+  display: none !important;
+  }
+
+
+
+.deviceScroll::-webkit-scrollbar-thumb
+{
+	background-color: var(--Grey);
+      /* border-radius: 50000px !important; */
+      border-bottom-right-radius: 50px !important;
+  /* background: transparent; */
+
+}
+
+
+.deviceScroll::-webkit-scrollbar{
+  width: 10px !important;
+}
+
+
+ .loginBtn{
+   color: white !important;
+   background-color: var(--clor) !important;
+   width: 100%;
+   height: 44px !important;
+  font-size: 15px !important;
+  /* border: none !important; */
+    outline:none !important;
+ }
+
+ /* Raised Buttons */
+ .basicRaisedbtn{
+   background-color: var(--clor) !important;
+   color: white !important;
+   width: 100px !important;
+
+ }
+
+ .btnleft{
+  background-color: var(--clor) !important;
+  color: white !important;
+  /* width: 150px; */
+
+
+ }
+
+ .btnIconLeft{
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.btnIconRight{
+  font-size: 20px;
+  /* margin-right: 5px; */
+  margin-left: 10px;
+}
+
+.btnBasicIcon{
+  font-size: 20px;
+}
+
+
+/* Stroked Buttons */
+
+.btnStrBasic{
+  color: var(--black);
+  border-color: var(--clor) !important;
+  outline: none !important;
+}
+
+.btnStrLeft{
+  color: var(--black);
+  border-color: var(--clor) !important;
+  min-width: 160px !important;
+  /* width: auto !important; */
+
+}
+
+.btnStrIconLeft{
+  font-size: 20px;
+  margin-right: 10px;
+  color: var(--clor) !important;
+}
+
+.btnStrIconRight{
+  font-size: 20px;
+  margin-left: 10px;
+  color: var(--clor) !important;
+}
+
+.btnStrIcon{
+  font-size: 20px;
+  color: var(--clor) !important;
+}
+
+/*************** check Box ***************/
+
+.mat-checkbox:hover .mat-checkbox-frame {
+  border-color: var(--clor) !important;
+}
+
+.mat-checkbox-checked .mat-checkbox-background {
+  background-color: var(--clor) !important;
+}
+
+/*************** Radio Button ***************/
+
+ .mat-radio-button.mat-accent .mat-radio-inner-circle {
+  background-color: var(--backGround)!important;   /*inner circle color change*/
+}
+
+.mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
+ border-color: var(--clor)!important; /*outer ring color change*/
+ background-color: var(--clor)!important;
+}
+
+.mat-radio-button.mat-accent:hover .mat-radio-outer-circle {
+  border-color: var(--clor)!important; /*outer ring color change on hover*/
+ }
+
+ .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element {
+  background-color: var(--clor) !important;
+}
+
+/*************** Slide Toggle ***************/
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+  background-color: white;
+}
+
+.mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+  background-color: #0BB07B;
+}
+
+.mat-slider-thumb {
+  background-color: var(--clor) !important;
+}
+
+.mat-slider-track-fill {
+  background-color: var(--clor) !important;
+}
+
+.mat-slider-rail {
+  background-color: var(--clor) !important;
+}
+
+/*************** Form Field ***************/
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: var(--clor) !important;
+}
+
+
+.mat-form-field-appearance-outline.mat-focused .mat-form-field-label {
+  color: var(--black);
+}
+.mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: var(--background);
+  /* border-radius: 5px; */
+}
+
+.mat-form-field-disabled{
+  color: #0BB07B !important;
+    }
+
+
+
+
+
+
+
+
+
+
+.mat-form-field-label {
+  /* color: var(--clor)!important; */
+  font-size: 14px !important;
+
+}
+
+
+
+
+/************************ Drop Zone Css Start ****************************/
+/*
+body{
+  background: rgba(0,0,0,0.9);
+} */
+
+/* form{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -250px;
+  width: 500px;
+  height: 200px;
+  border: 4px dashed #838383;
+}
+form p{
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height: 170px;
+  color: #838383;
+  font-family: Arial;
+}
+form input{
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  outline: none;
+  opacity: 0;
+} */
+/* form button{
+  margin: 0;
+  color: #fff;
+  background: #16a085;
+  border: none;
+  width: 508px;
+  height: 35px;
+  margin-top: -20px;
+  margin-left: -4px;
+  border-radius: 4px;
+  border-bottom: 4px solid #117A60;
+  transition: all .2s ease;
+  outline: none;
+}
+form button:hover{
+  background: #149174;
+	color: #0C5645;
+}
+form button:active{
+  border:0;
+} */
+
+.Drop-files-here-or-c {
+  width: 100% !important;
+  height: 100% !important;
+  text-align: center;
+  /* margin: 23px 0 0; */
+  /* padding: 69px 178px 69px 178px; */
+  font-family: Montserrat;
+  font-size: 15px;
+  font-weight: 600;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: normal;
+  letter-spacing: normal;
+  color: var(--Grey);
+}
+
+.my-style{
+  width: 100%;
+  height: 100%;
+  /* margin: 15px 148px 24px 210px; */
+  border-radius: 4px;
+  border: dashed 2px #979797;
+}
+
+/************************ Drop Zone Css End ****************************/
+
+.bshadow {
+
+display: inline !important;
+
+}
+
+.my-snack-bar button {
+  /* background-color: gray !important; */
+  color: white !important;
+}
+
+.my-snack-bar  {
+  background-color: var(--black) !important;
+  color: var(--Grey) !important;
+}
+
+
+
+
+
+
+/* 
+.my-menu {
+  min-width: 350px !important;
+
+  padding: 20px;
+
+} */
+
+
+
+@media  screen and (min-width: 320px) and (max-width: 1000px)  {
+
+}
+
+@media  screen and (min-width: 1371px) and (max-width: 1560px)  {
+ /* *{
+   transform: scale(0.9,0.9);
+ } */
+}
+
+@media  screen and (min-width: 1561px) and (max-width: 2500px)  {
+
+
+}
+
+
+@media  screen and (min-width: 2501px) and (max-width: 2700px)  {
+
+
+}
+
+
+.cdk-global-overlay-wrapper, .cdk-overlay-container { z-index: 9999!important; }
+.mat-toolbar-single-row{
+  padding: 0 12px !important;
+}
+
+.custom-tooltip {
+  margin-top: -25px !important;
+  margin-right: 60px !important;
+  width: 228px;
+  height: auto;
+  font-family: Montserrat;
+  font-size: 10px;
+  font-weight: normal;
+  font-stretch: normal;
+  font-style: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+  color: #fff;
+  background-color: #3e3e3e;
+}

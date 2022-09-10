@@ -1,0 +1,127 @@
+<div class="container-fluid p-0">
+  <div class="mapRow">
+      <div class="cardWidth eol">
+          <div class="d-flex p-2 " style="overflow: hidden;">
+              <div class="col-12">
+                  <div class="row mt-2">
+                      <div class="col-12">
+                          <button type="button" mat-stroked-button class="mapBtn" (click)="back()">
+                              <!-- <img src="assets/images/back_icon.svg"
+                                  style="margin-right: 6px !important; padding-bottom: 2px !important;"> -->
+                                  <mat-icon style="color: var(--clor); height: 24px; width:24px;">chevron_left</mat-icon>
+                              Go Back
+                          </button>
+                      </div>
+                  </div>
+                  <div class="row mt-3">
+                      <div class="col-12">
+                          <span class="congCode">
+                              Edit Consignee
+                          </span>
+                      </div>
+                  </div>
+                  <div [formGroup]="createForm">
+                      <div class="row mt-2">
+                          <div class="col-12" style="padding-left: 25px;">
+                              <span style="font-size: 12px; font-weight: 400;">Enter Address</span> <br>
+                              <span>
+                                  <input placeholder="Enter Address" formControlName="addressForm" class="filterInput"
+                                      (keydown.enter)="$event.preventDefault()" autocorrect="off" autocapitalize="off"
+                                      spellcheck="off" type="text" #search>
+                                  <!-- <mat-error *ngIf="deviceType.errors?.required && deviceType.touched">Device type is required</mat-error> -->
+                              </span>
+                          </div>
+                      </div>
+                      <div class="row mt-3">
+                          <div class="col-12" style="padding-left: 25px;">
+                              <span style="font-size: 12px; font-weight: 400;">Consignee Name</span> <br>
+                              <span>
+                                  <input placeholder="Enter Consignee Name" formControlName="consignorName"
+                                      class="filterInput">
+                                  <!-- <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="consignorName.errors?.required && consignorName.touched">Consignor Name is mandatory</mat-error> -->
+                              </span>
+                          </div>
+                      </div>
+                      <div class="row mt-3">
+                          <div class="col-12" style="padding-left: 25px;">
+                              <span style="font-size: 12px; font-weight: 400;">Consignee Code</span> <br>
+                              <span>
+                                  <input placeholder="Enter Consignee Code" formControlName="consignorCode"
+                                      class="filterInput">
+                                  <!-- <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="consignorCode.errors?.required && consignorCode.touched">Consignor code is mandatory</mat-error> -->
+                              </span>
+                          </div>
+                      </div>
+                      <div class="row mt-3">
+                          <div class="col-12" style="padding-left: 25px;">
+                              <span style="font-size: 12px; font-weight: 400;">Group Name</span> <br>
+                              <span><input placeholder="Enter Group Name" formControlName="groupName"
+                                      class="filterInput"></span>
+                          </div>
+                      </div>
+                      <div class="row mt-3">
+                          <div class="col-12" style="padding-left: 25px;">
+                              <span style="font-size: 12px; font-weight: 400;">Consignee Coordinates</span> <br>
+                              <span><input placeholder="Enter Coordinates" formControlName="consignorCoordinates"
+                                      class="filterInput"></span>
+                          </div>
+                      </div>
+                      <div class="row mt-3">
+                          <div class="col-12" style="padding-left: 25px;">
+                              <span style="font-size: 12px; font-weight: 400;">Loading Time</span> <br>
+                              <span><input placeholder="Enter Loading Time" formControlName="loadingTime"
+                                      class="filterInput"></span>
+                          </div>
+                      </div>
+                      <div class="row mt-2">
+                          <div class="col-12"
+                              style="font-size: 12px; font-weight: 400; padding-left: 25px !important;">
+                              Geofence
+                          </div>
+                          <div class="col" style="margin-top: 12px; padding-left: 25px !important;">
+                              <mat-radio-group aria-label="Select an option" formControlName="geofence">
+                                  <mat-radio-button value="CIRCLE" style="margin-bottom:1.1rem !important;"> Circular
+                                  </mat-radio-button>
+                                  <mat-radio-button value="POLYGON"> Polygon</mat-radio-button>
+
+                              </mat-radio-group>
+                          </div>
+                          <div class="col pl-0" style="margin-top: 12px;">
+                              <input *ngIf="geofence.value == 'CIRCLE'" type="number" class="geofenceInput"
+                                  formControlName="radiusForm" (keyup)="radiusParse()">
+                          </div>
+                      </div>
+                      <div class="col-12 p-0 d-flex justify-content-center"
+                          style="margin-top: 25px; font-size: 15px; color: white;" class="btnDisable">
+                          <button mat-stroked-button class="btnStrBasic"
+                              style="width: 100%; height: 40 px; background-color: var(--clor);"
+                              (click)="createConsignor()" [disabled]="!this.createForm.valid">Save Consignee</button>
+                      </div>
+                  </div>
+
+              </div>
+          </div>
+      </div>
+      <div class="mapWidth  p-0 m-0">
+          <agm-map [class.noneClass]="geofence.value == 'POLYGON'" [latitude]="latitude" [longitude]="longitude"
+              [fitBounds]="true">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [agmFitBounds]="true" [markerDraggable]="true"
+                  (dragEnd)="markerDragEnd( $event)"></agm-marker>
+              <agm-circle [latitude]="latitude" [longitude]="longitude" [radius]="radius"
+                  [fillColor]="theme.Consignorcircle">
+              </agm-circle>
+          </agm-map>
+
+          <agm-map [class.noneClass]="geofence.value == 'CIRCLE'" [zoom]="5" [fitBounds]="true" [latitude]="latitude"
+              [longitude]="longitude" (mapReady)="onMapReady($event)">
+              <agm-marker [latitude]="latitude" [longitude]="longitude" [visible]="false" [agmFitBounds]="true">
+              </agm-marker>
+
+              <agm-polygon [paths]="pointList" [strokeColor]="theme.polygonColor">
+              </agm-polygon>
+          </agm-map>
+
+      </div>
+  </div>
+
+</div>

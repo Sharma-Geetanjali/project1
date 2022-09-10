@@ -1,0 +1,245 @@
+<div style="overflow: hidden !important; background-color: var(--backGround); padding: 25px; padding-top: 0;">
+  <div class="row headingRow">
+    <div class="col-12" style="padding-left: 15px !important; line-height: 1.3;">
+      <span *ngIf="!editFlag" style="font-size: 22px; font-weight: 500;">
+        Create New Role
+      </span>
+      <span *ngIf="editFlag" style="font-size: 22px; font-weight: 500;">
+        Edit Role
+      </span>
+      <br>
+      <span style="font-size: 14px; color: var(--darkGrey);">
+        You can create a new role where you can give exclusive rights and control to team.Let your team manage better by
+        assigning custom rights.
+      </span>
+    </div>
+    <!-- <div class="col-6 d-flex justify-content-center">
+
+    </div> -->
+  </div>
+  <div class="contentRow" [formGroup]="createManagerForm">
+    <div class="row ">
+      <div class="col-4" style="padding-left: 30px !important; margin-top: 13px !important;">
+        <span style="font-size: 12px; font-weight: 400; padding-left: 5px;">Role Name</span> <br>
+        <span>
+          <input placeholder="Enter Role Name" class="filterInput" formControlName="roleManager">
+        </span> <br>
+        <span *ngIf="roleManager.touched" class="err">
+          <span *ngIf="roleManager.errors?.required">Role Name is required</span>
+        </span>
+        <span class="err"
+          *ngIf="roleManager.errors && roleManager.dirty && roleManager.errors.frontSpace && !roleManager.errors?.required">Enter
+          a valid role name.</span>
+      </div>
+      <div class="col-8 d-flex justify-content-end" style="padding-right: 30px; margin-top: 13px !important;">
+        <div>
+          <span style="font-size: 12px; font-weight: 400;">Grant Permissions</span> <br>
+          <div class="eventAccess">
+            <span class="iconCL" (click)="toggleSubmenu(1)">
+              <img *ngIf="tabCount != 1" src="assets/images/events-grey.svg" alt="" width="42px" height="42px">
+              <img *ngIf="tabCount == 1" src="assets/images/events-orang.svg" alt="" width="42px" height="42px">
+              <span [ngClass]="{'tabHeading' : tabCount != 1, 'tabHeadingSelec': tabCount == 1}">
+                Event Access
+              </span>
+
+              <img src="assets/images/info.svg" style=" margin-left: 16px;" alt="" width="18px" height="18px">
+            </span>
+          </div>
+          <div class="eventAccess" style="margin-left: -22px;">
+            <span class="iconCL" (click)="toggleSubmenu(2)">
+              <img *ngIf="tabCount != 2" src="assets/images/report-grey.svg" alt="" width="42px" height="42px">
+              <img *ngIf="tabCount == 2" src="assets/images/reports-orange.svg" alt="" width="42px" height="42px">
+              <span [ngClass]="{'tabHeading' : tabCount != 2, 'tabHeadingSelec': tabCount == 2}">
+                Report Access
+              </span>
+
+              <img src="assets/images/info.svg" style=" margin-left: 16px;" alt="" width="18px" height="18px">
+            </span>
+          </div>
+          <div class="eventAccess" style="margin-left: -22px;">
+            <span class="iconCL" (click)="toggleSubmenu(3)">
+              <img *ngIf="tabCount != 3" src="assets/images/feature-grey.svg" alt="" width="42px" height="42px">
+              <img *ngIf="tabCount == 3" src="assets/images/features-orange.svg" alt="" width="42px" height="42px">
+              <span [ngClass]="{'tabHeading' : tabCount != 3, 'tabHeadingSelec': tabCount == 3}">
+                Feature Access
+              </span>
+              <img src="assets/images/info.svg" style="margin-left: 16px;" alt="" width="18px" height="18px">
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12" style="padding-left: 30px !important; padding-right: 30px; margin-top: 18px !important;">
+        <div class="contentHead" *ngIf="tabCount == 1">
+          <span>
+            Events
+          </span>
+          <div style="height: 53vh; overflow-y: auto;" class="eol">
+            <div id={{obj.resourceId}} class="content" *ngFor="let obj of getAccessDataArrEvent"
+              style="margin-top: 13px;">
+              <span style="font-size: 14px; font-weight: 500; color: var(--black);">
+                {{obj.name}}
+              </span>
+              <span class="spacer"></span>
+              <span>
+                <span style="margin-left: 50px;">
+                  <img src="assets/images/icon-eye-solid 1.svg" (click)="getReadAccess(obj)"
+                    style="margin-left: 16px; cursor: pointer;" alt="" width="18px" height="18px">
+                </span>
+                <span style="margin-left: 50px;">
+                  <img src="assets/images/ic-edit1.svg" (click)="getWriteAccess(obj)"
+                    style="margin-left: 16px; cursor: pointer;" alt="" width="18px" height="18px">
+                </span>
+                <!-- <span style="margin-left: 50px;">
+                  <img src="../../assets/images/ic-delete1.svg" (click)="getDeleteAccess(obj)" style="margin-left: 16px; cursor: pointer;" alt="" width="18px"
+                  height="18px">
+                </span> -->
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="contentHead" *ngIf="tabCount == 2">
+          <span>
+            Reports
+          </span>
+          <div style="height: 53vh; overflow-y: auto;" class="eol">
+            <div id={{obj.resourceId}} class="content" *ngFor="let obj of getAccessDataArrReport"
+              style="margin-top: 13px;">
+              <span style="font-size: 14px; font-weight: 500; color: var(--black);">
+                {{obj.name}}
+              </span>
+              <span class="spacer"></span>
+              <span>
+                <span style="margin-left: 50px;">
+                  <img src="assets/images/icon-eye-solid 1.svg" (click)="getReadAccess(obj)"
+                    style="margin-left: 16px; cursor: pointer; fill: red;" alt="" width="18px" height="18px">
+                </span>
+                <!-- <span style="margin-left: 50px;">
+                  <img src="../../assets/images/ic-edit1.svg" (click)="getWriteAccess(obj)"  style="margin-left: 16px; cursor: pointer;" alt="" width="18px"
+                  height="18px">
+                </span>
+                <span style="margin-left: 50px;">
+                  <img src="../../assets/images/ic-delete1.svg" (click)="getDeleteAccess(obj)" style="margin-left: 16px; cursor: pointer;" alt="" width="18px"
+                  height="18px">
+                </span> -->
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="contentHead" *ngIf="tabCount == 3">
+          <span>
+            Features
+          </span>
+          <div style="height: 53vh; overflow-y: auto;" class="eol">
+            <div id={{obj.resourceId}} class="content" *ngFor="let obj of getAccessDataArrAction"
+              style="margin-top: 13px;">
+              <span style="font-size: 14px; font-weight: 500; color: var(--black);">
+                {{obj.name}}
+              </span>
+              <span class="spacer"></span>
+              <span>
+                <span style="margin-left: 50px;">
+                  <img src="assets/images/icon-eye-solid 1.svg" (click)="getReadAccess(obj)"
+                    style="margin-left: 16px; cursor: pointer;" alt="" width="18px" height="18px">
+                </span>
+                <span style="margin-left: 50px;">
+                  <img src="assets/images/ic-edit1.svg" (click)="getWriteAccess(obj)"
+                    style="margin-left: 16px; cursor: pointer;" alt="" width="18px" height="18px">
+                </span>
+                <span style="margin-left: 50px;">
+                  <img src="assets/images/ic-delete1.svg" (click)="getDeleteAccess(obj)"
+                    style="margin-left: 16px; cursor: pointer;" alt="" width="18px" height="18px">
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="row" style="margin-top: 1rem !important;">
+      <div class="col-12"
+        style="padding-left: 30px !important; padding-right: 30px; border-top: 1px solid var(--Grey); margin-top: 10px;">
+        <div class="contentFooter" style="margin-top: 13px;">
+          <span class="contentHead">
+            You are requested to keep saving once you fill one section
+          </span>
+          <span class="spacer"></span>
+          <span style="width: 155px;">
+            <button type="button" class="btn btn-secondary" (click)="createRoles()"
+              [disabled]="!this.createManagerForm.valid"
+              style="background-color: var(--clor);  font-weight: 500 !important; width: 100% !important; height: 44px !important; outline: none !important; border: none !important;">Save</button>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="successModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/ic-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{successMSG}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important;"
+                data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="errorInput" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-12 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/icon-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{statusMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

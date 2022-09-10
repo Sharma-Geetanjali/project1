@@ -1,0 +1,210 @@
+<mat-toolbar class="header">
+  <div class="searchBox">
+      <mat-icon class="searchIcon">search</mat-icon>
+      <input type="text" class="search_input" placeholder="Search By First Name" [(ngModel)]="searchText"
+          name="searchText" (keyup.enter)="search()">
+  </div>
+
+  <span class="spacer"></span>
+
+
+  <!-- <div class="badgedisplay"> -->
+      <div class="FilterIcon" style="margin-right: 10px !important">
+          <button mat-icon-button style="outline: none !important; padding: 1px !important; width: 100%;" routerLink="/dashboard/setting/Create-User" >
+              <mat-icon class="badgedisplay">add</mat-icon>
+              <span style="display: block; line-height: 0;"> New User </span>
+          </button>
+      </div>
+
+
+  <!-- </div> -->
+</mat-toolbar>
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+  <!-- <div style="position: relative !important;">
+      <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+          <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+      </ngx-spinner>
+  </div> -->
+  <div class="row mt-3" style="padding-left: 10px !important;">
+      <div class="col-lg-12 table-responsive eol overflow"
+          style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; ">
+
+          <table class="table table-bordered bordered rounded">
+              <thead>
+                  <tr class="thead-dark">
+                      <th scope="col" style="width: 60px !important;">S.No</th>
+                      <th scope="col" style="width: 150px !important;">First Name</th>
+                      <th scope="col" style="width: 150px !important;">Last Name</th>
+                      <th scope="col" style="width: 192px !important;">Email</th>
+                      <th scope="col" style="width: 100px !important;">Action</th>
+                  </tr>
+              </thead>
+              <tbody class="eol">
+                  <tr *ngFor="let obj of filterUserArr; index as i">
+                      <td class="align-middle" scope="row">{{i+1}}</td>
+                      <td class="align-middle" scope="row">
+                          <span *ngIf="obj.firstName">
+                              {{obj?.firstName}}
+                          </span>
+                          <span *ngIf="!obj.firstName">
+                              <h1>--</h1>
+                          </span>
+                      </td>
+                      <td class="align-middle" scope="row">
+                          <span *ngIf="obj.lastName">
+                              {{obj?.lastName}}
+                          </span>
+                          <span *ngIf="!obj.lastName">
+                              <h1>--</h1>
+                          </span>
+                      </td>
+                      <td class="align-middle" scope="row">
+                          <span *ngIf="obj.email">
+                              {{obj?.email}}
+                          </span>
+                          <span *ngIf="!obj.email">
+                              <h1>--</h1>
+                          </span>
+                      </td>
+
+                      <td class="align-middle ">
+                          <span style=" cursor: pointer;" (click)="editComponet(obj)">
+                              <img src="assets/images/ic-edit.svg" alt="">
+                              <!-- <img src="../../assets/ic-edit.svg" alt=""> -->
+
+                          </span>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                          <span style=" cursor: pointer;" data-toggle="modal"
+                          data-target="#deleteModal">
+                              <img src="assets/images/ic-delete.svg" alt="">
+                              <!-- <img src="../../assets/ic-delete.svg" alt=""> -->
+
+                          </span>
+                      </td>
+
+                  </tr>
+                  <tr *ngIf="userArr.length == 0">
+                      <td class="align-middle" colspan="5">
+                          No Result Found
+                      </td>
+                  </tr>
+              </tbody>
+          </table>
+
+      </div>
+  </div>
+</div>
+
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+      <div class="modal-content">
+          <div class="row mb-5">
+              <div class="col-11 pr-0 pt-3  ">
+                  <span class="modal-title d-flex justify-content-center modalHeading" style="font-size: 34px;" id="exampleModalLabel">
+                      Create Account</span>
+                  <div class="row">
+                      <div class="col-12 pr-5 pl-5 pt-3 ">
+                          <div class="row">
+                              <div class="col-12" style="padding-left: 42px;">
+                                  <span class="sub-heading">
+                                      Please fill up the details so that you can get access request according to your
+                                      role.
+                                  </span>
+                              </div>
+                          </div>
+
+                          <div class="row mt-3">
+                              <div class="col-6" style="padding-left: 25px;">
+                                  <span style="font-size: 12px; font-weight: 400;">First Name</span> <br>
+                                  <span>
+                                      <input placeholder="First Name" class="filterInput">
+                                  </span>
+                              </div>
+                              <div class="col-6" style="padding-left: 25px;">
+                                  <span style="font-size: 12px; font-weight: 400;">Last Name</span> <br>
+                                  <span>
+                                      <input placeholder="Last Name" class="filterInput">
+                                  </span>
+                              </div>
+                          </div>
+
+                          <div class="row mt-3">
+                              <div class="col-12" style="padding-left: 25px;">
+                                  <span style="font-size: 12px; font-weight: 400;">Email</span> <br>
+                                  <span>
+                                      <input placeholder="your@email.com" class="filterInput">
+                                  </span>
+                              </div>
+
+                          </div>
+
+                          <div class="row mt-3">
+                              <div class="col-6" style="padding-left: 25px;">
+                                  <span style="font-size: 12px; font-weight: 400;">User Name</span> <br>
+                                  <span>
+                                      <input placeholder="User Name" class="filterInput">
+                                  </span>
+                              </div>
+                              <div class="col-6" style="padding-left: 25px;">
+                                  <span style="font-size: 12px; font-weight: 400;">Phone</span> <br>
+                                  <span>
+                                      <input placeholder="Phone" class="filterInput">
+                                  </span>
+                              </div>
+                          </div>
+
+
+                          <div class="row mt-4">
+                              <div class="col-12 " style="padding-left: 42px;">
+                                  <button type="button"
+                                      style="width: 100%; background-color: var(--clor); color: white;"
+                                      class="btn submitDialog" data-dismiss="modal">Proceed to Grant Privilege</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+              <div class="col-1 pl-0">
+                  <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">
+                      clear</mat-icon>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " style="width: 576px !important;" role="document">
+    <div class="modal-content p-4">
+      <div class="row mb-3">
+        <div class="col-12 ">
+          <span class="modal-title d-flex justify-content-center modalHeading"> Delete</span>
+          <div class="row mt-3 d-flex justify-content-center">
+            <div class="col-12" style="text-align: center !important;">
+              <!-- <span class="sub-heading">
+                Are you sure u want to delete "{{currDeleteGroupName}}"?
+              </span> -->
+              <span class="sub-heading">
+                  Feature Under Development
+                </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12" style="display: flex; justify-content: center;">
+              <button type="button" mat-stroked-button class="btnStrBasic" style="width:90%;"
+                data-dismiss="modal">Ok</button>
+            </div>
+            <!-- <div class="col-6">
+              <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                  >Yes</button>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+    <defs>
+        <filter id="ehvb2stdma" width="137.5%" height="137.5%" x="-18.8%" y="-14.6%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+        <rect id="xujgbziijb" width="48" height="48" x="0" y="0" rx="8"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-667 -205) translate(673 209)">
+                    <use fill="#000" filter="url(#ehvb2stdma)" xlink:href="#xujgbziijb"/>
+                    <rect width="50" height="50" x="-1" y="-1" fill="#3E3E3E" stroke="#FDFDFD" stroke-width="2" rx="8"/>
+                </g>
+                <g fill="#FDFDFD" fill-rule="nonzero">
+                    <path d="M5.244 18.608c.659.178 1.345.252 2.034.236l-.469 2.66c-.109.598.327.531.327.531l2.387-.8.774 2.425-.87 1.872 2.443 1.285-.99 2.505.42 1.146 2.256 1.197-.567 1.918.533 1.398L17.042 37c.912-.457.958-3.103.958-3.103L13.461 20.08c-.136-.445.011-.479.011-.479l1.405-.619c.779-.342.079-1.049.079-1.049l-1.61-.986c-.197-.137-.246-.298-.24-.433 1.151-1.008 2.01-2.282 2.351-3.691.964-3.993-.975-8.278-5.086-9.385-.624-.167-1.261-.247-1.898-.251-.152-.283-.323-.56-.517-.828C7.353 1.526 6.617.875 5.854.47c0 0-.572-.292-1.24-.43C4.456.013 4.3 0 4.145 0c-.563 0-1.08.175-1.49.507-.712.575-1.05 1.536-.95 2.707.09 1.059.534 2.189 1.251 3.18C4.01 7.847 5.47 8.752 6.766 8.752c.564 0 1.08-.176 1.491-.507.287-.231.509-.527.67-.871.005.068.008.135.006.201l.034.044-.035.033c-.008.134-.027.271-.059.407C8.6 9.19 7.513 9.872 6.45 9.587c-.412-.111-.76-.352-1.018-.67-1.04-.3-2.101-1.096-2.917-2.223-.165-.229-.316-.466-.45-.706-.77.832-1.36 1.81-1.681 2.89-1.286 4.308.75 8.624 4.861 9.73zm2.247-11.42c-.193.154-.437.233-.726.233-.9 0-2.002-.72-2.809-1.836-.565-.782-.928-1.69-.997-2.49-.033-.405-.019-1.144.461-1.53.192-.154.437-.234.725-.234.899 0 2.001.722 2.81 1.837l.091.136c-1.052.18-2.072.557-2.992 1.095.13.247.277.49.443.72.288.398.613.744.953 1.026.481-.574 1.237-.853 1.986-.651.186.05.36.129.519.227.027.416-.008 1.099-.464 1.467z" transform="translate(-667 -205) translate(673 209) translate(15 7)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

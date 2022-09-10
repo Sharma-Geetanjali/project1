@@ -1,0 +1,496 @@
+<ngx-spinner size="small" bdColor="rgba(255,255,255,0)" [fullScreen]="true"> <img src='assets/images/cfpro.gif'
+        style="margin-bottom: 30px; height: 90px; width: 90px; background-color: white;"> </ngx-spinner>
+<div class="container-fluid py-3" style="overflow: auto !important; height: calc(100vh - 40px) !important;">
+    <div class="row topBox mx-3 mt-4 mb-5">
+        <div class="col-12 py-3">
+            <div class="row mx-2">
+                <div class=" col-lg-3 col-6 my-2">
+                    <span class="key">
+                        User ID
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        {{userArr?.userid}}
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.userid">
+                        {{userArr?.userid}}
+                    </span>
+                    <span class="value" *ngIf="!userArr?.userid">
+                        <h1>--</h1>
+                    </span>
+                </div>
+                <div class="col-lg-3 col-6 my-2">
+                    <span class="key">
+                        Login ID
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        abc@xyz.com
+                    </span> -->
+                    <span style="word-break: break-all;" class="value" *ngIf="userArr?.loginid">
+                        {{userArr?.loginid}}
+                    </span>
+                    <span class="value" *ngIf="!userArr?.loginid">
+                        <h1>--</h1>
+                    </span>
+                </div>
+                <div class="col-lg-3 col-6 my-2">
+                    <span class="key">
+                        Organisation
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        SMLI
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.org">
+                        {{userArr?.org}}
+                    </span>
+                    <span class="value" *ngIf="!userArr?.org">
+                        <h1>--</h1>
+                    </span>
+                </div>
+                <div class="col-lg-3 col-6 my-2">
+                    <span class="key">
+                        Device Serial No
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        AF887766D
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.deviceSerialNo">
+                        {{userArr?.deviceSerialNo}}
+                    </span>
+                    <span class="value" *ngIf="!userArr?.deviceSerialNo">
+                        <h1>--</h1>
+                    </span>
+                </div>
+            </div>
+            <div class="row mx-2">
+                <div class=" col-lg-3 col-6 my-2">
+                    <span class="key">
+                        Creation Date
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        17/08/2018
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.createdOn != '-'">
+                        <!-- {{userArr?.createdOn | date:'hh:mm a'}} <br> -->
+                        {{userArr?.createdOn | date:'dd/MM/yyyy'}}
+                    </span>
+                    <span class="value" *ngIf="userArr?.createdOn == '-'">
+                        <h1>--</h1>
+                    </span>
+                </div>
+                <div class="col-lg-3 col-6 my-2">
+                    <span class="key">
+                        Start Date
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        17/08/2018
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.activationDate != '-'">
+                        {{userArr?.activationDate | date:'dd/MM/yyyy'}}
+                    </span>
+                    <span class="value" *ngIf="userArr?.activationDate == '-'">
+                        <h1>--</h1>
+                    </span>
+                </div>
+                <div class="col-lg-3 col-6 my-2">
+                    <span class="key">
+                        End Date
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        17/08/2018
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.expiryDate != '-'">
+                        {{userArr?.expiryDate | date:'dd/MM/yyyy'}}
+                    </span>
+                    <span class="value" *ngIf="userArr?.expiryDate == '-'">
+                        <h1>--</h1>
+                    </span>
+                </div>
+                <div class="col-lg-3 col-6 my-2">
+                    <span class="key">
+                        Duration
+                    </span>
+                    <br>
+                    <!-- <span class="value">
+                        200 Days
+                    </span> -->
+                    <span class="value" *ngIf="userArr?.valditiy">
+                        {{userArr?.valditiy}}
+                    </span>
+                    <span class="value" *ngIf="!userArr?.valditiy">
+                        <h1>--</h1>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mx-3 my-5">
+        <div class="col-lg-6 col-12 d-flex p-0 justify-content-start">
+            <div [formGroup]="form2" class="updateBox px-4 py-3">
+                <div class="row mb-3 mt-2">
+                    <div class="col-6 d-flex align-items-center">
+                        <span class="head">
+                            Update Subscription
+                        </span>
+                    </div>
+                    <div class="col-6 d-flex align-items-center justify-content-end">
+                        <button mat-stroked-button class="btnStrIcon px-5 py-2 responsiveBtn" data-toggle="modal"
+                            data-target="#exampleModal"
+                            style=" border-radius: 8px; border: 0px;font-size: 14px; background-color: var(--backGround);">Add
+                            New</button>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-lg-9 col-6 ">
+
+                        <div class="row my-3 ">
+
+                            <div class="col-lg-6 col-12 ">
+                                <div class="row  ">
+                                    <div class="col-12">
+                                        <span class="title">Subscription Days</span>
+                                    </div>
+                                </div>
+                                <div class="row my-3 ">
+                                    <div class="col-12 " style="height: 40px;">
+                                        <mat-radio-group id="update" formControlName="updateOperation">
+                                            <mat-radio-button style="margin-right: 20px !important;"
+                                                value="increaseSubscriptionInDays"> Extend
+                                            </mat-radio-button>
+                                            <mat-radio-button value="reduceSubscriptionInDays"> Reduce
+                                            </mat-radio-button>
+                                        </mat-radio-group>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-lg-6 col-12">
+                                <div class="row mb-3 ">
+                                    <div class="col-12">
+                                        <span class="title">Enter no. of days</span>
+                                    </div>
+                                </div>
+                                <div class="row my-3">
+                                    <div class="col-12">
+                                        <input type="number" formControlName="days" min="1"
+                                            placeholder="Enter no. of days" class="filterInput">
+                                        <mat-error *ngIf="days2.errors?.required && days2.touched" class="d-block">
+                                            Reqiured*
+                                        </mat-error>
+                                        <mat-error *ngIf="days2.value<1 && !days2.errors?.required " class="d-block">
+                                            Please
+                                            enter value
+                                            greater than 0*
+                                        </mat-error>
+                                        <mat-error *ngIf="days2.value % 1 != 0 && !days2.errors?.required"
+                                            class="d-block">
+                                            Decimal
+                                            values are not allowed*
+                                        </mat-error>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="row my-3 d-flex align-items-center">
+                            <div class="col-12">
+                                <span class="title">New End Date is</span>
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center ">
+                            <div class="col-12">
+                                <span class="value" *ngIf="userArr?.expiryDate == '-'">
+                                    <h1>--</h1>
+                                </span>
+                                <span class="value" *ngIf="userArr?.expiryDate != '-' && days2.value < 1 ">
+                                    <h1>--</h1>
+                                </span>
+                                <span class="value" *ngIf="userArr?.expiryDate != '-' && days2.value > 0">
+                                    {{addedDate | date:'dd/MM/yyyy'}}
+                                </span>
+                            </div>
+                            <!-- <div class="col-12" *ngIf="userArr?.expiryDate != '-' && days2.value < 1">
+                                <span class="date">- -/- -/- -</span>
+                            </div>
+                            <span class="value" *ngIf="userArr?.expiryDate != '-' && days2.value > 0">
+                                {{addedDate | date:'dd/MM/yyyy'}}
+                            </span> -->
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="row my-3">
+                    <div class="col-12">
+                        <mat-checkbox formControlName="notify">Notify User</mat-checkbox>
+                    </div>
+                </div>
+
+
+                <div class="row my-3">
+                    <div class="col-12">
+                        <div class="row my-3">
+                            <div class="col-12">
+                                <span class="title">Add Comment</span>
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-12">
+                                <input type="text" formControlName="comment" placeholder="Specify the reason here"
+                                    class="filterInput">
+                                <mat-error *ngIf="comment2.errors?.required && comment2.touched" class="d-block">
+                                    Reqiured*
+                                </mat-error>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="button" mat-raised-button class="btnleft" (click)="updateSub()"
+                            style="width: 200px;">Confirm</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-12 d-flex p-0 justify-content-end">
+            <div [formGroup]="form3" class="transferBox px-4 py-3">
+                <div class="row mb-3 mt-2">
+                    <div class="col-6 d-flex align-items-center">
+                        <span class="head">
+                            Transfer Subscription
+                        </span>
+                    </div>
+                    <div style="opacity: 0;" class="col-6 d-flex align-items-center justify-content-end">
+                        <button mat-stroked-button class="btnStrIcon px-5 py-2" disabled
+                            style=" border-radius: 8px; border: 0px;font-size: 14px; background-color: var(--backGround);">Add
+                            New</button>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-lg-6 col-12 ">
+                        <div class="row my-3 ">
+                            <div class="col-12">
+                                <span class="title">To</span>
+                            </div>
+                        </div>
+                        <div class="row my-3 ">
+                            <div class=" col-12 " style="height: 40px;">
+                                <mat-radio-group id="transfer" formControlName="transferOperation">
+                                    <mat-radio-button style="margin-right: 20px !important;" value="newDeviceid">
+                                        Device Serial No
+                                    </mat-radio-button>
+                                    <mat-radio-button value="newUserid"> Login ID
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-12">
+                        <div class="row my-3 d-flex align-items-center">
+                            <div class="col-12">
+                                <span *ngIf="transferOperation.value == 'newDeviceid'" class="title">Enter Device Serial
+                                    No.</span>
+                                <span *ngIf="transferOperation.value != 'newDeviceid'" class="title">Enter Login
+                                    ID</span>
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-12">
+
+                                <input *ngIf="transferOperation.value == 'newDeviceid'" type="text"
+                                    placeholder="Enter Device Serial No" formControlName="id" class="filterInput">
+                                <input *ngIf="transferOperation.value == 'newUserid'" type="text"
+                                    placeholder="Enter Login ID" formControlName="id" [matAutocomplete]="auto"
+                                    class="filterInput">
+                                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                                    <mat-option *ngFor="let option of emailSuggestionArr; index as i" (click)="setId(option.id)" [value]="option.email">
+                                        {{option.email}}
+                                    </mat-option>
+                                </mat-autocomplete>
+                                <mat-error *ngIf="id.errors?.required && id.touched" class="d-block">Reqiured*
+                                </mat-error>
+                                <mat-error
+                                    *ngIf="transferOperation.value == 'newDeviceid' && !validateSubID(id.value) && !id.errors?.required"
+                                    class="d-block">Please enter a valid device Serial No*
+                                </mat-error>
+                                <mat-error
+                                    *ngIf="transferOperation.value != 'newDeviceid' && !validateEmail(id.value) && !id.errors?.required"
+                                    class="d-block">Please enter a valid Login ID*
+                                </mat-error>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12">
+                        <mat-checkbox formControlName="notify">Notify User</mat-checkbox>
+                    </div>
+                </div>
+                <div class="row my-3">
+                    <div class="col-12">
+                        <div class="row my-3">
+                            <div class="col-12">
+                                <span class="title">Add Comment</span>
+                            </div>
+                        </div>
+                        <div class="row my-3">
+                            <div class="col-12">
+                                <input type="text" formControlName="comment" placeholder="Specify the reason here"
+                                    class="filterInput">
+                                <mat-error *ngIf="comment3.errors?.required && comment3.touched" class="d-block">
+                                    Reqiured*
+                                </mat-error>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row my-3">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="button" mat-raised-button class="btnleft" (click)="transferSub()"
+                            style="width: 200px;">Confirm
+                            Transfer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal fade " data-backdrop="static" id="exampleModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " style="width: 576px !important;" role="document">
+        <div class="modal-content p-4">
+            <div class="row mb-3">
+                <div class="col-12 ">
+                    <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Create
+                        New Subscription</span>
+                    <div class="row mt-3 d-flex justify-content-center">
+                        <div [formGroup]="form" class="col-12" style="text-align: center !important;">
+                            <span class="sub-heading">
+                                Please enter number of days for new subscription
+                            </span>
+                            <div class="row my-3 mx-2">
+                                <div class="col-6 d-flex align-items-center"><input type="number"
+                                        placeholder="enter no. of days" formControlName="days" min="1"
+                                        class="filterInput2">
+                                </div>
+                                <div class="col-6 d-flex align-items-center">
+                                    <mat-checkbox formControlName="notify">Notify</mat-checkbox>
+                                </div>
+                            </div>
+
+
+                            <mat-error *ngIf="days.errors?.required && days.touched"
+                                class="mx-3 d-flex justify-content-start">Reqiured*
+                            </mat-error>
+                            <mat-error *ngIf="days.value<1 && !days.errors?.required "
+                                class="mx-3 d-flex justify-content-start">Please enter value greater than 0*
+                            </mat-error>
+                            <mat-error *ngIf="days.value % 1 != 0 && !days.errors?.required "
+                                class="mx-3 d-flex justify-content-start">Decimal values are not allowed*
+                            </mat-error>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6" style="display: flex; justify-content: center;">
+                            <button type="button" mat-stroked-button class="btnStrBasic" style="width:90% ;"
+                                (click)="closeModal()">Cancel</button>
+                        </div>
+                        <div class="col-6">
+                            <button type="button" class="btn btn-secondary submitDialog"
+                                (click)="create()">Create</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" data-backdrop="static" id="successModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-11 pr-0 pt-3 ">
+                    <div class="row">
+                        <div class="col-12 pr-5 pl-5 pt-3 ">
+                            <div class="row">
+                                <div class="col-12"
+                                    style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                                    <img src="assets/images/ic-done.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12"
+                                    style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                                    {{successMsg}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary"
+                                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                                (click)="closeModal2()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" data-backdrop="static" id="errorModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="row">
+                <div class="col-12 pr-0 pt-3 ">
+                    <div class="row">
+                        <div class="col-12 pr-5 pl-5 pt-3 ">
+                            <div class="row">
+                                <div class="col-12"
+                                    style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                                    <img src="assets/images/icon-done.svg" alt="">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-12"
+                                    style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                                    {{statusMsg}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary"
+                                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                                data-dismiss="modal">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

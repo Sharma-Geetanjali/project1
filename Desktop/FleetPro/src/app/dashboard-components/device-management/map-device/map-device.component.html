@@ -1,0 +1,131 @@
+<!-- <ngx-spinner size="small" bdColor="rgba(255,255,255,0)" [fullScreen]="true"> <img src='assets/images/cfpro.gif'
+  style="margin-bottom: 30px; height: 90px; width: 90px; background-color: white;"> </ngx-spinner> -->
+<mat-toolbar class="header ">
+  <div class="row heading align-items-center">
+    <div class="col-lg-12 p-0 headContent">
+      Map Device
+    </div>
+  </div>
+
+</mat-toolbar>
+
+
+<div class="container-fluid">
+
+  <div class="row header">
+    <div class="col-12 p-0">
+      <mat-tab-group mat-align-tabs="center" (selectedTabChange)="onTabChanged($event);" >
+        <mat-tab label="Add Manually">
+          <ng-template matTabContent>
+            <div class="container-fluid mt-5" [formGroup]="addFormGroup">
+              <div class="row d-flex justify-content-center pt-4">
+                <div class="col-lg-6 col-sm-12  d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Serial number</mat-label>
+                    <input type="text" #imeiNo="matInput" matInput  formControlName="serialNumber">
+                    <mat-error *ngIf="serialNumber.errors?.required && serialNumber.touched">Serial number type is required</mat-error>
+                  </mat-form-field>
+
+                </div>
+
+              </div>
+              <div class="row d-flex justify-content-center">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>SIM number</mat-label>
+                    <input type="text" matInput  formControlName="simNumber">
+                    <mat-error *ngIf="simNumber.errors?.required && simNumber.touched">SIM number  is required</mat-error>
+
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center ">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Phone number</mat-label>
+                    <input type="text" matInput  formControlName="phnoneNumber">
+                    <mat-error *ngIf="phnoneNumber.errors?.required && phnoneNumber.touched">Phone number is required</mat-error>
+                    <!-- <mat-error *ngIf="phnoneNumber.errors?.pattern && !phnoneNumber.errors?.required && !phnoneNumber.touched">wewewe number is required</mat-error> -->
+
+
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center">
+                <div class="col-lg-6 col-sm-12 d-flex justify-content-center">
+                  <mat-form-field appearance="outline" style="width: 90%;">
+                    <mat-label>Network operator</mat-label>
+                    <!-- <input type="email" matInput  > -->
+                    <mat-select  formControlName="networkOperator">
+                      <mat-option value="VODAFONE">
+                        VODAFONE
+                      </mat-option>
+                      <mat-option value="AIRTEL">
+                        AIRTEL
+                      </mat-option>
+                      <mat-option value="SENSORISE">
+                        SENSORISE
+                      </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="networkOperator.errors?.required && networkOperator.touched">Network operator type is required</mat-error>
+
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-center mt-5 mb-5">
+                <div class="col-lg-2 col-3" >
+                  <button mat-stroked-button class="btnStrBasic" (click)="resetAddForm()" style="width: 100% !important; outline: none !important;">Reset</button>
+                </div>
+                <div class="col-lg-2 col-3">
+                  <button mat-raised-button class="basicRaisedbtn" [disabled]="!this.addFormGroup.valid" (click)="addManuallySubmit()" style="width: 100% !important; outline: none !important;">Submit</button>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="Bulk Upload">
+          <ng-template matTabContent>
+            <div class="row mt-3 " id="MobileView">
+              <div class="col-12 d-flex justify-content-center align-items-center">
+                <!-- <img class="blink-image" src="assets/images/QR-Code scanner.png"  style="height: 60px !important; width: 60px !important;"> -->
+                <p style="font-size: 20px; margin-top: 10px; color: var(--black); margin-left: 10px;">Available on desktop only</p>
+              </div>
+            </div>
+            <div class="modal-dialog modal-xl" id="desktopView" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <div class="modal-title Drop-zone" >Drop zone</div>
+                </div>
+                <div class="modal-body">
+                  <div class="center">
+                    <ngx-file-drop contentClassName="Drop-files-here-or-c" dropZoneClassName="my-style"
+                      dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+                      (onFileLeave)="fileLeave($event)">
+                      <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                        <div (click)="openFileSelector()" style="height: 100%; width: 100%;padding: 10%;">
+                          <img src="assets/images/upload.png" class="upload">
+                          <p style="cursor: pointer;" *ngIf="dropZoneMessage==0">Drop files here or click to upload</p>
+                          <p style="cursor: pointer;" *ngIf="dropZoneMessage==1">{{files[0].relativePath}}</p>
+                          <p style="cursor: pointer;" *ngIf="dropZoneMessage==2" class="text-danger">Only Excel Files
+                            are
+                            allowed.
+                          </p>
+                        </div>
+                      </ng-template>
+                    </ngx-file-drop>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                  <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                  <!-- <button type="button" [disabled]="dropZoneMessage!=1" class="modalUploadButton">Upload</button> -->
+                  <button mat-raised-button [disabled]="dropZoneMessage!=1" (click)="uploadExcel()" class="basicRaisedbtn modalUploadButton">Upload</button>
+                  <!-- <input type="file" name="test" id="" (change)="fileChange($event)"> -->
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+</div>

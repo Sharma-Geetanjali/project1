@@ -1,0 +1,431 @@
+<div class="containersidenav">
+  <mat-sidenav-container style="background-color: var(--black); height: 100vh;" autosize>
+
+    <mat-sidenav #sidenav class="example-sidenav " mode="side"></mat-sidenav>
+    <mat-sidenav-content class="element">
+
+      <div *ngIf="!login.isExpanded">
+        <img src="assets/images/group-2@2x.png" class="hideImg" alt="">
+
+      </div>
+
+      <mat-nav-list [ngClass]="{navlist: login.isExpanded}">
+        <mat-list-item  *ngIf="login.isExpanded"  [ngClass]="{ 'listItemWidth, mt-2': login.isExpanded}">
+
+          <div  style="position: fixed; z-index: 99; background-color: var(--black); margin-left: 70px;" >
+
+
+            <div   [ngClass]="{'mainlogo' : login.isExpanded}" *ngIf="login.isExpanded">
+
+              <img [src]="theme.biglogo" *ngIf="login.isExpanded || login.isShowing" class="openImg" alt="">
+
+            </div>
+          </div>
+        </mat-list-item>
+        <mat-list-item  [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth , mt-4': login.isExpanded}" routerLink="/abc"
+          routerLinkActive="selected" #rla="routerLinkActive">
+          <img src="assets/images/grid-grid-big.png" *ngIf="!rla.isActive" width="19x" height="18px" alt="">
+          <img src="assets/images/dashboard.png" *ngIf="rla.isActive" width="19px" height="18px" alt="">
+
+          <span *ngIf="login.isExpanded || login.isShowing" style="padding-left: 13px !important;" class="content" routerLinkActive="selectedContent">
+            Dashboard
+          </span>
+          <!-- <mat-icon class="menu-button" [ngClass]="{'rotated' : login.showSubmenu}" *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon> -->
+
+        </mat-list-item>
+
+
+        <mat-list-item  [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded}"
+          (click)="login.toggleSubmenu(1)">
+          <img src="assets/images/insights.svg" class="navicons" alt="">
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Insights
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.showSubmenu}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount == 1}" *ngIf="login.subCount == 1 && login.isExpanded">
+          <a mat-list-item class="listSubmeu">
+            <span>
+              Submenu Item 1
+            </span></a>
+          <!-- <a mat-list-item href="...">Submenu Item 2</a>  routerLink="/dashboard/vehicles/vehicleList"-->
+
+        </div>
+
+        <mat-list-item (click)="login.toggleSubmenu(2)" [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded , 'selected': login.subCount === 2 }"
+          routerLink="/dashboard/vehicles/vehicleList">
+          <img src="assets/images/vehicle-grey.svg" *ngIf="!(login.subCount === 2)" class="navicons" alt="">
+          <img src="assets/images/vehicle-white.svg" *ngIf="login.subCount === 2" class="navicons" alt="">
+
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Vehicles
+          </span>
+
+        </mat-list-item>
+        <mat-list-item (click)="login.toggleSubmenu(3)" [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded , 'selected': login.subCount === 3}" routerLink="/dashboard/consignment">
+          <img src="assets/images/consg-grey.svg" *ngIf="!(login.subCount === 3)"class="navicons" alt="">
+          <img src="assets/images/consg-white.svg" *ngIf="login.subCount === 3" class="navicons" alt="">
+
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Consignment
+          </span>
+
+        </mat-list-item>
+
+
+        <mat-list-item  [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded, 'selected': login.subCount === 11}"
+          (click)="login.toggleSubmenu(11)">
+          <img src="assets/images/insights.svg" class="navicons" alt="">
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Departments
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 11}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount == 11}" *ngIf="login.subCount == 11 && login.isExpanded">
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/departments/routes">
+            <span>
+              Routes
+            </span></a>
+
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/departments/consignor">
+            <span>
+              Consignor
+            </span></a>
+
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/departments/consignee">
+            <span>
+              Consignee
+            </span></a>
+
+        </div>
+
+
+        <mat-list-item [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded, 'selected': login.subCount === 4}" routerLink="/dashboard/alerts"
+          (click)="login.toggleSubmenu(4)" *ngIf="global.userAlerts.length !== 0">
+          <img src="assets/images/alerts-grey.svg" *ngIf="!(login.subCount === 4)" class="navicons" alt="">
+          <img src="assets/images/alerts-white.svg" *ngIf="login.subCount === 4" class="navicons" alt="">
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Alerts
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount === 4}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+        </mat-list-item>
+        <!-- <div class="submenu" [ngClass]="{'expanded' : login.subCount === 4}"
+          *ngIf="login.subCount == 4 && login.isExpanded">
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('OVER_SPEEDING')">
+            <span>
+              Over Speeding
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('SOS')">
+            <span>
+              SOS
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('IDLE_ENGINE')">
+            <span>
+              Engine Idling
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('HARD_DECELERATION')">
+            <span>
+              Harsh Brake
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('HARD_ACCELERATION')">
+            <span>
+              High Acceleration
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('LOW_VOLTAGE')">
+            <span>
+              Low Battery
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('GEO_FENCE_BREACH')">
+            <span>
+              Geo Fences
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('IGNITION_ON')">
+            <span>
+              Engine On
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('IGNITION_OFF')">
+            <span>
+              Engine Off
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('HIGH_ENGINE_COLLANT_TEMPERATURE')">
+            <span>
+              Coolant Temp.
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('TEMPERATURE_SENSOR')">
+            <span>
+              Temp Sensor
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('POWER_ON')">
+            <span>
+              Device Plugged In
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('POWER_OFF')">
+            <span>
+              Disconnected
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('STOPPAGE')">
+            <span>
+              Stoppage Alert
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('AC_ON')">
+            <span>
+              AC ON
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('AC_OFF')">
+            <span>
+              AC OFF
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('FREEWHEELING')">
+            <span>
+              FREE WHEELING
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkIf('REFUEL')">
+            <span>
+              Refuel
+            </span></a>
+
+        </div> -->
+        <mat-list-item (click)="login.toggleSubmenu(5)" [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded,'selected': login.subCount === 5 }"
+
+          *ngIf="global.userReports.length !== 0">
+          <img src="assets/images/reports-grey.svg" *ngIf="!(login.subCount === 5)" class="navicons" alt="">
+          <img src="assets/images/reports-white.svg" *ngIf="login.subCount === 5" class="navicons" alt="">
+
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Reports
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount === 5}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount === 5}"
+          *ngIf="login.subCount === 5 && login.isExpanded">
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('TRIP_DAILY')">
+            <span>
+              Daily Ignition Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('TRIP_SUMMARY')">
+            <span>
+              Trip Summary Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('DAYWISE_DISTANCE')">
+            <span>
+              Daywise Distance
+            </span></a>
+          <!-- <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('VEHICLE_TRACKING')">
+            <span>
+              Tracking Report
+            </span></a> -->
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('STOPPAGE_REPORT')">
+            <span>
+              Stoppage Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite"
+            routerLink="/dashboard/reports/consignmentReport" #consignActive="routerLinkActive" *ngIf="global.checkReport('CONSIGNMENT_DETAIL')">
+            <span>
+              Consignment Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('DUTY_REPORTS')">
+            <span>
+              Duty Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('CONSIGNMENT_SUMMARY')">
+            <span>
+              Consignment Summary
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('DTC_REPORT')">
+            <span>
+              DTC Instance Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('DTC_MODEL_WISE')">
+            <span>
+              DTC ModelWise Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('CONTAINER_TRACKING')">
+            <span>
+              Container Tracking
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('DAILY_PAYMENT_REPORT')">
+            <span>
+              Daily Payment Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" *ngIf="global.checkReport('VEHICLE_FITNESS_REPORT')">
+            <span>
+              Vehicle Fitness
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite"
+          routerLink="/dashboard/reports/dailyRunningReport" *ngIf="global.checkReport('DAILY_RUNNING')">
+            <span>
+              Daily Running
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite"
+          routerLink="/dashboard/reports/trackingReport" *ngIf="global.checkReport('VEHICLE_TRACKING')">
+            <span>
+              Tracking Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/reconciliationReport" *ngIf="global.checkReport('CONSIGNMENT_RECONCILIATION')">
+            <span>
+              Reconciliation Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/commodityReport" *ngIf="global.checkReport('COMMODITY_REPORT')">
+            <span>
+              Commodity Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/kpiReport" *ngIf="global.checkReport('KPI_VIOLATION_REPORT')">
+            <span>
+              Kpi Violation Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/activityLogReport" *ngIf="global.checkReport('USER_ACTIVITY')">
+            <span>
+              Activity Log
+            </span></a>
+        </div>
+        <mat-list-item (click)="login.toggleSubmenu(6)" [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded}">
+          <img src="assets/images/services-grey.svg" class="navicons" alt="">
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Service
+          </span>
+
+        </mat-list-item>
+        <mat-list-item (click)="login.toggleSubmenu(7)" [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded}">
+          <img src="assets/images/kpi-grey.svg" class="navicons" alt="">
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            KPI's Dashboard
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount === 7}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount === 7}" *ngIf="login.subCount === 7 && login.isExpanded">
+          <a mat-list-item class="listSubmeu">
+            <span>
+              Submenu Item 1
+            </span></a>
+          <!-- <a mat-list-item href="...">Submenu Item 2</a> -->
+
+        </div>
+        <mat-list-item (click)="login.toggleSubmenu(8)" [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded}">
+          <img src="assets/images/basic-settings.svg" class="navicons" alt="">
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Settings
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount === 8}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount === 8}"
+          *ngIf="login.subCount === 8 && login.isExpanded">
+          <a mat-list-item class="listSubmeu">
+            <span>
+              Submenu Item 1
+            </span></a>
+        </div>
+        <!-- <div class="dropdown"> -->
+
+        <mat-list-item (click)="login.toggleSubmenu(9)"
+          [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded, 'selected': login.subCount === 9}" *ngIf="global.checkAction('EOL')">
+          <img src="assets/images/eol.svg" *ngIf="!(login.subCount === 9)" class="navicons" alt="">
+          <img src="assets/images/eol-white.svg" *ngIf="login.subCount === 9" class="navicons" alt="">
+
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            EOL
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount === 9}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+
+
+        </mat-list-item>
+
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount === 9}" *ngIf="login.subCount === 9 && login.isExpanded">
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/testing">
+            <span>
+              EOL Testing
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/report">
+            <span>
+              EOL Report
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite"
+            routerLink="/dashboard/eol/tkm/testing">
+            <span>
+              TKM EOL Testing
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/tkm/report">
+            <span>
+              TKM EOL Report
+            </span></a>
+        </div>
+        <mat-list-item [ngClass]="{'listItem' : !login.isExpanded, 'listItemWidth': login.isExpanded, 'selected': login.subCount === 10}"
+        routerLinkActive="selected" (click)="login.toggleSubmenu(10)">
+          <img src="assets/images/Device-management-grey.png" *ngIf="!(login.subCount === 10)" class="navicons" alt="">
+          <img src="assets/images/Device-management-white.png" *ngIf="login.subCount === 10" class="navicons" alt="">
+
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Device Management
+          </span>
+          <span class="spacer"></span>
+          <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount === 10}"
+            *ngIf="login.isExpanded || login.isShowing">expand_more</mat-icon>
+
+        </mat-list-item>
+        <div class="submenu" [ngClass]="{'expanded' : login.subCount === 10}" *ngIf="login.subCount === 10 && login.isExpanded">
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/add-device">
+            <span>
+              Add Device
+            </span></a>
+          <a mat-list-item class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/map-device">
+            <span>
+              Map Sim & Device
+            </span></a>
+        </div>
+
+
+        <!-- </div> -->
+
+
+        <mat-list-item *ngIf="login.isExpanded" class="d-flex justify-content-center slider">
+          <mat-slide-toggle></mat-slide-toggle>
+          <span *ngIf="login.isExpanded || login.isShowing" class="content">
+            Receiver mode
+          </span>
+        </mat-list-item>
+        <mat-list-item *ngIf="login.isExpanded">
+          <div class="row footer" style="z-index: 9999 !important;">
+
+            <div class="col-12 d-flex justify-content-center align-items-center">
+
+              <span class="span1">
+                Powered by
+              </span>
+              <span class="span2">
+                &nbsp; Minda iConnect Pvt.Ltd.
+              </span>
+            </div>
+          </div>
+        </mat-list-item>
+        <mat-list-item *ngIf="!login.isExpanded">
+
+          <div class=" row nfooter ">
+            <span class="notExpand1">
+              Powered by
+            </span>
+            <span class="notExpand2">
+              Minda iConnect
+            </span>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+</div>

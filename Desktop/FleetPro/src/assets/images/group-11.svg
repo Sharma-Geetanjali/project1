@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+    <defs>
+        <filter id="coip6u9z4a" width="137.5%" height="137.5%" x="-18.8%" y="-14.6%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+        <rect id="b88t0qg4ab" width="48" height="48" x="0" y="0" rx="8"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-349 -206) translate(355 210)">
+                    <use fill="#000" filter="url(#coip6u9z4a)" xlink:href="#b88t0qg4ab"/>
+                    <rect width="50" height="50" x="-1" y="-1" fill="#3E3E3E" stroke="#FDFDFD" stroke-width="2" rx="8"/>
+                </g>
+                <g fill="#FDFDFD" fill-rule="nonzero">
+                    <path d="M16.688 1.601c-1.926 0-3.75.444-5.366 1.23-.378-.683-.722-1.298-1.1-1.982C9.74-.073 8.57-.244 7.712.337 2.792 3.515-.407 8.675.041 15.714.11 16.74.97 17.56 2.002 17.39c.997-.137 1.857-.274 2.855-.445C6.267 22.14 11.047 26 16.722 26 23.497 26 29 20.532 29 13.8 28.966 7.07 23.463 1.602 16.688 1.602zm0 2.563c.928 0 1.72.752 1.72 1.709 0 .922-.757 1.708-1.72 1.708-.93 0-1.72-.752-1.72-1.708.034-.957.79-1.709 1.72-1.709zm-9.424 7.415c0-.922.757-1.708 1.72-1.708.928 0 1.72.752 1.72 1.708 0 .923-.757 1.709-1.72 1.709-.963-.034-1.72-.786-1.72-1.709zm3.99 10.15c-.93 0-1.72-.752-1.72-1.71 0-.922.757-1.708 1.72-1.708.928 0 1.72.752 1.72 1.709 0 .957-.792 1.708-1.72 1.708zm5.434-3.589c-2.408 0-4.334-1.947-4.334-4.305 0-2.392 1.96-4.306 4.334-4.306 2.373 0 4.333 1.948 4.333 4.306.034 2.358-1.926 4.305-4.333 4.305zm5.262 3.588c-.929 0-1.72-.751-1.72-1.708 0-.923.757-1.709 1.72-1.709.928 0 1.72.752 1.72 1.709-.035.957-.792 1.708-1.72 1.708zm2.476-8.474c-.929 0-1.72-.752-1.72-1.709 0-.922.757-1.708 1.72-1.708.928 0 1.72.751 1.72 1.708s-.757 1.709-1.72 1.709z" transform="translate(-349 -206) translate(355 210) translate(10 11)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

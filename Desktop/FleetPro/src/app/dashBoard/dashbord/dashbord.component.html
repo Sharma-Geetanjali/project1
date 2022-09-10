@@ -1,0 +1,22 @@
+<div class="container-fluid" style="overflow: hidden !important;">
+  <!-- <div class="flexitem1" style="background-color: var(--black) !important;" id="sidenav2">
+    <app-side-nav></app-side-nav>
+  </div>
+
+  <app-side-nav id="sidenav" *ngIf="auth.isExpanded"
+    style="overflow: visible !important; visibility: visible !important;"></app-side-nav> -->
+
+<app-sidenav2 [ngClass]="{'sidebarOpen': login.isExpanded, 'sidebarClosed': !login.isExpanded}"></app-sidenav2>
+
+  <div class="middlecontainer">
+    <div class="flexitem2">
+      <div class="headerMain">
+        <app-main-header></app-main-header>
+      </div>
+      <div class="roter" style="z-index: -99 !important;">
+        <router-outlet></router-outlet>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+    <defs>
+        <filter id="f46i2lhwxa" width="137.5%" height="137.5%" x="-18.8%" y="-14.6%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+        <rect id="hr8yzjvdbb" width="48" height="48" x="0" y="0" rx="8"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-243 -204) translate(249 208)">
+                    <use fill="#000" filter="url(#f46i2lhwxa)" xlink:href="#hr8yzjvdbb"/>
+                    <rect width="50" height="50" x="-1" y="-1" fill="#E87F00" stroke="#FDFDFD" stroke-width="2" rx="8"/>
+                </g>
+                <g fill="#FDFDFD">
+                    <path d="M30.346 0c-3.584 0-6.5 2.916-6.5 6.5s2.916 6.5 6.5 6.5 6.5-2.916 6.5-6.5S33.93 0 30.346 0zm.644 6.814V2.579c0-.275-.202-.499-.452-.499s-.452.224-.452.5v4.446c0 .136.05.266.139.36l2.216 2.355c.088.093.2.139.313.139.119 0 .237-.051.326-.153.173-.2.167-.515-.013-.706L30.99 6.814z" transform="translate(-243 -204) translate(249 208) translate(2 6)"/>
+                    <g fill-rule="nonzero">
+                        <path d="M2.028 3.353v11.822c6.329 3.773 12.67-3.774 19 0V3.353c-6.33-3.773-12.671 3.774-19 0z" transform="translate(-243 -204) translate(249 208) translate(2 6) scale(-1 1) rotate(25 -19.414 -44.877)"/>
+                        <path d="M.908 3.065v30.248h.747V3.028c.357-.223.6-.716.6-1.296 0-.79-.443-1.42-1-1.42-.556 0-1 .63-1 1.42 0 .604.27 1.123.653 1.333z" transform="translate(-243 -204) translate(249 208) translate(2 6) scale(-1 1) rotate(25 -19.414 -44.877)"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

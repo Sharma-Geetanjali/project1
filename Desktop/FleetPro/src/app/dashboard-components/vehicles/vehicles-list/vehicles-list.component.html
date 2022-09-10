@@ -1,0 +1,818 @@
+<mat-toolbar class="header">
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search vehicle"
+      (keyup.enter)="search()">
+  </div>
+  <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+  <div class="FilterIcon" style="height: 100%;" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+        class="badgedisplay1">filter_list</mat-icon>
+      <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+      <span style="display: block; line-height: 0.8; color: var(--headerText);"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class=" eol menu-my"  [formGroup]="filterForm">
+    <!-- <span style="display: block; font-size: 12px;">
+      <span>
+       Group
+      </span>
+      <span style="color: var(--clor); font-size: 14px; float: right !important; font-weight: 500 !important;" (click)="clearVehicleStatus()">
+        Clear
+      </span>
+    </span> -->
+
+  <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 126px !important;">
+    <span style="display: block; font-size: 12px; margin-left: -7px;">
+      <span style="color: var(--darkGrey)">
+       Group
+      </span>
+      <span style="color: var(--clor); font-size: 14px; float: right !important; font-weight: 500 !important;" (click)="clearGroup()">
+        Clear
+      </span>
+    </span>
+    <span style="display: block; font-size: 12px; color: var(--darkGrey)"> Region</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select  placeholder="All" #singleSelect formControlName="region"
+          (selectionChange)="onChangeRegion($event.value)">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Select Region'" [noEntriesFoundLabel]="'No match found'"
+              formControlName="regionFilter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let obj of UnqiueGroupID" value="{{obj}}">
+            {{obj}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <!-- <mat-divider style="margin-top: 5px;"></mat-divider> -->
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 99px !important;">
+      <span style="display: block; font-size: 12px; color: var(--darkGrey)"> Select District</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important; ">
+        <mat-select placeholder="Select District" #singleSelect formControlName="district">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Select District'" [noEntriesFoundLabel]="'No match found'"
+              formControlName="districtFilter">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let obj of filteredArr" value="{{obj.groupName}}">
+            {{obj.groupName}}
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 0px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 167px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span style="color: var(--darkGrey)">
+          Vehicle Status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important; font-weight: 500 !important;" (click)="clearVehicleStatus()">
+          Clear
+        </span>
+      </span>
+
+      <section aria-label="Select an option"  >
+         <mat-checkbox formControlName="VehicleStatus" value="DISCONNECTED">Disconnected</mat-checkbox><br>
+        <mat-checkbox formControlName="VehicleStatus" value="LOW_VOLTAGE">Low Battery </mat-checkbox><br>
+        <mat-checkbox formControlName="VehicleStatus" value="OVER_SPEEDING">Over Speeding </mat-checkbox><br>
+        <mat-checkbox formControlName="VehicleStatus" value="TAMPER">Tamper </mat-checkbox>
+         </section>
+    </span>
+    <mat-divider style="margin-top: 0px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 66px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span style="color: var(--darkGrey)">
+          Ignition Status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important; font-weight: 500 !important; " (click)="clearignitionStatus()">
+          Clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="ignitionStatus">
+        <mat-radio-button value="true">On</mat-radio-button>
+        <mat-radio-button style="margin-left: 64px;" value="false">Off</mat-radio-button>
+      </mat-radio-group>
+    </span>
+    
+    
+    <span  *ngIf="!vehicleList"  mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 66px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span style="color: var(--darkGrey)">
+          Load status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important; font-weight: 500;" (click)="clearLoadState()">
+          Clear
+        </span>
+      </span>
+     
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" style="display: inline !important;"formControlName="LoadState">
+        <mat-radio-button value="true">Loaded</mat-radio-button>
+        <mat-radio-button style="margin-left: 30px;" value="false">Unloaded</mat-radio-button>
+
+      </mat-radio-group>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+
+   
+    <!-- <span mat-menu-item (click)="$event.stopPropagation();"
+      style="outline: none !important; height: 80px !important; margin-bottom: 75px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Not In Network
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important; font-weight: 500;" (click)="clearnotInNetwork()">
+          Clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="notInNetwork">
+        <mat-radio-button value="true">Yes</mat-radio-button>
+        <mat-radio-button style="margin-left: 100px;" value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </span> -->
+
+   
+    <div style="  background-color: white; ">
+      <span mat-menu-item (click)="$event.stopPropagation();"
+        style="outline: none !important; height: 56px !important;">
+        <span style="display: flex; justify-content: space-around; margin-top: 14px;">
+          <span >
+            <button mat-stroked-button class="btnStrBasic2" styles="font-size:14px !important"  (click)="clearAll()">Clear All</button>
+          </span>
+          <span style="float: right !important;">
+            <button type="submit" mat-raised-button class=" basicRaisedbtn2" styles=" font-size:14px !important" (click)="filter()">
+              Filter
+            </button>
+          </span>
+        </span>
+      </span>
+    </div>
+
+  
+  </mat-menu>
+
+  <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+    <span>{{numberFilter.length}} Filters</span>
+    <a (click)="reomveFilter()">
+      <img src="assets/images/ic-close.png" height="10px" width="10px"
+        style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+    </a>
+
+
+  </span>
+
+
+
+
+
+  <span class="spacer"></span>
+  <!-- <button mat-raised-button  class="basicRaisedbtn mapButton">Report</button> -->
+  <div class="badgedisplay" *ngIf="vehicleList" style=" width: 70px ;  height: 100%;  margin-right: 20px;" >
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleList()">
+
+      <mat-icon style="color: var(--clor);">list</mat-icon>
+      <span style="display: block; line-height: 0.8;color: var(--clor);">List View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" *ngIf="!vehicleList" style=" width: 70px ;  height: 100%; margin-right: 20px;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleList()">
+
+      <mat-icon style="color: var(--black);">list</mat-icon>
+      <span style="display: block; line-height: 0.8;color: var(--headerText);">List View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" *ngIf="vehicleList" style=" width: 70px ;  height: 100%;  margin-right: 20px;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleMap()">
+
+      <mat-icon style="color: var(--black);" fontSet="material-icons-outlined">map_outline</mat-icon>
+      <span style="display: block; line-height: 0.8;color: var(--headerText);">Map View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" *ngIf="!vehicleList" style=" width: 70px ; height: 100%;  margin-right: 20px;" >
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important;  "
+      (click)="selectVehicleMap()">
+
+      <mat-icon style="color: var(--clor);" fontSet="material-icons-outlined">map_outline</mat-icon>
+      <span style="display: block; line-height: 0.8;color: var(--clor);">Map View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" style="width: 70px ; height: 100%;">
+    <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon >more_vert</mat-icon>
+      <span style="display: block; line-height: 0.8;color: var(--headerText);">More</span>
+
+    </button>
+    <mat-menu #menu3="matMenu">
+      <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+        Download Excel
+        <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+        <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+      </button>
+    </mat-menu>
+  </div>
+
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style=" outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+      <button *ngIf="vehicleList" mat-menu-item style="outline: none !important;" (click)="selectVehicleMap()">
+        Vehicle Map
+      </button>
+      <button *ngIf="!vehicleList" mat-menu-item style="outline: none !important;" (click)="selectVehicleList()">
+        Vehicle List
+      </button>
+      <button mat-menu-item style="outline: none !important;" class="mapBtnMobile">
+        Report
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>
+
+
+
+<!-- vehicle List Start -->
+
+<div [class.noneClass]="!vehicleList">
+  <div class="container-fluid smallScreen eol">
+    <!-- [ngStyle]="{'width.vw': widthExp }" -->
+    <div class="widgetRow d-flex eol"  style="width: 100%;">
+      <div class="main-card">
+        <div class="leftChart">
+          <div class="mapCardIcon"> <img src="assets/images/Vehicle_card.svg" style="margin: 15px;"> </div>
+        </div>
+        <div class="rightContent">
+          <h4 class=" card-content-no">
+            {{this.dashboardData?.totalVehicles}}
+          </h4>
+          <span class="card-content-text">
+            Total Vehicles
+          </span>
+        </div>
+      </div>
+      <div class="main-card">
+        <div class="leftChart" style=" pointer-events: none;">
+          <canvas class="chartCanvas" id="connectedVechChart"></canvas>
+        </div>
+        <div class="rightContent">
+          <h4 class=" card-content-no" *ngIf="this.dashboardData?.inContact">
+            {{this.dashboardData?.inContact}}
+          </h4>
+          <span class="card-content-text">
+            Connected Vehicles
+          </span>
+        </div>
+      </div>
+      <div class="main-card">
+        <div class="leftChart" style=" pointer-events: none;">
+          <canvas class="chartCanvas" id="NotInContactChart"></canvas>
+        </div>
+        <div class="rightContent">
+          <h4 class=" card-content-no" *ngIf="this.dashboardData?.notInNetwork">
+            {{this.dashboardData?.notInNetwork}}
+          </h4>
+          <span class="card-content-text">
+            Not in contact
+          </span>
+        </div>
+      </div>
+      <div class="main-card">
+        <div class="leftChart" style=" pointer-events: none;">
+          <canvas class="chartCanvas" id="loadedChart"></canvas>
+        </div>
+        <div class="rightContent">
+          <h4 class=" card-content-no">
+            119
+          </h4>
+          <span class="card-content-text">
+            Loaded Vehicles
+          </span>
+        </div>
+      </div>
+      <div class="main-card">
+        <div class="leftChart" style=" pointer-events: none;">
+          <canvas class="chartCanvas" id="unLoadedChart"></canvas>
+        </div>
+        <div class="rightContent">
+          <h4 class=" card-content-no">
+            119
+          </h4>
+          <span class="card-content-text">
+            Unloaded
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mobiletable" style="padding-left: 8px !important; margin-left: 0px; margin-right: 0px;">
+      <!-- <div style="position: relative !important;">
+        <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+          <img src='assets/images/cfpro.gif' style="margin-top: 300px;  height: 90px; width: 90px;">
+        </ngx-spinner>
+      </div> -->
+      <div class="col-lg-12 table-responsive eol"
+        [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+        style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+        [infiniteScrollDistance]="2" [infiniteScrollThrottle]="40" (scrolled)="nextPageTable()" [scrollWindow]="false">
+
+        <table class="table table-bordered bordered rounded" style="background-color: white;">
+          <thead>
+            <tr class="thead-dark">
+              <th scope="col" style="width: 60px;">S.No</th>
+              <th scope="col" style="width: 120px;">Ignition status </th>
+              <th scope="col" style="width: 120px;">Vehicle status</th>
+              <th scope="col" style="width: 200px;">Group </th>
+              <th scope="col" style="width: 180px;">Reg. No.</th>
+              <th scope="col" style="width: 120px;">Speed</th>
+              <th scope="col" style="width: 260px;">Last reported location</th>
+              <th scope="col" style="width: 120px;">Reported time</th>
+
+              <th scope="col" style="z-index: 99 !important; width: 180px;">Action</th>
+            </tr>
+          </thead>
+
+          <tbody class="eol">
+
+            <tr *ngFor="let obj of tablePaginatedArray; index as i">
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{i+1}}</td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.ignitionStatus" class="GreenCircle" style="font-weight: 500;">&nbsp; &nbsp; ON</span>
+                <span *ngIf="!obj.ignitionStatus" class="RedCircle" style="font-weight: 500;">&nbsp; &nbsp; OFF</span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.ignitionStatus && obj.loaded"><img src="{{theme.onLoaded}}"></span>
+                <span *ngIf="obj.ignitionStatus && !obj.loaded"><img src="{{theme.onUnLoaded}}"></span>
+                <span *ngIf="!obj.ignitionStatus && obj.loaded"><img src="{{theme.offLoaded}}"></span>
+                <span *ngIf="!obj.ignitionStatus && !obj.loaded"><img src="{{theme.offUnLoaded}}"></span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: bold;">{{obj?.groupName}}</td>
+              <td class="align-middle" scope="row">
+                <span style="border-bottom: 1px solid #008ce8; color: #008ce8; font-weight: 500; cursor: pointer;"
+                  (click)="getVehicleData(obj.vehicleId)" >
+                  {{obj.vehicleName}}
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{obj?.speed}}</td>
+              <td class="align-middle" scope="row" style="font-weight: 500;"> {{obj?.address}}</td>
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{obj?.date | date: 'dd/MM/yy'}} <br>
+                {{obj.date | date: 'hh:mm a'}}
+              </td>
+              <td class="align-middle">
+                <span>
+                  <button mat-stroked-button class="btnStrBasic" data-toggle="modal"
+                    (click)="patchValueSOS(obj.vehicleId)" data-target="#exampleModal">Report</button>
+
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="vehicleListArr.length === 0">
+              <td class="align-middle" colspan="9">
+                No Result Found
+
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+    <div class="mobileCard eol" infiniteScroll [infiniteScrollDistance]="2.5" [infiniteScrollThrottle]="40"
+    (scrolled)="nextPage()" [scrollWindow]="false">
+
+    <div class="d-flex p-2" style="cursor:pointer ; outline: none;" *ngFor="let obj of paginatedArray"
+      (click)="getVehicleData(obj.vehicleId)">
+      <div class="col-12  mapcard">
+        <div class=" row ">
+          <div class="col-12 vehicleNo">
+            {{obj.vehicleName}}
+          </div>
+        </div>
+        <div class="row ">
+          <div class="col-12 lastKnown">
+            Last Known Location
+
+          </div>
+        </div>
+        <div class=" row ">
+          <div class="col-10 address ">
+            {{obj.address}}
+          </div>
+          <div class="col-2 d-flex justify-content-end">
+            <img src="assets/images/back_icon.svg" class="my-auto"
+              style="margin-right: 6px !important; padding-bottom: 2px !important; transform: rotate(180deg)">
+          </div>
+        </div>
+        <div class="row p-0 r-0">
+          <div class=" col-5 ">
+            <span class="currStatus">
+              Current Speed
+
+            </span>
+          </div>
+          <div class=" col-7">
+            <span class="liveStatus">
+              {{obj.speed}}
+            </span>
+          </div>
+        </div>
+        <div class="row p-0 r-0">
+          <div class=" col-5">
+            <span class="currStatus">
+              Travelled Today
+            </span>
+          </div>
+          <div class=" col-7">
+            <span class="liveStatus">
+              {{obj.todayskm}} km
+            </span>
+          </div>
+        </div>
+        <div class="row p-0 r-0">
+          <div class="currStatus col-5 ">
+            Ignition
+          </div>
+          <div *ngIf="obj.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+            <span style="font-size: 12px; color: var(--black);">
+              ON
+            </span>
+          </div>
+          <div *ngIf="!obj.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+            <span style="font-size: 12px; color: var(--black);">
+              OFF
+            </span>
+          </div>
+        </div>
+        <div class="row p-0 r-0 ">
+          <div class="col-12 d-flex justify-content-end">
+            <span style="font-size: 9px; color: var(--black);">
+              {{obj.date | date: 'hh:mm a dd-MM-yyyy'}}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+  </div>
+
+  <div class="modal fade " id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+      <div class="modal-content">
+        <div class="row mb-5" [formGroup]="requestSubmitForm">
+          <div class="col-11 pr-0 pt-3  ">
+            <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Report</span>
+            <div class="row">
+              <div class="col-12 pr-5 pl-5 pt-3 ">
+                <div class="row">
+                  <div class="col-12" style="padding-left: 42px;">
+                    <span class="sub-heading">
+                      Please fill up the form to report the issue associated with the vehicle.
+                    </span>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12" style="padding-left: 42px;">
+                    <span style="font-size: 12px; font-weight: 400;">Vehicle Name</span>
+                    <span style="font-size: 18px; font-weight: 600; padding-left: 12px;">
+                      {{vehicleName.value}}
+                    </span>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12" style="padding-left: 42px;">
+                    <span style="font-size: 12px; font-weight: 400;">Issue Type</span> <br>
+                    <span class="reportIssue">
+                      <mat-form-field appearance="outline" style="width: 100% !important;">
+                        <mat-select placeholder="Choose Issue" #singleSelect
+                          style=" z-index: 2 !important;" formControlName="issueType">
+                          <mat-option value="Disconnected">Disconnected</mat-option>
+                          <mat-option value="Tampered">Tampered</mat-option>
+                          <mat-option value="Data Not Reporting">Data Not Reporting</mat-option>
+                          <mat-option value="GPS Bounce">GPS Bounce</mat-option>
+                          <mat-option value="Others">Others</mat-option>
+                        </mat-select>
+                        <mat-error class="issueTypeErr" *ngIf="issueType.errors?.required && issueType.touched">Issue type is required 
+                        </mat-error>
+                        
+                      </mat-form-field>
+                    </span>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-12" style="padding-left: 42px;">
+                    <span style="font-size: 12px; font-weight: 400;">Issue Description</span> <br>
+                    <span>
+                      <textarea class="filterInput" formControlName="issueDescription"></textarea>
+                      <mat-error class="issueDescriptionErr" *ngIf="issueDescription.errors?.required && issueDescription.touched">Issue description is required
+                      </mat-error>
+                      <mat-error class="issueDescriptionErr" *ngIf="issueDescription.errors?.frontSpace && issueDescription.touched && !issueDescription.errors?.required">Issue description is required
+                      </mat-error>
+                    </span>
+                  </div>
+                </div>
+                <div class="row mt-4">
+                  <div class="col-12 " style="padding-left: 42px;">
+                    <button type="button" class="btn btn-secondary submitDialog" 
+                      (click)="submitRequest();">Submit Request</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="col-1 pl-0">
+            <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" (click)="closeReportModal()">clear
+            </mat-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- vehicle List END -->
+
+
+<!-- vehicle MAP Start -->
+
+
+<div [class.noneClass]="vehicleList">
+  <div class="container-fluid p-0">
+    <div class="mapRow">
+      <div class="cardWidth eol" infiniteScroll [infiniteScrollDistance]="2.5" [infiniteScrollThrottle]="40"
+        (scrolled)="nextPage()" [scrollWindow]="false">
+
+        <ng-container *ngIf="paginatedArray.length > 0">
+        <div class="d-flex p-2" style="cursor:pointer ; outline: none;" *ngFor="let obj of paginatedArray"
+          (click)="getVehicleData(obj.vehicleId)" routerLink="/dashboard/vehicleMap/{{obj.vehicleId}}">
+          <div class="col-12  mapcard">
+            <div class=" row ">
+              <div class="col-12 vehicleNo">
+                {{obj.vehicleName}}
+              </div>
+            </div>
+            <div class="row ">
+              <div class="col-12 lastKnown">
+                Last Known Location
+
+              </div>
+            </div>
+            <div class=" row ">
+              <div class="col-11 address ">
+                {{obj.address}}
+              </div>
+              <div style="position: absolute !important; top: 47%; right: 5%;">
+                <!-- <img src="assets/images/back_icon.svg" class="my-auto"
+                  style="margin-right: 6px !important; padding-bottom: 2px !important; transform: rotate(180deg)"> -->
+                  <mat-icon style="color: var(--clor);" >chevron_right</mat-icon>
+              </div>
+            </div>
+            <div class="row p-0 r-0">
+              <div class=" col-4 ">
+                <span class="currStatus">
+                  Current Speed
+
+                </span>
+              </div>
+              <div class=" col-8">
+                <span class="liveStatus">
+                  {{obj.speed}} km/hr
+                </span>
+              </div>
+            </div>
+            <div class="row p-0 r-0">
+              <div class=" col-4 pr-0">
+                <span class="currStatus ">
+                  Travelled Today
+                </span>
+              </div>
+              <div class="col-8">
+                <span class="liveStatus">
+                  {{obj.todayskm}} km
+                </span>
+              </div>
+            </div>
+            <div class="row p-0 r-0">
+              <div class="currStatus col-4 ">
+                Ignition
+              </div>
+              <div *ngIf="obj.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+                <span style="font-size: 12px; color: var(--black); font-weight: 600;">
+                  ON
+                </span>
+              </div>
+              <div *ngIf="!obj.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+                <span style="font-size: 12px; color: var(--black); font-weight: 600;">
+                  OFF
+                </span>
+              </div>
+            </div>
+            <div class="row p-0 r-0 ">
+              <div class="col-12 d-flex justify-content-end">
+                <span style="font-size: 9px; color: var(--black);font-weight: 600;">
+                  {{obj.date | date: 'hh:mm a dd-MM-yyyy'}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="paginatedArray.length == 0">
+        <div class="row mt-3 d-flex justify-content-center">
+          No Data Found
+        </div>
+      </ng-container>
+
+
+
+
+      </div>
+      <div class="mapWidth  p-0 m-0">
+        <div style="position: relative !important;">
+          <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+            <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+          </ngx-spinner>
+        </div>
+        <div class="countCardPosition">
+          <div class="row totalCountCard ">
+            <div class="col-4 p-0 d-flex align-self-center">
+              <div class="mapCardIcon d-flex"> <img src="assets/images/Vehicle_card.svg"
+                  class="mx-auto align-self-center"> </div>
+            </div>
+            <div class="col-2 p-0 ">
+              <div class="row p-0">
+                <div class="col-12 pl-0 pt-0 pb-0">
+                  <span class="totalVehcile" *ngIf="totalVehcile" style="font-weight: 500;">{{totalVehcile}}</span>
+                  <span class="totalVehcile" *ngIf="!totalVehcile" style="font-weight: 500;">--</span>
+
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-12 pl-0 pt-0 pb-0">
+                  <span class="totalVehcileSM" *ngIf="totalVehcile"
+                    style="font-weight: 500;">{{nonLocationVehicle}}</span>
+                  <span class="totalVehcileSM" *ngIf="!totalVehcile" style="font-weight: 500;">--</span>
+
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div class="col-12 pl-0 pt-0 pb-0">
+                  <span class="totalVehcileSM" *ngIf="totalVehcile" style="font-weight: 500;">{{totalVehcile -
+                    nonLocationVehicle}}</span>
+                  <span class="totalVehcileSM" *ngIf="!totalVehcile" style="font-weight: 500;">--</span>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-6 p-0 mt-1 ">
+              <div class="row mt-1 mb-1">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM" style="font-size: 10px !important;">Active Vehicles</span>
+                </div>
+              </div>
+              <div class="row mt-2 ">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM" style="font-size: 10px !important;">Unknown Location</span>
+                </div>
+              </div>
+              <div class="row mt-1 ">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM" style="font-size: 10px !important;">Total Vehicles</span>
+                </div>
+              </div>
+              <!-- <div class="row mt-2 ">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM"
+                    style="font-size: 10px !important; font-weight: 500 !important;">{{todayDate
+                    | date: 'hh:mm a dd/MM/yy'}}</span>
+                </div>
+              </div> -->
+            </div>
+
+          </div>
+        </div>
+    <!-- <button  class="recenterMapBtn" (click)="recenterMap()">Recenter Map</button> -->
+    <!--  (mapReady)="mapReady($event)" (centerChange)="centerChange($event)" -->
+    <!-- id="AgmMap" [latitude]="defaultLat"  [longitude]="defaultLng"   [fitBoundsPadding]="250" [fullscreenControl]='true'  [usePanning]="true" -->
+
+        <agm-map #AgmMap [fitBounds]="true" [mapTypeControl]='true'>
+          <agm-marker-cluster *ngIf="!cardLoadingFlag" imagePath="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m">
+
+            <agm-marker [agmFitBounds]="true"  *ngFor="let marker of mapsdata | async" (markerClick)="clickedMarker(infoWindow)"
+              [latitude]="marker?.latitude" [longitude]="marker?.longitude"  [iconUrl]="{
+                    url: marker?.icon,
+                    scaledSize: {
+                      width: 45,
+                      height: 45
+                    }
+            }">
+              <agm-info-window #infoWindow>
+                <div class="iw-title">
+                  {{ marker?.vehicleName | uppercase }}
+                  <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                    <mat-icon>close</mat-icon>
+                  </span>
+                </div>
+                <div class="iw-content">
+                  <div class="iw-subTitle">
+                    <span class="currStatus">District:</span> &nbsp;
+                    <Span class="liveStatus">{{marker?.groupName}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Ignition Status:</span>&nbsp;
+
+                    <Span class="liveStatus" *ngIf="marker?.ignitionStatus"> ON</Span>
+                    <Span class="liveStatus" *ngIf="!marker?.ignitionStatus"> OFF</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Loading Status:</span>&nbsp;
+
+
+                    <Span class="liveStatus" *ngIf="marker?.loaded"> Loaded</Span>
+                    <Span class="liveStatus" *ngIf="!marker?.loaded"> Unloaded</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Travelled Today:</span>&nbsp;
+
+                    <Span class="liveStatus">24km</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Speed:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker?.speed}}km/hr</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Time:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker?.date | date: 'hh:mm a dd/MM/yy'}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Last Known Location:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker?.address}}</Span>
+                  </div>
+                  <div class=" p-0 d-flex justify-content-center"
+                    style="margin-top: 10px; font-size: 15px; color: var(--clor);">
+                    <button mat-stroked-button class="btnStrBasic" (click)="getVehicleData(marker?.vehicleId)"  >View Details</button>
+                  </div>
+                </div>
+              </agm-info-window>
+
+            </agm-marker>
+
+
+            
+
+
+          </agm-marker-cluster>
+          <agm-marker  *ngIf="cardLoadingFlag" [agmFitBounds]="true" 
+              [latitude]="31.1048" [longitude]="77.1734" [visible]="false">
+            </agm-marker>
+
+            <agm-marker  *ngIf="cardLoadingFlag" [agmFitBounds]="true" 
+              [latitude]="11.1271" [longitude]="78.6569" [visible]="false">
+            </agm-marker>
+
+        </agm-map>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- vehicle MAP END -->

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+    <defs>
+        <filter id="6wixvjucza" width="137.5%" height="137.5%" x="-18.8%" y="-14.6%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+        <rect id="uz7knfngwb" width="48" height="48" x="0" y="0" rx="8"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-455 -206) translate(461 210)">
+                    <use fill="#000" filter="url(#6wixvjucza)" xlink:href="#uz7knfngwb"/>
+                    <rect width="50" height="50" x="-1" y="-1" fill="#E87F00" stroke="#FDFDFD" stroke-width="2" rx="8"/>
+                </g>
+                <g fill="#FDFDFD" fill-rule="nonzero">
+                    <path d="M30.015 24.5c-.136 0-.274-.03-.404-.096l-3.688-1.841c-.454-.227-.642-.785-.419-1.246.223-.461.773-.652 1.227-.425l2.844 1.42c.725-1.756 1.092-3.62 1.092-5.555 0-7.937-6.355-14.395-14.167-14.395-7.812 0-14.167 6.457-14.167 14.395 0 1.924.363 3.78 1.08 5.526l2.555-1.378c.447-.24 1.002-.068 1.24.386.236.454.067 1.018-.38 1.26l-3.414 1.84c-.218.118-.474.141-.71.065-.235-.077-.43-.247-.54-.472C1.06 21.727.5 19.295.5 16.758.5 7.793 7.678.5 16.5.5s16 7.293 16 16.256c0 2.539-.56 4.97-1.664 7.227-.16.327-.484.517-.821.517z" transform="translate(-455 -206) translate(461 210) translate(8 11)"/>
+                    <path d="M28.498 15.97C28.066 9.538 22.807 4.5 16.527 4.5c-5.847 0-10.733 4.248-11.808 9.856l-.047.242c-.006.035-.01.07-.014.104-.104.644-.158 1.305-.158 1.977 0 .573.06 1.326.162 2.014.07.47.463.807.912.807.046 0 .093-.003.14-.01.503-.08.85-.563.774-1.08-.087-.592-.141-1.255-.141-1.73 0-.667.063-1.319.183-1.95 1.106-5.325 5.553-7.222 9.065-7.222 4.196 0 7.093 3.67 7.786 7.294.06.31.266.57.55.692l3.288 1.417c.296.127.634.088.895-.104.26-.192.406-.508.384-.837z" transform="translate(-455 -206) translate(461 210) translate(8 11)"/>
+                    <path d="M28.199 18.491l-10.493-4.873c-.017-.008-.034-.015-.053-.021-.48-.16-.981-.12-1.376.107-.366.212-.616.565-.723 1.02-.216.916.226 1.702 1.124 2l.039.012 11.153 2.75c.04.01.08.014.119.014.214 0 .412-.14.484-.358.085-.257-.034-.54-.274-.651z" transform="translate(-455 -206) translate(461 210) translate(8 11)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="7px" height="11px" viewBox="0 0 7 11" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>back icon</title>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="View-Specific-Vehicle-" transform="translate(-97.000000, -97.000000)">
+            <g id="Group-13" transform="translate(90.000000, 92.000000)">
+                <g id="arrow-down" transform="translate(10.000000, 10.000000) scale(-1, 1) rotate(270.000000) translate(-10.000000, -10.000000) ">
+                    <path d="M11.6947368,14.495417 C11.8502683,14.6403428 12.0926367,14.6360665 12.2429588,14.4857443 C12.393281,14.3354222 12.3975573,14.0930538 12.2526316,13.9375223 L8.04210526,9.72699599 L12.2526316,5.66383809 C12.3975573,5.50830665 12.393281,5.26593824 12.2429588,5.1156161 C12.0926367,4.96529395 11.8502683,4.96101764 11.6947368,5.10594336 L7,9.72699599 L11.6947368,14.495417 Z" id="Shape" stroke="#E87F00" fill="#E87F00" transform="translate(9.679287, 9.800680) scale(-1, -1) rotate(90.000000) translate(-9.679287, -9.800680) "></path>
+                    <rect id="Rectangle" x="0" y="0" width="20" height="20"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

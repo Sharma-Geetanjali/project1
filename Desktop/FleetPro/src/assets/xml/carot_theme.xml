@@ -1,0 +1,90 @@
+
+<theme>
+	<carot>
+		<logo>
+			<logo_big>assets/images/carot-fleet logo.png</logo_big>
+			<logo_small>assets/images/carot-fleet logo.png</logo_small>
+		</logo>
+		<colors>
+			<primary_color>#E87F00</primary_color>
+			<secondary_color> #F7941D</secondary_color>
+			<top_header_color>#000000</top_header_color>
+			<top_headerText_color>#FFFFFF</top_headerText_color>
+			<header_color>#FFFFFF </header_color>
+			<headerText_color>#000000</headerText_color>
+			<side_nav_color>#000000</side_nav_color>
+			<sideIconNav_color>#000000</sideIconNav_color>
+			<dropdownColor>#3e3e3e</dropdownColor>
+			<dropdownColorText>#939CAF</dropdownColorText>
+			<dropdownColorTextHover>#901F1A</dropdownColorTextHover>
+			<dropdownBackgroundHover>#39FF14</dropdownBackgroundHover>
+			<dropdownHeader>#CFCFCF</dropdownHeader>
+			<dropHeaderText>#ff0000</dropHeaderText>
+		</colors>
+		<flagImages>
+			<FlagNG>assets/images/ng.png</FlagNG>
+			<FlagOK>assets/images/ok.png</FlagOK>
+			<FlagBlack>assets/images/black.png</FlagBlack>
+			<FlagRed>assets/images/redFlag.png</FlagRed>
+			<FlagGreen>assets/images/greenFlag.png</FlagGreen>
+			<FlagGrey>assets/images/greyFlag.png</FlagGrey>
+		</flagImages>
+    <mapIconsAlert>
+      <OverSpeeding>assets/images/overspeeding.png</OverSpeeding>
+      <Engine_idle>assets/images/engine-idle.png</Engine_idle>
+      <Harsh_break>assets/images/harshbreak.png</Harsh_break>
+      <High_Acc>assets/images/hignAcc.png</High_Acc>
+      <Geo_fence>assets/images/enginon.png</Geo_fence>
+      <Engine_On>assets/images/enginon.png</Engine_On>
+      <Engine_Off>assets/images/engineoff.png</Engine_Off>
+      <Dtc>assets/images/dtc.png</Dtc>
+      <Device_Plug_In>assets/images/deviceplug.png</Device_Plug_In>
+      <Disconnected>assets/images/deviceunplug.png</Disconnected>
+      <TempSensor>assets/images/deviceunplug.png</TempSensor>
+      <CoolentTemp>assets/images/collent.png</CoolentTemp>
+    </mapIconsAlert>
+    <mapIconTruck>
+      <OnLoaded>assets/images/truck-2-1.png</OnLoaded>
+      <OnUnLoaded>assets/images/truck-2-2.png</OnUnLoaded>
+      <OffLoaded>assets/images/truck-2-3.png</OffLoaded>
+      <OffUnLoaded>assets/images/truck-2-4.png</OffUnLoaded>
+    </mapIconTruck>
+    <mapIconsConsignment>
+      <receiver>assets/images/receiver_sm.png</receiver>
+      <dispatcher>assets/images/dispatcher_sm.png</dispatcher>
+      <routeStart>assets/images/rd_start.png</routeStart>
+      <routeEnd>assets/images/rd_end.png</routeEnd>
+      <routeStoppageStart>assets/images/enroute_start.png</routeStoppageStart>
+      <routeStoppageEnd>assets/images/enroute_end.png</routeStoppageEnd>
+    </mapIconsConsignment>
+    <trackingPolylineColor>
+        <polyline>#4800e8</polyline>
+        <polygon>#2196f3</polygon>
+        <Consignorcircle>#2196f3</Consignorcircle>
+        <Consigneecircle>#2196f3</Consigneecircle>
+
+    </trackingPolylineColor>
+    	<title>
+    		Carot
+    	</title>
+    	<favicon_path>
+    		assets/images/a.ico
+    	</favicon_path>
+		<mindaPlantCoordinates>
+			<coordinate>
+        		<latitude>18.751215</latitude>
+				<longitude>73.792109</longitude>
+			</coordinate>
+			<coordinate>
+        		<latitude>18.751215</latitude>
+				<longitude>73.792109</longitude>
+			</coordinate>
+      <coordinate>
+        		<latitude>19.039535</latitude>
+				<longitude>73.635498</longitude>
+			</coordinate>
+		</mindaPlantCoordinates>
+	</carot>
+</theme>
+
+

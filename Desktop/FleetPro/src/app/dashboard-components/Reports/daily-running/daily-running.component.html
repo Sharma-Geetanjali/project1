@@ -1,0 +1,489 @@
+<mat-toolbar class="header">
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search Consignment"
+      (keyup.enter)="search()">
+  </div>
+  <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+        class="badgedisplay1">filter_list</mat-icon>
+      <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+      <span style="display: block; line-height: 0.8; color: var(--headerText);"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+    <span mat-menu-item (click)="$event.stopPropagation();"
+    style="outline: none !important; height: 150px !important; border-top: none !important;">
+    <span style="display: block; font-size: 12px;">
+      <span>
+        Date
+      </span>
+      <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+        Clear
+      </span>
+    </span>
+    <span style="display: block;">
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate" [max]="maxDate"
+          placeholder="From date & time" disabled>
+
+        <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+        <ngx-mat-datetime-picker  #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+      </mat-form-field>
+    </span>
+
+    <span>
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time" [min]="minDate" [max]="maxDate"
+          formControlName="toDate" disabled>
+
+        <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+        <ngx-mat-datetime-picker  #pickerTo [enableMeridian]="true" style="border-top: none !important;" disabled="false"></ngx-mat-datetime-picker>
+      </mat-form-field>
+
+    </span>
+    <!-- <span style="display: block; font-size: 12px;">
+      <span>
+        Date
+      </span>
+      <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+        Clear
+      </span>
+    </span>
+    <span style="display: block;">
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+          <input matStartDate formControlName="start" placeholder="Start date" formControlName="fromDate">
+          <input matEndDate formControlName="end" placeholder="End date" formControlName="toDate">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker" style="outline: none !important;"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker style="outline: none !important;"></mat-date-range-picker>
+      </mat-form-field>
+    </span> -->
+
+  </span>
+
+    <mat-divider style="margin-top: 10px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          All Vehicle
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearVehicle()">
+          Clear
+        </span>
+      </span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select vehicle" #singleSelect formControlName="vehicle" (infiniteScroll)="getNextBatch()" [complete]="offset === list.length" msInfiniteScroll>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'search vehicle'" formControlName="filterVehicle"
+              [noEntriesFoundLabel]="'No match found'">
+            </ngx-mat-select-search>
+          </mat-option>
+
+          <mat-option *ngFor="let obj of options" value="{{obj.id}}">
+            {{obj.name}}
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Vehicle My Group
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearMyvehicle()">
+          Clear
+        </span>
+      </span>
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select Group" #singleSelect formControlName="myvehicle">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'search Group'" formControlName="myfilterVehicle"
+              [noEntriesFoundLabel]="'No match found'">
+            </ngx-mat-select-search>
+          </mat-option>
+
+          <!-- <mat-option *ngFor="let obj of myOrganization[0]?.groups" value="{{obj.groupName}}">
+          {{obj.groupName}}
+        </mat-option> -->
+          <mat-optgroup *ngFor="let obj of myOrganization[0]?.groups" [label]="obj.groupName" [disabled]="obj.disabled">
+            <mat-option *ngFor="let obj1 of obj.vehicles" [value]="obj1.id">
+              {{ obj1.name }}
+            </mat-option>
+
+            <!-- <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name"
+                  [disabled]="group.disabled">
+      </mat-optgroup> -->
+
+          </mat-optgroup>
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <!-- <mat-divider style="margin-top: 5px;"></mat-divider>
+  <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+    <span style="display: block; font-size: 12px;"> Vehicle Shared with me</span>
+
+    <mat-form-field appearance="outline" style="width: 100% !important;">
+      <mat-select placeholder="Select Group" #singleSelect formControlName="vehicle">
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'search Group'" formControlName="filterVehicle"
+            [noEntriesFoundLabel]="'No match found'">
+          </ngx-mat-select-search>
+        </mat-option>
+
+        <mat-option *ngFor="let obj of myOrganization[0]?.groups" value="{{obj.groupName}}">
+          {{obj.groupName}}
+        </mat-option>
+
+      </mat-select>
+    </mat-form-field>
+  </span> -->
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Consignment My Group
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearMyconsign()">
+          Clear
+        </span>
+      </span>
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select Group" #singleSelect formControlName="myconsign" (infiniteScroll)="getNextGroup()" [complete]="offset === consignmentMyGroup[0]?.groups.length" msInfiniteScroll>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'search group'" formControlName="filterMyconsign"
+              [noEntriesFoundLabel]="'No match found'">
+            </ngx-mat-select-search>
+          </mat-option>
+
+          <mat-option *ngFor="let obj of options1" value="{{obj.groupId}}">
+            {{obj.groupName}}
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 10px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;"> Registration Number</span>
+      <input placeholder="Registration Number" formControlName="registraionNo" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;"> Consignor</span>
+
+      <input placeholder="Consignor Code" formControlName="consignorCode" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;"> Consignee</span>
+
+      <input placeholder="Consignee Code" formControlName="consigneeCode" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Proximity Status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearproxStatus()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="proxStatus">
+        <mat-radio-button value="ENTERED">Entered</mat-radio-button>
+        <mat-radio-button style="margin-left: 80px;" value="EXITED">Exited</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+      <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+        <span>
+          <button mat-stroked-button class="btnStrBasic" (click)="clearAll()">Clear All</button>
+        </span>
+        <span style="float: right !important;">
+          <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+            Apply
+          </button>
+        </span>
+      </span>
+    </span>
+  </mat-menu>
+
+  <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+    <span>{{numberFilter.length}} Filters</span>
+    <a (click)="clearAll()">
+      <img src="assets/images/ic-close.png" height="10px" width="10px"
+        style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+    </a>
+
+
+  </span>
+
+
+
+  <span class="spacer"></span>
+
+  <div class="badgedisplay" style="margin-right: 20px; ">
+    <button mat-menu-item style="outline: none !important; color: var(--headerText);" (click)="downloadReport()">
+      Download Excel
+      <img src="assets/images/download.png" style="margin-left: 4px;">
+    </button>
+  </div>
+
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style="margin-right: 22px; outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <!-- <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+    Upload Excel
+    <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+  </button> -->
+      <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </mat-menu>
+  </div>
+
+  <!-- <div class="dateInput" [formGroup]="filterForm">
+
+
+  <mat-form-field appearance="outline" class="eol1 input-full-width " >
+    <mat-date-range-input [rangePicker]="picker" [max]="maxDate" style="font-size: 16px !important; ">
+      <input matStartDate placeholder="Start date" formControlName="fromDate">
+      <input matEndDate placeholder="End date" formControlName="toDate">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matSuffix [for]="picker" class="iconBtn" style="outline: none !important;">
+    </mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+  </mat-form-field>
+
+</div>
+<div style="margin-left: -50px ">
+
+  <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn">GO</button>
+</div> -->
+
+
+
+</mat-toolbar>
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+  <!-- <div class="row">
+  <div class="col-12 header"  >
+    <div class="searchBox">
+      <mat-icon class="searchIcon">search</mat-icon>
+      <input type="text" class="search_input" placeholder="search ">
+    </div>
+  </div>
+</div> -->
+  <div class="row mt-3" style="padding-left: 10px !important;">
+    <div class="col-lg-12 table-responsive eol"
+      [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+      style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+      [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getConsignmentReport()"
+      [scrollWindow]="false">
+      <div style="position: relative !important;">
+        <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+          <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+        </ngx-spinner>
+      </div>
+
+      <table class="table table-bordered bordered rounded">
+        <thead>
+          <tr class="thead-dark">
+            <th scope="col" style="width: 70px !important;">S.No</th>
+            <th scope="col" style="width: 132px !important;">Registration Number</th>
+            <th scope="col" style="width: 132px !important;">Consignment Code</th>
+            <th scope="col" style="width: 172px !important;">Transporter Name</th>
+            <th scope="col" style="width: 192px !important;">Cluster</th>
+            <th scope="col" style="width: 112px !important;">Route</th>
+            <th scope="col" style="width: 112px !important;">Invoice Date </th>
+            <th scope="col" style="width: 112px !important;">Trip Status</th>
+            <th scope="col" style="width: 132px !important;">Proximity Status</th>
+            <th scope="col" style="width: 172px !important;">Consignor</th>
+            <th scope="col" style="width: 170px !important;">Consignee</th>
+            <th scope="col" style="width: 132px !important;">State</th>
+            <th scope="col" style="width: 132px !important;">City</th>
+            <th scope="col" style="width: 132px !important;">Gate Out Time</th>
+            <th scope="col" style="width: 132px !important;">Carrier Number</th>
+            <th scope="col" style="width: 132px !important;">Created On </th>
+            <th scope="col" style="width: 132px !important;" *ngFor="let dailyData of dailyData; index as i">Day: {{i}}</th>
+          </tr>
+        </thead>
+        <tbody class="eol">
+          <tr *ngFor="let obj of consignmentArr; index as i">
+            <td class="align-middle" scope="row">{{i+1}}</td>
+            <td class="align-middle">
+              <span *ngIf="obj.vehicle?.name">
+                {{obj.vehicle.name}}
+              </span>
+              <span *ngIf="!obj.vehicle?.name">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.consignmentCode">
+                {{obj.consignmentCode}}
+              </span>
+              <span *ngIf="!obj.consignmentCode">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.transporter?.name">
+                {{obj.transporter?.name}}
+              </span>
+              <span *ngIf="!obj.transporter?.name">
+                <h1>--</h1>
+              </span>
+
+            </td>
+
+            <td class="align-middle">
+              <span *ngIf="obj.cluster">
+                {{obj.cluster}}
+              </span>
+              <span *ngIf="!obj.cluster">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.route">
+                {{obj.route}}
+              </span>
+              <span *ngIf="!obj.route">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.invoiceTime">
+                {{obj.invoiceTime | date:'hh:mm a'}} <br>
+                {{obj.invoiceTime | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.invoiceTime">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.currentStatus">
+                {{obj.currentStatus}}
+              </span>
+              <span *ngIf="!obj.currentStatus">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.proximityStatus">
+                {{obj.proximityStatus}}
+              </span>
+              <span *ngIf="!obj.proximityStatus">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.consignor?.name">
+                {{obj.consignor?.name}}<br />
+                (consignor code: {{obj.consignor?.code}})
+              </span>
+              <span *ngIf="!obj.consignor?.name">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.metas[0]?.targetDepartmentName">
+                {{obj.metas[0]?.targetDepartmentName}}<br />
+                (receiver code: {{obj.metas[0]?.targetDepartmentCode}})
+              </span>
+              <span *ngIf="!obj.metas[0]?.targetDepartmentName">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.state">
+                {{obj.state}}
+              </span>
+              <span *ngIf="!obj.state">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.city">
+                {{obj.city}}
+              </span>
+              <span *ngIf="!obj.city">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.gateOutTime">
+                {{obj.gateOutTime | date:'hh:mm a'}} <br>
+                {{obj.gateOutTime | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.gateOutTime">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.vehicle?.name">
+                {{obj.vehicle?.name}}
+              </span>
+              <span *ngIf="!obj.vehicle?.name">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.createdOn">
+                {{obj.createdOn | date:'hh:mm a'}} <br>
+                {{obj.createdOn | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.createdOn">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" *ngFor="let daywiseDis of obj.daywiseData">
+                <span *ngIf="daywiseDis.distance != '---'" >
+                  {{daywiseDis.distance/1000}} KM
+                </span>
+									<span *ngIf="daywiseDis.distance == '---'">---</span>
+
+
+            </td>
+          </tr>
+          <tr *ngIf="consignmentArr.length === 0">
+            <td class="align-middle" colspan="11">
+              No Result Found
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>

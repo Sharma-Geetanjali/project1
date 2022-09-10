@@ -1,0 +1,504 @@
+<mat-toolbar class="header">
+  <!-- <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search Chassis Number"
+      (keyup.enter)="search()">
+  </div> -->
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger" style="height: 100%;">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+            class="badgedisplay1">filter_list</mat-icon>
+        <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+      <span style="display: block; line-height: 0.8;color: var(--headerText);"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Serial Number</span>
+
+      <input placeholder="Serial Number" formControlName="serialNmmber" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Chassis Number</span>
+
+      <input placeholder="Chassis Number" formControlName="chassisNumber" class="filterInput">
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+      <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+        <span>
+          <button mat-stroked-button class="btnStrBasic" (click)="reomveFilter()">Clear All</button>
+        </span>
+        <span style="float: right !important;">
+          <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+            Apply
+          </button>
+        </span>
+      </span>
+    </span>
+
+  </mat-menu>
+
+  <span class="spacer"></span>
+
+
+  <div class="badgedisplay" style="height: 100%;">
+    <div class="FilterIcon" style="margin-right: 40px; padding: 1px;">
+      <button mat-icon-button
+      data-toggle="modal" data-target="#addDeviceModal"
+        style="outline: none !important; padding: 1px !important; width: 45%;">
+        <mat-icon class="badgedisplay" style="align-self: center;">add</mat-icon>
+        <span style="display: block; line-height: 0.9;color: var(--headerText);"> Add Device </span>
+      </button>
+    </div>
+
+    <div class="FilterIcon">
+      <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+        aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+        <span style="display: block; line-height: 0.9;color: var(--headerText);"> More </span>
+
+      </button>
+      <mat-menu #menu3="matMenu">
+        <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+          Upload Excel
+          <!-- <img src="assets/images/upload-orange.png" style="margin-left: 18px;"> -->
+        <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">upload</mat-icon>
+        </button>
+        <button mat-menu-item style="outline: none !important;" (click)="downloadSampleExcel()">
+          Download Sample Excel
+          <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+        <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+
+  <div class="badgedisplay1" >
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style=" outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+        Upload Excel
+        <!-- <img src="assets/images/upload-orange.png" style="margin-left: 18px;"> -->
+        <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">upload</mat-icon>
+      </button>
+      <button mat-menu-item style="outline: none !important;" (click)="downloadSampleExcel()">
+        Download Sample Excel
+        <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+        <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>
+
+
+<div>
+  <div class="container-fluid smallScreen eol">
+    <div style="position: relative !important;">
+      <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+          <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+      </ngx-spinner>
+  </div>
+    <div class="row mobiletable" style="padding-left: 10px !important;">
+      <div class="col-lg-12 table-responsive eol"
+        [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+        style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px;" infiniteScroll
+        [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="getOEMDevice()">
+
+        <table class="table table-bordered bordered rounded" style="background-color: white;">
+          <thead>
+            <tr class="thead-dark">
+              <th scope="col" style="width: 60px;">S.No</th>
+              <th scope="col" style="width: 200px;">Serial Number</th>
+              <th scope="col" style="width: 200px;">Chassis Number </th>
+              <th scope="col" style="width: 200px;">Engine Number</th>
+              <th scope="col" style="width: 200px;">Vehicle Name</th>
+              <th scope="col" style="width: 120px;">Update Vehicle Regn No</th>
+              <th scope="col" style="width: 200px;">Phone Number</th>
+              <th scope="col" style="width: 120px;">Activation Status</th>
+              <th scope="col" style="width: 200px;">CV Segment</th>
+              <th scope="col" style="width: 120px;">Gross Weight</th>
+              <th scope="col" style="width: 120px;">Euro</th>
+              <th scope="col" style="width: 120px;">Model Category</th>
+              <th scope="col" style="width: 200px;">Model Code</th>
+              <th scope="col" style="width: 200px;">Model Id</th>
+              <th scope="col" style="width: 120px;">References</th>
+              <th scope="col" style="width: 120px;">Siam Model</th>
+              <th scope="col" style="width: 120px;">Vehicle Class</th>
+              <th scope="col" style="width: 120px;">Vehicle Type</th>
+              <th scope="col" style="width: 120px;">Wheel Base</th>
+              <th scope="col" style="width: 120px;">Date & Time Created</th>
+              <th scope="col" style="width: 120px;">Validity</th>
+            </tr>
+          </thead>
+
+          <tbody class="eol">
+
+            <tr *ngFor="let obj of oemListArr; index as i">
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{i+1}}</td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.serialNumber">
+                  {{obj.serialNumber}}
+                </span>
+                <span *ngIf="!obj.serialNumber">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.vin">
+                  {{obj.vin}}
+                </span>
+                <span *ngIf="!obj.vin">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.engineNumber">
+                  {{obj.engineNumber}}
+                </span>
+                <span *ngIf="!obj.engineNumber">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.vehicleName">
+                  {{obj.vehicleName}}
+                </span>
+                <span *ngIf="!obj.vehicleName">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.sold==false">
+                  --
+                </span>
+                <span *ngIf="obj.sold==true">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.phoneNumber">
+                  {{obj.phoneNumber}}
+                </span>
+                <span *ngIf="!obj.phoneNumber">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.deviceActivationStatus">
+                  {{obj.deviceActivationStatus}}
+                </span>
+                <span *ngIf="!obj.deviceActivationStatus">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.CV_SEGMENT">
+                  {{obj.CV_SEGMENT}}
+                </span>
+                <span *ngIf="!obj.CV_SEGMENT">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.GROSS_WEIGHT">
+                  {{obj.GROSS_WEIGHT}}
+                </span>
+                <span *ngIf="!obj.GROSS_WEIGHT">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.EURO">
+                  {{obj.EURO}}
+                </span>
+                <span *ngIf="!obj.EURO">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.MODEL_CATEGORY">
+                  {{obj.MODEL_CATEGORY}}
+                </span>
+                <span *ngIf="!obj.MODEL_CATEGORY">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.MODEL_CODE">
+                  {{obj.MODEL_CODE}}
+                </span>
+                <span *ngIf="!obj.MODEL_CODE">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.MODEL_ID">
+                  {{obj.MODEL_ID}}
+                </span>
+                <span *ngIf="!obj.MODEL_ID">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.REFERENCES">
+                  {{obj.REFERENCES}}
+                </span>
+                <span *ngIf="!obj.REFERENCES">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.SIAM_MODEL">
+                  {{obj.SIAM_MODEL}}
+                </span>
+                <span *ngIf="!obj.SIAM_MODEL">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.VEHICLE_CLASS">
+                  {{obj.VEHICLE_CLASS}}
+                </span>
+                <span *ngIf="!obj.VEHICLE_CLASS">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.VEHICLE_TYPE">
+                  {{obj.VEHICLE_TYPE}}
+                </span>
+                <span *ngIf="!obj.VEHICLE_TYPE">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.WHEEL_BASE">
+                  {{obj.WHEEL_BASE}}
+                </span>
+                <span *ngIf="!obj.WHEEL_BASE">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.deviceActivationDate">
+                  {{obj.deviceActivationDate}}
+                </span>
+                <span *ngIf="!obj.deviceActivationDate">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.deviceSubscriptionEndingStatus">
+                  {{obj.deviceSubscriptionEndingStatus}}
+                </span>
+                <span *ngIf="!obj.deviceSubscriptionEndingStatus">
+                  <h1>--</h1>
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="oemListArr.length == 0">
+              <td class="align-middle" colspan="9">
+                No Result Found
+
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+    <!--
+
+    <div class="mobileCard eol">
+
+      <div class="d-flex p-2" style="cursor:pointer ; outline: none;" *ngFor="let obj of filterDealerArr">
+        <div class="col-12  mapcard">
+          <div class=" row ">
+            <div class="col-12 vehicleNo">
+              {{obj.vehicleName}}
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-12 lastKnown">
+              Last known loaction
+
+            </div>
+          </div>
+          <div class=" row ">
+            <div class="col-10 address ">
+              {{obj.address}}
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+              <img src="assets/images/back_icon.svg" class="my-auto"
+                style="margin-right: 6px !important; padding-bottom: 2px !important; transform: rotate(180deg)">
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class=" col-5 ">
+              <span class="currStatus">
+                Current Speed
+
+              </span>
+            </div>
+            <div class=" col-7">
+              <span class="liveStatus">
+                {{obj.speed}}
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class=" col-5">
+              <span class="currStatus">
+                Travelled today
+              </span>
+            </div>
+            <div class=" col-7">
+              <span class="liveStatus">
+                {{obj.todayskm}} km
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class="currStatus col-5 ">
+              igntion
+            </div>
+            <div *ngIf="obj.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+              <span style="font-size: 12px; color: var(--black);">
+                ON
+              </span>
+            </div>
+            <div *ngIf="!obj.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+              <span style="font-size: 12px; color: var(--black);">
+                OFF
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0 ">
+            <div class="col-12 d-flex justify-content-end">
+              <span style="font-size: 9px; color: var(--black);">
+                {{obj.date | date: 'hh:mm a dd/MM/yy'}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div> -->
+  </div>
+
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title Drop-zone" id="exampleModalLabel">Drop zone</div>
+        <button (click)="modalClose()" type="button" class="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="center">
+          <ngx-file-drop contentClassName="Drop-files-here-or-c" dropZoneClassName="my-style"
+            dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+              <div (click)="openFileSelector()" style="height: 100%; width: 100%;padding: 10%;">
+
+                <img src="assets/images/upload.png" class="upload">
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==0">Drop files here or click to upload</p>
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==1">{{files[0].relativePath}}</p>
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==2" class="text-danger">Only Excel Files are
+                  allowed.
+                </p>
+              </div>
+
+            </ng-template>
+          </ngx-file-drop>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" (click)="uploadExcel()" [disabled]="dropZoneMessage!=1" class="modalUploadButton"><span
+            class="Upload">Upload</span></button>
+        <!-- <input type="file" name="test" id="" (change)="fileChange($event)"> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade " id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="addDeviceForm">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="addDeviceModalLabel"> Register
+            Device</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 25px;">
+                  <span style="font-size: 12px; font-weight: 400;">Device Number</span> <br>
+                  <span>
+                    <input type="text" placeholder="Enter Device Number" formControlName="deviceNumber"
+                      class="filterInput">
+                    <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="deviceNumber.errors?.required && deviceNumber.touched">Device Number is mandatory</mat-error>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 25px;">
+                  <span style="font-size: 12px; font-weight: 400;">Engine Number</span> <br>
+                  <span>
+                    <input type="text" placeholder="Enter Engine Number" formControlName="engineNumber"
+                      class="filterInput">
+                    <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="engineNumber.errors?.required && engineNumber.touched">Engine Number is mandatory</mat-error>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 25px;">
+                  <span style="font-size: 12px; font-weight: 400;">Chassis Number</span> <br>
+                  <span>
+                    <input type="text" placeholder="Enter Chassis Number" formControlName="chassisNo"
+                      class="filterInput">
+                    <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="chassisNo.errors?.required && chassisNo.touched">Chassis Number code is mandatory</mat-error>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal" [disabled]="!this.addDeviceForm.valid"
+                    (click)="addDevice()">Submit Request</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

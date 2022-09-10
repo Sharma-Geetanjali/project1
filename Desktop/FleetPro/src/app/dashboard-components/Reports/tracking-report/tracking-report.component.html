@@ -1,0 +1,765 @@
+<mat-toolbar class="header" [formGroup]="filterForm" [class.noneClass]="vehicleListToggle">
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" formControlName="filterVehicle" placeholder="Search Vehicle"
+      (keyup.enter)="apply()" [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filterVehicleList" [value]="option.name">
+        {{option.name}}
+      </mat-option>
+    </mat-autocomplete>
+  </div>
+  <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <!-- <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+          class="badgedisplay1">filter_list</mat-icon>
+        <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon> -->
+
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+      <span style="display: block; line-height: 0; color: var(--headerText);"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before">
+
+    <span mat-menu-item (click)="$event.stopPropagation();"
+      style="outline: none !important; height: 150px !important; border-top: none !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Date
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+          Clear
+        </span>
+      </span>
+      <span style="display: block;">
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate" [max]="maxDate"
+            (dateChange)="headerS.setStartDate($event.value)" placeholder="From date & time" disabled>
+
+          <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+          <ngx-mat-datetime-picker #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+        </mat-form-field>
+      </span>
+
+      <span>
+        <mat-form-field appearance="outline" style="width: 100% !important;">
+          <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time" [max]="maxDate"
+            formControlName="toDate" disabled (dateChange)="headerS.setEndDate($event.value)">
+
+          <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+          <ngx-mat-datetime-picker #pickerTo [enableMeridian]="true" style="border-top: none !important;"
+            disabled="false"></ngx-mat-datetime-picker>
+        </mat-form-field>
+
+      </span>
+    </span>
+
+    <mat-divider style="margin-top: 10px;"></mat-divider>
+
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;">Enter Interval</span>
+      <input placeholder="Enter Interval" formControlName="interval" class="filterInput">
+    </span>
+
+
+
+
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+      <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+        <span>
+          <button mat-stroked-button class="btnStrBasic" style="outline: none !important;" (click)="clearAll()">Clear
+            All</button>
+        </span>
+        <span style="float: right !important;">
+          <button type="submit" mat-raised-button class=" basicRaisedbtn" style="outline: none !important;"
+            (click)="apply()">
+            Apply
+          </button>
+        </span>
+      </span>
+    </span>
+  </mat-menu>
+
+  <!-- <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+      <span>{{numberFilter.length}} Filters</span>
+      <a (click)="reomveFilter()">
+        <img src="assets/images/ic-close.png" height="10px" width="10px"
+          style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+      </a>
+
+
+    </span> -->
+
+
+
+  <span class="spacer"></span>
+
+
+  <!-- <div class="badgedisplay" *ngIf="!vehicleListToggle" style="margin-right: 20px; width: 70px ;">
+        <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+            (click)="selectVehicleList()">
+
+            <mat-icon style="color: var(--clor);">list</mat-icon>
+            <span style="display: block; line-height: 0.8;color: var(--clor);">List View</span>
+        </button>
+    </div>
+
+    <div class="badgedisplay" *ngIf="vehicleListToggle" style="margin-right: 20px; width: 70px ;">
+        <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+            (click)="selectVehicleList()">
+
+            <mat-icon style="color: var(--black);">list</mat-icon>
+            <span style="display: block; line-height: 0.8;color: var(--black);">List View</span>
+        </button>
+    </div> -->
+
+  <div class="badgedisplay" *ngIf="!vehicleListToggle" style="margin-right: 20px; width: 70px ; height: 100%;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleMap()">
+
+      <mat-icon style="color: var(--black);" fontSet="material-icons-outlined">map_outline</mat-icon>
+      <span style="display: block; line-height: 0.8; color: var(--headerText);">Map View</span>
+    </button>
+  </div>
+
+  <!-- <div class="badgedisplay" *ngIf="vehicleListToggle" style="margin-right: 20px; width: 70px ;">
+        <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+            (click)="selectVehicleMap()">
+
+            <mat-icon style="color: var(--clor);" fontSet="material-icons-outlined">map_outline</mat-icon>
+            <span style="display: block; line-height: 0.8;color: var(--clor);">Map View</span>
+        </button>
+    </div> -->
+
+  <div class="badgedisplay" style="margin-right: 20px;">
+    <button mat-menu-item style="outline: none !important; color: var(--headerText);">
+      Download Excel
+      <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+      <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+    </button>
+  </div>
+
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style="margin-right: 22px; outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <button *ngIf="!vehicleListToggle" mat-menu-item style="outline: none !important;" (click)="selectVehicleMap()">
+        Map View
+      </button>
+      <!-- <button *ngIf="vehicleListToggle" mat-menu-item style="outline: none !important;"
+                (click)="selectVehicleList()">
+                List View
+            </button> -->
+      <button mat-menu-item style="outline: none !important;">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>
+
+<div [class.noneClass]="vehicleListToggle">
+  <div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+    <div *ngIf="trackingReportData.length > 0" class="row" style="padding-left: 20px !important; color: var(--darkGrey); font-weight: 600;">
+      Total Distance Travelled: {{this.trackingReportDistance/1000}} KM. &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Duration: {{secondsToDhms(durationTime)}}
+    </div>
+    <div style="position: relative !important;">
+      <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+        <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+      </ngx-spinner>
+    </div>
+    <div class="row mt-1" style="padding-left: 10px !important;">
+      <div class="col-lg-12 table-responsive eol"
+        [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+        style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+        [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false" (scrolled)="apply()">
+
+        <table class="table table-bordered bordered rounded">
+          <thead>
+            <tr class="thead-dark">
+              <th scope="col" style="width: 30px !important;">S.No</th>
+              <th scope="col" style="width: 70px !important;">Vehicle Name</th>
+              <th scope="col" style="width: 70px !important;">Vehicle Status</th>
+              <th scope="col" style="width: 70px !important;">Date/Time</th>
+              <th scope="col" style="width: 70px !important;">Speed<br>(KMPH)</th>
+              <th scope="col" style="width: 80px !important;">Total Distance<br>(KM)</th>
+              <th scope="col" style="width: 120px !important;">Lat,Lng</th>
+              <th scope="col" style="width: 316px !important;">Location</th>
+              <th scope="col" style="width: 102px !important;">Select All<br>(For View Map)<br>
+                <input type="checkbox" [(ngModel)]="selectedAll" [ngModelOptions]="{standalone: true}"
+                  (change)="selectAll();">
+              </th>
+            </tr>
+          </thead>
+          <tbody class="eol">
+            <tr *ngFor="let obj of trackingReportData; index as i">
+              <td class="align-middle" scope="row">{{i+1}}</td>
+              <td class="align-middle" scope="row">{{obj.vehicleName}}</td>
+              <td class="align-middle">
+                <span *ngIf="obj.vehicleStatus">
+                  {{obj.vehicleStatus}}
+                </span>
+                <span *ngIf="!obj.vehicleStatus">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle">
+                <span *ngIf="obj.timeStamp">
+                  {{obj.timeStamp | date: 'medium'}}
+                </span>
+                <span *ngIf="!obj.timeStamp">
+                  <h1>--</h1>
+                </span>
+              </td>
+
+              <td class="align-middle">
+                <span *ngIf="obj.speed">
+                  {{obj.speed}}
+                </span>
+                <span *ngIf="!obj.speed">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle">
+                <span *ngIf="obj.distanceRun">
+                  {{(obj.distanceRun)/1000}}
+                </span>
+                <span *ngIf="!obj.distanceRun">
+                  <h1>--</h1>
+                </span>
+              </td>
+
+              <td class="align-middle">
+                <span *ngIf="obj.latitude && obj.longitude">
+                  {{obj.latitude}},{{obj.longitude}}
+                </span>
+                <span *ngIf="!obj.latitude && !obj.longitude">
+                  <h1>--</h1>
+                </span>
+
+              </td>
+              <td class="align-middle">
+                <span *ngIf="obj.address">
+                  {{obj.address}}
+                </span>
+                <span *ngIf="!obj.address">
+                  <h1>--</h1>
+                </span>
+
+              </td>
+              <td class="align-middle">
+                <span>
+                  <input type="checkbox" [(ngModel)]="obj.selected" [ngModelOptions]="{standalone: true}"
+                    (change)="checkIfAllSelected()" checked:true>
+                </span>
+              </td>
+
+            </tr>
+            <tr *ngIf="trackingReportData.length === 0">
+              <td class="align-middle" colspan="8">
+                No Result Found
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div [class.noneClass]="!vehicleListToggle">
+
+
+  <div class="container-fluid p-0">
+    <div class="mapRow">
+      <div class="cardWidth" style="height: calc(100vh - 40px); overflow-x:auto;">
+        <div class="d-flex p-2 " style="overflow: hidden;">
+          <div class="col-12">
+            <div class="row mt-3 ">
+              <div class="col-12">
+                <span class="backBTN" (click)="back()">
+                  <img src="assets/images/back_icon.svg"
+                    style="margin-right: 6px !important; padding-bottom: 2px !important;">
+                  Go Back
+                </span>
+              </div>
+            </div>
+            <div class="row mt-4">
+              <div class="col-12">
+                <span class="congCode">
+                  {{filterVehicle.value}}
+                </span>
+              </div>
+            </div>
+            <!-- <div class="row mt-3">
+              <div class="col-6">
+                <span class="currStatusMap">
+                  Current Location
+                </span>
+              </div>
+              <div class="col-6 ">
+                <span style="font-size: 9px; color: var(--black);">
+                  {{vehicleData.date | date: 'hh:mm a dd/MM/yy'}
+                </span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <span class="liveStatus">
+                  {{endLocation?.address}
+                </span>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-6">
+                <span class="currStatusMap">
+                  District
+                </span>
+              </div>
+              <div class="col-6">
+                <span class="liveStatus ">
+                  {{vehicleData.groupName | uppercase}
+                </span>
+              </div>
+            </div> -->
+            <!-- <div class="row mt-2">
+                            <div class="col-6">
+                                <span class="currStatusMap">
+                                    Ignition Status
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <span class="liveStatus " *ngIf="vehicleData.ignitionStatus">
+                                    ON
+                                </span>
+                                <span class="liveStatus " *ngIf="!vehicleData.ignitionStatus">
+                                    OFF
+                                </span>
+                            </div>
+                        </div> -->
+            <!-- <div class="row mt-2">
+                            <div class="col-6">
+                                <span class="currStatusMap">
+                                    Loading Status
+                                </span>
+                            </div>
+                            <div class="col-6">
+                                <span class="liveStatus " *ngIf="vehicleData.loaded">
+                                    Loaded
+                                </span>
+                                <span class="liveStatus " *ngIf="!vehicleData.loaded">
+                                    Unloaded
+                                </span>
+                            </div>
+                        </div> -->
+            <div class="row mt-2">
+              <div class="col-6">
+                <span class="currStatusMap">
+                  Travelled Today
+                </span>
+              </div>
+              <div class="col-6">
+                <span class="liveStatus ">
+                  {{trackingReportDistance/1000}} km
+                </span>
+              </div>
+            </div>
+            <!-- <div class="row mt-2">
+              <div class="col-6">
+                <span class="currStatusMap">
+                  Speed
+                </span>
+              </div>
+              <div class="col-6 ">
+                <span class="liveStatus ">
+                  {{vehicleData.speed} km/hr
+                </span>
+              </div>
+            </div> -->
+            <!-- <div class="row mt-2">
+                            <div class="col-12">
+                                <span class="currStatusMap">
+                                    <mat-checkbox (change)="toggle($event)">Auto center ON/OFF</mat-checkbox>
+                                </span>
+                            </div>
+                        </div> -->
+            <div class="col-12 p-0 d-flex justify-content-center"
+              style="margin-top: 25px; font-size: 15px; color: white;">
+              <button mat-stroked-button class="btnStrBasic" type="button" (click)="replay()"
+                style="width: 100%; height: 40 px; background-color: var(--clor); cursor: pointer;">Replay
+                route</button>
+            </div>
+            <div class="col-12 p-0 d-flex justify-content-center"
+              style="margin-top: 20px; font-size: 15px; color: var(--black);">
+              <button mat-stroked-button class="btnStrBasic"
+                style="width: 100%; height: 40 px; background-color: white;">Report an issue</button>
+            </div>
+            <div class="col-12 " *ngIf="filterPathdraw.length === 0 && !cardLoadingFlag"  style="margin-top: 50px;">
+              <div class=" row ">
+                <div class="col-12 p-0 vehicleNo mb-2">
+                  Data Replay
+                </div>
+              </div>
+              <div class="row p-0 r-0">
+                <div class=" col-5  p-0">
+                  <span class="currStatus">
+                    Date & TIme
+
+                  </span>
+                </div>
+                <div class="p-0 col-7">
+                  <span class="liveStatus">
+                    {{pathdrawPlayRoute[0]?.timeStamp | date: 'medium'}} 
+                  </span>
+                </div>
+              </div>
+              <div class="row p-0 r-0">
+                <div class="currStatus col-5 d-flex justify-content-start  p-0">
+                  Ignition State
+                </div>
+                <div *ngIf="pathdrawPlayRoute[0]?.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7  p-0">
+                  <span style="font-size: 12px; color: var(--black); font-weight: 600;">
+                    ON
+                  </span>
+                </div>
+                <div *ngIf="!pathdrawPlayRoute[0]?.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7  p-0">
+                  <span style="font-size: 12px; color: var(--black); font-weight: 600;">
+                    OFF
+                  </span>
+                </div>
+              </div>
+              <div class="row p-0 r-0">
+                <div class=" col-5  p-0">
+                  <span class="currStatus">
+                    Vehicle Speed
+
+                  </span>
+                </div>
+                <div class="p-0 col-7">
+                  <span class="liveStatus">
+                    {{pathdrawPlayRoute[0]?.speed}} km/hr
+                  </span>
+                </div>
+              </div>
+              <div class="row ">
+                <div class="col-12 p-0 currStatus">
+                  Location
+
+                </div>
+              </div>
+              <div class=" row ">
+                <div class="col-12 p-0 address ">
+                  {{pathdrawPlayRoute[0]?.location}}
+                </div>
+              </div>
+              
+            </div>
+            <div class="col-12 " *ngIf="filterPathdraw.length > 0 && !cardLoadingFlag" style="margin-top: 50px;">
+              <div class=" row ">
+                <div class="col-12 p-0 vehicleNo">
+                  Data Replay
+                </div>
+              </div>
+              <div class="row p-0 r-0">
+                <div class=" col-4  p-0">
+                  <span class="currStatus">
+                    Date & TIme
+
+                  </span>
+                </div>
+                <div class="p-0 col-8">
+                  <span class="liveStatus">
+                    {{filterPathdraw[filterPathdraw.length -1]?.timeStamp | date: 'medium'}} 
+                  </span>
+                </div>
+              </div>
+              <div class="row ">
+                <div class="col-12 p-0 lastKnown">
+                  Location
+
+                </div>
+              </div>
+              <div class=" row ">
+                <div class="col-12 p-0 address ">
+                  {{filterPathdraw[filterPathdraw.length -1]?.location}}
+                </div>
+              </div>
+              <div class="row p-0 r-0">
+                <div class=" col-4  p-0">
+                  <span class="currStatus">
+                    Current Speed
+
+                  </span>
+                </div>
+                <div class="p-0 col-8">
+                  <span class="liveStatus">
+                    {{filterPathdraw[filterPathdraw.length -1]?.speed}} km/hr
+                  </span>
+                </div>
+              </div>
+              
+              <div class="row p-0 r-0">
+                <div class="currStatus col-4 d-flex justify-content-start">
+                  Ignition
+                </div>
+                <div *ngIf="filterPathdraw[filterPathdraw.length -1]?.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+                  <span style="font-size: 12px; color: var(--black); font-weight: 600;">
+                    ON
+                  </span>
+                </div>
+                <div *ngIf="!filterPathdraw[filterPathdraw.length -1]?.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+                  <span style="font-size: 12px; color: var(--black); font-weight: 600;">
+                    OFF
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 p-0 mt-3">
+              <div>
+                <canvas width="400" height="400" id="abc"></canvas>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="mapWidth  p-0 m-0 ">
+
+        <div style="position: relative !important;">
+          <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+            <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+          </ngx-spinner>
+        </div>
+
+        <agm-map  *ngIf="cardLoadingFlag" id="map3"  [fitBounds]="true">
+          <agm-marker [agmFitBounds]="true" 
+              [latitude]="31.1048" [longitude]="77.1734" [visible]="false">
+            </agm-marker>
+
+            <agm-marker [agmFitBounds]="true" 
+              [latitude]="11.1271" [longitude]="78.6569" [visible]="false">
+            </agm-marker>
+        </agm-map>
+
+        <agm-map #AgmMap id="map2" *ngIf="!cardLoadingFlag" (mapReady)="mapReady($event)" [zoom]='currentZoom'
+          [fullscreenControl]='true' [mapTypeControl]='true' [usePanning]="true">
+
+          <agm-marker [latitude]="returnStartFocusLatitude()" [longitude]="returnStartFocusLongitude()"
+            (markerClick)="clickedMarker(infoWindowStart)" [iconUrl]="{
+              url: '/assets/images/end-flag.png',
+              scaledSize: {
+                width: 45,
+                height: 45
+              },
+              origin:{
+                x:-18,
+                y:-19
+              },
+              size:{
+                width: 55,
+                height: 55
+              }
+          }">
+
+            <agm-info-window #infoWindowStart>
+              <!-- <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+              <mat-icon>close</mat-icon>
+            </span> -->
+              <div class="iw-content">
+                <!-- <div class="iw-subTitle">
+                <span class="currStatus">Vehicle Name:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[0]?.vehicleName}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Distance Covered:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[0]?.distanceRun/1000}}KM</Span>
+              </div> -->
+                <div class="iw-subTitle">
+                  <span class="currStatus">Speed:</span> &nbsp;
+                  <Span class="liveStatus">{{pathdrawPlayRoute[0]?.speed}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Date & Time:</span>&nbsp;
+                  <Span class="liveStatus"> {{pathdrawPlayRoute[0]?.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Address:</span> &nbsp;
+                  <Span class="liveStatus">{{pathdrawPlayRoute[0]?.location}}</Span>
+                </div>
+
+              </div>
+            </agm-info-window>
+
+          </agm-marker>
+
+          <agm-overlay [latitude]="returnEndFocusLatitude()" [longitude]="returnEndFocusLongitude()">
+            <div>
+              <img [src]="theme.onLoaded"
+                style="transform: rotate({{returnEndFocusOrientation()?.orientation}}deg); margin:-7px">
+            </div>
+          </agm-overlay>
+          <agm-marker [visible]="false" [latitude]="returnEndFocusLatitude()" [longitude]="returnEndFocusLongitude()"
+            (markerClick)="clickedMarker(infoWindowEnd)">
+
+
+            <agm-info-window #infoWindowEnd>
+              <!-- <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+              <mat-icon>close</mat-icon>
+            </span> -->
+              <div class="iw-content">
+                <!-- <div class="iw-subTitle">
+                <span class="currStatus">Vehicle Name:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.vehicleName}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Distance Covered:</span> &nbsp;
+                <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.distanceRun/1000}}KM</Span>
+              </div> -->
+                <div class="iw-subTitle">
+                  <span class="currStatus">Speed:</span> &nbsp;
+                  <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.speed}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Date & Time:</span>&nbsp;
+                  <Span class="liveStatus"> {{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.timeStamp | date: 'hh:mm a
+                    dd/MM/yy'}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Address:</span> &nbsp;
+                  <Span class="liveStatus">{{pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.location}}</Span>
+                </div>
+
+              </div>
+            </agm-info-window>
+          </agm-marker>
+
+
+          <!-- <agm-marker *ngIf="!currentPlaying" [latitude]="pathdrawPlayRoute[0]?.lat" [longitude]="pathdrawPlayRoute[0]?.lng" (markerClick)="clickedMarker(infoWindowStart)"
+        [iconUrl]="{
+          url: 'assets/images/start_icon.png',
+          scaledSize: {
+            width: 30,
+            height: 30
+          }
+        }"> 
+
+        
+        </agm-marker>-->
+
+
+          <!-- <agm-marker *ngIf="!currentPlaying" [latitude]="pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.lat" [longitude]="pathdrawPlayRoute[pathdrawPlayRoute.length -1]?.lng" (markerClick)="clickedMarker(infoWindowEnd)"
+        [iconUrl]="{
+          url: 'assets/images/end_icon.png',
+          scaledSize: {
+            width: 30,
+            height: 30
+          }
+        }"> 
+
+        
+
+        </agm-marker>-->
+
+          <div>
+            <agm-overlay *ngFor="let item of pathdrawPlayRoute" [latitude]="item.lat" [longitude]="item.lng"
+              (markerClick)="clickedMarker(infoWindow)">
+              <div style="width:5px;height:5px;background-color:transparent; border-radius: 50%;"></div>
+              <agm-info-window #infoWindow>
+                <!-- <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span> -->
+                <div class="iw-content">
+                  <!-- <div class="iw-subTitle">
+                  <span class="currStatus">Vehicle Name:</span> &nbsp;
+                  <Span class="liveStatus">{{item.vehicleName}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Distance Covered:</span> &nbsp;
+                  <Span class="liveStatus">{{item.distance/1000}}KM</Span>
+                </div> -->
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Speed:</span> &nbsp;
+                    <Span class="liveStatus">{{item.speed}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Date & Time:</span>&nbsp;
+                    <Span class="liveStatus"> {{item.timeStamp | date: 'hh:mm a dd/MM/yy'}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Address:</span> &nbsp;
+                    <Span class="liveStatus">{{item.location}}</Span>
+                  </div>
+
+                </div>
+              </agm-info-window>
+            </agm-overlay>
+          </div>
+
+
+          <agm-polyline *ngIf="filterPathdraw.length === 0"  [visible]="true" [strokeWeight]="4" [strokeColor]="theme.polylineColor">
+            <agm-polyline-point *ngFor="let coordinate of pathdrawPlayRoute;" [latitude]="coordinate.lat"
+              [longitude]="coordinate.lng">
+            </agm-polyline-point>
+          </agm-polyline>
+
+          <agm-polyline *ngIf="filterPathdraw.length > 0" [visible]="true" [strokeWeight]="4" [strokeColor]="theme.polylineColor">
+            <agm-polyline-point *ngFor="let coordinate of filterPathdraw;" [latitude]="coordinate.lat"
+              [longitude]="coordinate.lng">
+            </agm-polyline-point>
+          </agm-polyline>
+
+        </agm-map>
+
+        <div class="videoBar d-flex justify-content-center" style="flex-direction: column;">
+          <!-- <input [(ngModel)]="seekBarVal" class="seekbar m-2" (change)="seek()" type="range" min="1"
+            [max]="noOfDisplayChunks" style=" width: auto !important;" step="1" /> -->
+          <mat-slider class="seekbar mb-4" min="1" aria-label="units" [max]="noOfDisplayChunks" step="1"
+            [value]="seekBarVal" (input)="seek($event)"></mat-slider>
+          <div class="row m-2">
+            <div class="col-5" style="font-size: 18 px;color: white; font-weight: 500;">
+              Trip Start <br>
+              {{pathdraw1[0]?.timeStamp | date: 'hh:mm a dd/MM/yy'}}
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+              <mat-icon *ngIf="!currentPlaying" class="material-icons mx-auto" (click)="drawPath()"
+                style="height: 58px; width: 58px; font-size: 54px; color: white; cursor: pointer;">
+                play_circle_outline</mat-icon>
+
+              <mat-icon *ngIf="currentPlaying" class="material-icons mx-auto" (click)="stopInterval()"
+                style="height: 58px; width: 58px; font-size: 54px; color: white; cursor: pointer;">
+                pause_circle_outline</mat-icon>
+            </div>
+            <div class="col-5 justify-content-end"
+              style="font-size: 18 px;color: white; text-align: right;font-weight: 500;">
+              Trip Start <br>
+              {{pathdraw1[pathdraw1.length - 1]?.timeStamp | date: 'hh:mm a dd/MM/yy'}}
+            </div>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+</div>

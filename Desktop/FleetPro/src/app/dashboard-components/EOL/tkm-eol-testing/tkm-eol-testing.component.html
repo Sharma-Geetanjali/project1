@@ -1,0 +1,373 @@
+<div class="container-fluid eol" style="height: 100vh; overflow: auto">
+  <div class="row heading align-items-center">
+    <div class="col-7 headContent">
+      TKM EOL Testing
+    </div>
+    <div class="col-5 d-flex justify-content-end ">
+      <!-- <button mat-raised-button  (click)="testPrint()" style="margin-right: 40px !important; outline: none !important;" class="basicRaisedbtn">Test Print</button> -->
+      <button mat-raised-button (click)="clearSearch()" style="margin-right: 20px !important; outline: none !important;"
+        class="basicRaisedbtn">clear</button>
+      <div style="width: 70px ; height: 100%; ">
+        <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+          aria-label="Example icon-button with a menu">
+          <mat-icon>more_vert</mat-icon>
+          <!-- <span style="display: block; line-height: 0.8;color: var(--headerText); margin-top: 0px !important;">More</span> -->
+    
+        </button>
+        <mat-menu #menu3="matMenu">
+          <button mat-menu-item style="outline: none !important;" (click)="testPrint()">
+            Printer Testing
+            <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+            <!-- <mat-icon  style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon> -->
+          </button>
+        </mat-menu>
+      </div>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center align-items-center toggleRow ">
+    <div class="col-lg-1 col-md-4  col-6 responsivePad d-flex justify-content-center align-items-center" >
+      <span [class.toggleDevice]='toggle==false' [class.vechileId]='toggle==true' (click)="deviceId()">
+        Device ID
+      </span>
+    </div>
+    <div class="col-lg-1 col-md-4  col-6 responsivePad d-flex justify-content-center align-items-center">
+      <span [class.toggleDevice]='toggle==true' [class.vechileId]='toggle==false' (click)="vechileId()">
+        Vehicle UIN
+      </span>
+    </div>
+  </div>
+  <div class="row d-flex justify-content-center align-items-center searchRow">
+    <div class="col-lg-3">
+      <div class="searchBox" [formGroup]="searchForm"  >
+        <input *ngIf="!toggle" type="text"   class="search_input " formControlName="name"  (keyup.enter)="searchEolTesting()" id="fix1" placeholder="Search Device ID">
+        <input *ngIf="toggle" type="text"  class="search_input" formControlName="name" autofocus (keyup.enter)="searchEolTesting()"  id="fix1" placeholder="Search Vehicle ID">
+        <img src="assets/images/search-white-18dp.svg" (click)="searchEolTesting()" class="searchIcon" alt="">
+      </div>
+    </div>
+  </div>
+
+  <div class="row dataRow d-flex justify-content-center ">
+    <div class="col-lg-12">
+      <div class="row contentRow d-flex justify-content-center align-items-center">
+        <div class="col-3 " >
+          <div class="row d-flex justify-content-center align-items-center ">
+            <div class="col-lg-6 col-sm-12  vechiclePad ">
+              <span *ngIf="eolTestingArr?.vehicleModel?.deviceSerialNumber" class="rowSpan">
+                {{eolTestingArr.vehicleModel.deviceSerialNumber}}
+                <span class="rowSpan2">
+                Device ID
+                </span>
+              </span>
+              <span *ngIf="!eolTestingArr?.vehicleModel ?.deviceSerialNumber" style="margin: 0 !important;" class="rowSpan">
+                <h1>--</h1>
+                <span class="rowSpan2">
+                  Device ID
+                </span>
+              </span>
+            </div>
+            <div class="col-lg-6 col-sm-12 vechiclePad">
+              <span *ngIf="eolTestingArr?.vehicleModel?.uin" class="rowSpan">
+                {{eolTestingArr.vehicleModel.uin}}
+                <span class="rowSpan2">
+                  Vehicle UIN
+                </span>
+              </span>
+              <span *ngIf="!eolTestingArr?.vehicleModel?.uin" class="rowSpan">
+                <h1>--</h1>
+                <span class="rowSpan2">
+                  Vehicle UIN
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-1"></div> -->
+
+        <div class="col-4 mobilePad " style="padding-right: 25px;">
+          <div class="row d-flex justify-content-center align-items-center">
+            <!-- <div *ngIf="deviceLinkingLight==0 && gprsLight==0 && ignitionDataLight==0 && gpsLight==0 && insidePlantLight==0" class="theme.flagGrey"></div> -->
+            <img
+              *ngIf="deviceLinkingLight==0 && gprsLight==0 && ignitionDataLight==0 && gpsLight==0 && insidePlantLight==0 "
+              src="{{theme.flagBlack}}" alt="">
+            <img
+              *ngIf="deviceLinkingLight==1 && gprsLight==1 && ignitionDataLight==1 && gpsLight==1 && insidePlantLight==1 "
+              src="{{theme.flagOK}}" alt="">
+            <img
+              *ngIf="deviceLinkingLight==2 || gprsLight==2 || ignitionDataLight==2 || gpsLight==2 || insidePlantLight==2 "
+              src="{{theme.flagNG}}" alt="">
+          </div>
+        </div>
+        <div class="col-3"></div>
+
+      </div>
+
+      <div class="row d-flex justify-content-center pb-2 deviceRow deviceScroll" >
+        <div class="col-lg-10 ">
+          <div class="row timerRow align-items-center" style="padding-top: 13px !important;">
+            <div class="col-5 ">
+
+            </div>
+            <div *ngIf="showTimer" class="col-lg-2 col-md-4 col-sm-6 d-flex justify-content-center responsivePad ">
+              <span style="font-size: 18px; color: #838383; letter-spacing: -0.19px;" class="resetTimer">
+                Resetting in
+              </span>
+              <span style="font-size: 18px; color: var(--black); letter-spacing: -0.19px;" class="resetTimer">
+                &nbsp; {{timerVar}} secs
+              </span>
+            </div>
+            <div *ngIf="!showTimer" class="col-lg-2 col-md-4 d-flex justify-content-center responsivePad ">
+
+            </div>
+            <div class="col-lg-5 col-sm-6 d-flex justify-content-center ">
+              <span style="font-size: 18px; color: #838383; padding-right: 16px;">
+                Last updated at
+              </span>
+            </div>
+          </div>
+          <div class="row d-flex justify-content-center ">
+            <div class="col-lg-10">
+              <div class="row displayRow align-items-center ">
+                <div class="col-lg-4 col-4">
+                  <span class="head">
+                    Device linking
+                  </span>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center">
+                  <div class="flagBox align-items-center">
+                    <img *ngIf="deviceLinkingLight == 0" src="{{theme.flagGrey}}"  alt="">
+                    <img *ngIf="deviceLinkingLight == 1" src="{{theme.flagGreen}}" alt="">
+                    <img *ngIf="deviceLinkingLight == 2" src="{{theme.flagRed}}" alt="">
+                    <!-- <div *ngIf="deviceLinkingLight == 0" class="flagGrey"></div> -->
+                  </div>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center align-items-center">
+                  <span *ngIf="deviceLinkingLight!=0" class="date">
+                    {{createdOnTime | date:'hh:mm a'}} <br>
+                    {{createdOnTime | date:'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngIf="deviceLinkingLight==0 || !createdOnTime" class="date ">
+                    <!-- <h1>--</h1> <br> -->
+                    <h1>--</h1>
+                  </span>
+                </div>
+              </div>
+              <div class="row displayRow align-items-center">
+                <div class="col-lg-4 col-4">
+                  <span class="head">
+                    GPRS STATUS
+                  </span>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center align-items-center">
+                  <div class="flagBox d-flex align-items-center">
+                    <!-- <div *ngIf="gprsLight == 0" class="flagGrey"></div> -->
+                    <img *ngIf="gprsLight == 0" src="{{theme.flagGrey}}" alt="">
+                    <img *ngIf="gprsLight == 1" src="{{theme.flagGreen}}" alt="">
+                    <img *ngIf="gprsLight == 2" src="{{theme.flagRed}}" alt="">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center align-items-center">
+                  <span *ngIf="gprsLight!=0" class="date">
+                    {{vehicleStateTime | date:'hh:mm a'}} <br>
+                    {{vehicleStateTime | date:'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngIf="gprsLight==0 || !vehicleStateTime" class="date">
+                    <!-- <h1>--</h1> <br> -->
+                    <h1>--</h1>
+                  </span>
+                </div>
+              </div>
+              <div class="row displayRow align-items-center">
+                <div class="col-lg-4 col-4">
+                  <span class="head">
+                    Ignition data
+                  </span>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center">
+                  <div class="flagBox align-items-center">
+                    <!-- <div *ngIf="ignitionDataLight == 0" class="flagGrey"></div> -->
+                    <img *ngIf="ignitionDataLight == 0" src="{{theme.flagGrey}}" alt="">
+                    <img *ngIf="ignitionDataLight == 1" src="{{theme.flagGreen}}" alt="">
+                    <img *ngIf="ignitionDataLight == 2" src="{{theme.flagRed}}" alt="">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center align-items-center">
+                  <span *ngIf="ignitionDataLight!=0 && lastIgnitionTime" class="date">
+                    {{lastIgnitionTime | date:'hh:mm a'}} <br>
+                    {{lastIgnitionTime | date:'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngIf="ignitionDataLight==0 || !lastIgnitionTime" class="date">
+                    <!-- <h1>--</h1> <br> -->
+                    <h1>--</h1>
+                  </span>
+                </div>
+              </div>
+              <div class="row displayRow align-items-center">
+                <div class="col-lg-4 col-4">
+                  <span class="head">
+                    GPS data
+                  </span>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center">
+                  <div class="flagBox align-items-center">
+                    <!-- <div *ngIf="gpsLight == 0" class="flagGrey"></div> -->
+                    <img *ngIf="gpsLight == 0" src="{{theme.flagGrey}}" alt="">
+                    <img *ngIf="gpsLight == 1" src="{{theme.flagGreen}}" alt="">
+                    <img *ngIf="gpsLight == 2" src="{{theme.flagRed}}" alt="">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center align-items-center">
+                  <span *ngIf="gpsLight!=0" class="date">
+                    {{vehicleStateTime | date:'hh:mm a'}} <br>
+                    {{vehicleStateTime | date:'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngIf="gpsLight==0  || !vehicleStateTime" class="date">
+                    <!-- <h1>--</h1> <br> -->
+                    <h1>--</h1>
+                  </span>
+                </div>
+              </div>
+              <div class="row displayRow align-items-center">
+                <div class="col-lg-4 col-4">
+                  <span class="head">
+                    Inside plant data
+                  </span>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center">
+                  <div class="flagBox align-items-center">
+                    <!-- <div *ngIf="insidePlantLight == 0" class="flagGrey"></div> -->
+                    <img *ngIf="insidePlantLight == 0" src="{{theme.flagGrey}}" alt="">
+                    <img *ngIf="insidePlantLight == 1" src="{{theme.flagGreen}}" alt="">
+                    <img *ngIf="insidePlantLight == 2" src="{{theme.flagRed}}" alt="">
+                  </div>
+                </div>
+                <div class="col-lg-4 col-4 d-flex justify-content-center align-items-center">
+                  <span *ngIf="insidePlantLight!=0" class="date">
+                    {{vehicleStateTime | date:'hh:mm a'}} <br>
+                    {{vehicleStateTime | date:'dd/MM/yyyy'}}
+                  </span>
+                  <span *ngIf="insidePlantLight==0 || !systemTime" class="date">
+                    <!-- <h1>--</h1> <br> -->
+                    <h1>--</h1>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div id="print-section" style="visibility: hidden;">
+      <div style="display: flex; flex-direction: row;  align-items: center;  width: 40mm !important; height: 14mm !important;">
+
+        <!-- <canvas  id="mycanvas"></canvas> -->
+        <!-- <div style=" width: 90px; height: 90px; " >
+        <ejs-datamatrixgenerator style="display: block;"     #barcode id="barcode" [displayText]='displayText' margin={left:0,right:0,bottom:0,top:0} width="100%" height="100%" mode="SVG"
+                        type="DataMatrix" value="deviceID">
+                    </ejs-datamatrixgenerator>
+                  </div> -->
+                  <div id='container' style="margin-bottom: -20px !important;  margin-left: -10px !important; margin-top: -10px !important;  width: 75px; height: 75px;">
+                    <div id='element'></div>
+                </div>
+        <div *ngIf="eolTestingArr?.vehicleModel?.deviceSerialNumber;else other_content" style="display: inline !important; margin-bottom: 6px ; font-size: 3.8mm;">
+          {{eolTestingArr.vehicleModel.deviceSerialNumber}}/OK
+        </div>
+        
+        <ng-template #other_content>
+          <div  style="display: inline !important; margin-bottom: 6px ; font-size: 3.8mm;">
+            999999999999999/OK
+          </div>
+        </ng-template>
+      </div>
+
+
+  </div>
+
+  <!-- <button style="display: none !important;" id="clickButton" printSectionId="print-section" ngxPrint>print</button> -->
+   <!-- <ngx-qrcode
+        [elementType]="elementType"
+        [errorCorrectionLevel]="correctionLevel"
+        [value]="value"
+        [cssClass]="cs"></ngx-qrcode> -->
+
+</div>
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button> -->
+
+<!-- success Modal -->
+<div class="modal fade bd-example-modal-sm" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+        <span class="modal-title d-flex justify-content-center modalHeading"  id="exampleModalLabel"> EOL Successful</span>
+         <div class="row">
+           <div class="col-12 pr-5 pl-5 pt-3 ">
+            <div class="row">
+              <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                Device EOL Test Successful and device mapping has been removed
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                To view results of EOL, Please navigate to "EOL Report" section.
+              </div>
+            </div>
+           </div>
+         </div>
+          <div class="row mt-3">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+  <button type="button" class="btn btn-secondary" style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; " data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-1 pl-0">
+       <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal" >clear</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- device feild Arr -->
+
+<div class="modal fade bd-example-modal-sm" id="errorInput" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-12 pr-0 pt-3 ">
+        <!-- <span class="modal-title d-flex justify-content-center modalHeading"  id="exampleModalLabel"> EOL Successful</span> -->
+         <div class="row">
+           <div class="col-12 pr-5 pl-5 pt-3 ">
+            <div class="row">
+              <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                <img  src="assets/images/icon-done.svg" alt="">
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+               {{statusMsg}}
+              </div>
+            </div>
+           </div>
+         </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+  <button type="button" class="btn btn-secondary" style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; " data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+        <!-- <div class="col-1 pl-0">
+       <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal" >clear</mat-icon>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+

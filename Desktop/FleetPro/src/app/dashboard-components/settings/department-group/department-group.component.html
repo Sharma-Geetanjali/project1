@@ -1,0 +1,518 @@
+<div class="container-fluid" style="overflow: hidden !important;">
+  <div class="row headingRow">
+    <div class="col-7" style="padding-left: 25px !important; line-height: 1.5;">
+      <span style="font-size: 22px; font-weight: 500;">
+        Department Group Management
+      </span> <br>
+      <span style="font-size: 14px; color: var(--darkGrey);">
+        Manage different department groups and their hierarchy below. Select a group to proceed.
+      </span>
+    </div>
+    <div class="col-5">
+      <button mat-raised-button style="height: 44px !important; font-size: 15px !important; margin-left: 17% !important; outline: none !important ;" class="btnleft"
+        data-toggle="modal" data-target="#modalWithOutParent">
+        <mat-icon aria-hidden="false" class="btnIconLeft" style="margin-right: 0px;">add</mat-icon>
+        Group
+      </button>
+    </div>
+  </div>
+  <div class="row contentRow">
+    <div class="col-12">
+      <div class="flex-container"  >
+
+        <div class="box eol" id="jojo" (scroll)="scrollFn()">
+
+          <div class="boxDiv eol" (scroll)="scrollFn()">
+
+            <!-- <div class="row"> -->
+              <div class=" groupHeading">
+                Super Group
+              </div>
+            <!-- </div> -->
+            <div class="eol" (scroll)="scrollFn()" style="height: 94%; overflow-y: auto; overflow-x: hidden;">
+              <div  style="cursor: pointer !important;" *ngFor="let obj of superGroupArr">
+                <div id="{{obj.id}}"  [ngClass]="{'groupContent' : !changeClass}"
+                  (click)="gethtml($event.currentTarget)">
+                  <span style="font-size: 12px !important; font-weight: 500; cursor: pointer;"
+                    (click)="preventDoubleClick(obj.id,obj.parent,obj.groupCount,obj.full_name)">
+                    {{obj.full_name}}
+                  </span>
+                  <span class="spacer"></span>
+                  <div>
+                    <button mat-icon-button [matMenuTriggerFor]="menu2" style=" outline: none !important;"
+                      (click)="checkChild(obj.id);getSpecificGroup(obj)" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu2="matMenu">
+                      <button mat-menu-item style="outline: none !important;" data-toggle="modal"
+                        data-target="#exampleModal" >
+                        Add Sub Group
+                      </button>
+                      <button mat-menu-item style="outline: none !important;" data-toggle="modal"
+                        data-target="#changeParent">
+                        Change Parent
+                      </button>
+                      <button mat-menu-item style="outline: none !important;" data-toggle="modal"
+                        data-target="#GroupRename">
+                        Rename Group
+                      </button>
+                      <button *ngIf="subGroupArr1.length == 0" mat-menu-item style="outline: none !important;"
+                        (click)="deleteGroup(obj.full_name)">
+                        Delete Group
+                      </button>
+                      <button *ngIf="subGroupArr1.length == 0" mat-menu-item style="outline: none !important;"
+                        data-toggle="modal" data-target="#addLegacyGroup">
+                        Add Legacy Group
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="boxDiv eol" (scroll)="scrollFn()" *ngFor="let obj of subGroupCounter">
+            <!-- <div class="row"> -->
+              <div class=" groupHeading">
+                Sub Group {{obj.groupCount}}
+              </div>
+            <!-- </div> -->
+            <div class="eol" (scroll)="scrollFn()" style="height: 94%; overflow-x: hidden; overflow-y: auto;">
+              <div  *ngFor="let obj1 of obj?.subGroupData">
+                <div id="{{obj1.id}}" [ngClass]="{'groupContent' : !changeClass}">
+                  <span style="font-size: 12px !important; font-weight: 500; cursor: pointer;"
+                    (click)="preventDoubleClick(obj1.id,obj1.parent,obj.groupCount,obj1.full_name)">
+                    {{obj1.full_name}}
+                  </span>
+                  <span class="spacer"></span>
+                  <div>
+                    <button mat-icon-button [matMenuTriggerFor]="menu2" style=" outline: none !important;"
+                      (click)="checkChild(obj1.id);getSpecificGroup(obj1)" aria-label="Example icon-button with a menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu2="matMenu">
+                      <button mat-menu-item style="outline: none !important;" data-toggle="modal"
+                        data-target="#exampleModal">
+                        Add Sub Group
+                      </button>
+                      <button mat-menu-item style="outline: none !important;" data-toggle="modal"
+                        data-target="#changeParent">
+                        Change Parent
+                      </button>
+                      <button mat-menu-item style="outline: none !important;" data-toggle="modal"
+                        data-target="#GroupRename">
+                        Rename Group
+                      </button>
+                      <button *ngIf="subGroupArr1.length == 0" mat-menu-item style="outline: none !important;"
+                        (click)="deleteGroup(obj1.full_name)">
+                        Delete Group
+                      </button>
+                      <button *ngIf="subGroupArr1.length == 0" mat-menu-item style="outline: none !important;"
+                        data-toggle="modal" data-target="#addLegacyGroup">
+                        Add Legacy Group
+                      </button>
+                    </mat-menu>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <section id="wrapper">
+
+          </section>
+
+
+        </div>
+
+        <div style="flex: 0 0 280px; ">
+          <!-- <div class="row"> -->
+            <div class=" departmentHeading">
+              <span>
+                {{vehicleGroupName}} &nbsp; department groups
+              </span>
+            </div>
+          <!-- </div> -->
+          <div class="eol" style="height: 94%; overflow-x: hidden; overflow-y: auto;">
+            <div  *ngFor="let obj of leagecyArr">
+              <div  class=" departmentContent">
+                <span style="font-size: 12px !important; font-weight: 500; padding-left: 27px;">
+                  {{obj?.name}}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="groupWithParent">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Add Sub Group</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span class="sub-heading">
+                    Enter the name of the group which you want to create under  {{changeParentName}}.
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Parent Name</span>
+                  <span style="font-size: 18px; font-weight: 600; padding-left: 12px;">
+                    {{changeParentName}}
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Group Name</span> <br>
+                  <span>
+                    <input placeholder="Enter Group Name" formControlName="GroupNameWithParent" class="filterInput">
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                    (click)="createGroupWithParent()" [disabled]="!this.groupWithParent.valid">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade " id="GroupRename" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" data-backdrop="static" data-keyboard="false"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="groupRename">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Rename Group</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span class="sub-heading">
+                    Please enter the new name for the group {{changeParentName}}.
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Group Name</span>
+                  <span style="font-size: 18px; font-weight: 600; padding-left: 12px;">
+                    {{changeParentName}}
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Group Rename</span> <br>
+                  <span>
+                    <input placeholder="Enter Group Name" formControlName="RenamedGroup" class="filterInput">
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                    (click)="renameGroupfn()" [disabled]="!this.groupRename.valid">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="modalWithOutParent" tabindex="-1" role="dialog" aria-labelledby="modalWithOutParent" data-backdrop="static" data-keyboard="false"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="groupWithOutParent">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Add Department Group</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span class="sub-heading">
+                    Please enter name of the root level group you want to create.
+                   </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Group Name</span> <br>
+                  <span>
+                    <input placeholder="Enter Group Name" formControlName="GroupNameWithOutParent" class="filterInput">
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                    (click)="createGroupWithOutParent()" [disabled]="!this.groupWithOutParent.valid">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="errorInput" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-12 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/icon-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{statusMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="modal fade " id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered " style="width: 576px !important;" role="document">
+    <div class="modal-content p-4">
+      <div class="row mb-3">
+        <div class="col-12 ">
+          <span class="modal-title d-flex justify-content-center modalHeading"> Delete Group ?</span>
+          <div class="row mt-3 d-flex justify-content-center">
+            <div class="col-12" style="text-align: center !important;">
+              <span class="sub-heading">
+                Are you sure u want to delete "{{currDeleteGroupName}}"?
+              </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-6" style="display: flex; justify-content: center;">
+              <button type="button" mat-stroked-button class="btnStrBasic" style="width:90%;"
+                data-dismiss="modal">No</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                (click)="deleteGroupName()">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade " id="changeParent" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="changeParentForm">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Change
+            Parent</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span class="sub-heading">
+                    Please enter name of the group which you use as parent of the group {{changeParentName}}.
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Group Name</span> <br>
+                  <span>
+                    <input placeholder="Enter Group Name" formControlName="parentName" class="filterInput"
+                      [matAutocomplete]="auto">
+                    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                      <mat-option *ngFor="let obj of searchArr" value="{{obj.full_name}}" (click)="enableBtn()">
+                        {{obj.full_name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </span>
+                </div>
+              </div>
+              <!-- <div class="row mt-3" *ngIf="searchArr.length > 0">
+              <div class="col-12" style="padding-left: 42px;">
+                <span style="font-size: 12px; font-weight: 400;">Choose Parent</span> <br>
+                <span class="reportIssue">
+                  <mat-form-field appearance="outline" style="width: 100% !important;">
+                    <mat-select placeholder="Choose Issue"  #singleSelect formControlName="changeParentId"
+                      style="padding-left: 21px !important; z-index: 2 !important;">
+                      <mat-option  *ngFor="let obj of searchArr" value="{{obj.id}}">{{obj.full_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </span>
+              </div>
+            </div> -->
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                    (click)="changeParentOfGroup()" [disabled]="!validSelection">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="addLegacyGroup" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="legacyForm">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel">Add Legacy
+            Group</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span class="sub-heading">
+                    Please select the group level,and enter the name of the group you want to create.
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;"> Legacy Group Name</span> <br>
+                  <span>
+                    <input placeholder="Enter Group Name" formControlName="legacyGroupName" class="filterInput"
+                      [matAutocomplete]="auto1">
+                    <mat-autocomplete  autoActiveFirstOption #auto1="matAutocomplete">
+                      <mat-option *ngFor="let obj of legacyArr" value="{{obj.name}}" (click)="enableLegacyBtn()">
+                        {{obj.name}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </span>
+                </div>
+              </div>
+              <!-- <div class="row mt-3" *ngIf="searchArr.length > 0">
+              <div class="col-12" style="padding-left: 42px;">
+                <span style="font-size: 12px; font-weight: 400;">Choose Parent</span> <br>
+                <span class="reportIssue">
+                  <mat-form-field appearance="outline" style="width: 100% !important;">
+                    <mat-select placeholder="Choose Issue"  #singleSelect formControlName="changeParentId"
+                      style="padding-left: 21px !important; z-index: 2 !important;">
+                      <mat-option  *ngFor="let obj of searchArr" value="{{obj.id}}">{{obj.full_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </span>
+              </div>
+            </div> -->
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal"
+                    (click)="addLegacyGroup()" [disabled]="!legacyBtnFlag">Save</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="successModal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/ic-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{successMSG}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important;"
+                data-dismiss="modal" (click)="reloadFN()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

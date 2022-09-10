@@ -1,0 +1,277 @@
+<mat-toolbar class="header">
+  <!-- <div [formGroup]="filterForm" class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" formControlName="searchInput" placeholder="Search Email"
+      (keyup.enter)="search()">
+  </div> -->
+
+
+  <div [formGroup]="filterForm" class="input-group searchBox">
+    <select formControlName="searchBy" class="search_input2">
+      <option value="email">Email</option>
+      <option value="deviceSerialNo">Device Serial No</option>
+      <!-- <option value="vehicleUIN">Vehicle ID</option> -->
+      <option value="subscriptionId">Subscription ID</option>
+    </select>
+    <input type="text" formControlName="searchInput" class="search_input" placeholder="Search By {{searchBy.value}}">
+    <div class="input-group-append">
+      <img src="assets/images/orange-search.svg" (click)="search()" style="height: 35px; width: 35px;" alt="">
+    </div>
+
+  </div>
+
+  <mat-error *ngIf="searchBy.value == 'email' && !emailFlag && searchInput.errors?.required " class="mx-3">Please enter a valid Email
+  </mat-error>
+
+  <mat-error *ngIf="searchBy.value == 'deviceSerialNo' && !deviceSerialFlag && !searchInput.errors?.required " class="mx-3">Please enter a valid device Serial No
+  </mat-error>
+
+  <mat-error *ngIf="searchBy.value == 'subscriptionId' && !subIdFlag && !searchInput.errors?.required " class="mx-3">Please enter a valid Subscription ID
+  </mat-error>
+
+  <!-- <mat-form-field appearance="outline" [formGroup]="filterForm" style="width: 8%;">
+    <mat-label>Search by</mat-label>
+    <input type="email" matInput>
+    <mat-select formControlName="searchBy">
+      <mat-option selected value="email">
+        Email
+      </mat-option>
+      <mat-option value="deviceSerialNo">
+        Device Id
+      </mat-option>
+      <mat-option value="vehicleUIN">
+        Vehicle Id
+      </mat-option>
+      <mat-option value="subscriptionId">
+        Subscription Id
+      </mat-option>
+    </mat-select>
+    <mat-error *ngIf="networkOperator.errors?.required && networkOperator.touched">Network operator type is required
+    </mat-error>
+
+  </mat-form-field> -->
+  <span class="spacer"></span>
+
+
+
+
+
+</mat-toolbar>
+
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+  <div style="position: relative !important;">
+    <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+      <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+    </ngx-spinner>
+  </div>
+  <div class="row mt-3" style="padding-left: 10px !important;">
+    <div class="col-lg-12 table-responsive eol"
+      [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+      style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; ">
+
+      <table class="table table-bordered bordered rounded mb-0">
+        <thead>
+          <tr class="thead-dark">
+            <th scope="col" style="width: 60px !important;">S.No</th>
+            <th scope="col" style="width: 90px !important;">User ID</th>
+            <th scope="col" style="width: 170px !important;">Login ID</th>
+            <th scope="col" style="width: 80px !important;">Subscription ID</th>
+            <th scope="col" style="width: 90px !important;">Organisation</th>
+            <th scope="col" style="width: 80px !important;">Created Date</th>
+            <th scope="col" style="width: 102px !important;">Device Serial No</th>
+            <th scope="col" style="width: 80px !important;">Activation Date</th>
+            <th scope="col" style="width: 80px !important;">Expiry Date</th>
+            <th scope="col" style="width: 100px !important;">Action</th>
+          </tr>
+        </thead>
+        <tbody class="eol">
+          <tr *ngFor="let obj of subscriptionArr; index as i">
+            <td class="align-middle" scope="row">{{i+1}}</td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.userid">
+                {{obj.userid}}
+              </span>
+              <span *ngIf="!obj.userid">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.loginid">
+                {{obj.loginid}}
+              </span>
+              <span *ngIf="!obj.loginid">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.subscriptionId">
+                {{obj.subscriptionId}}
+              </span>
+              <span *ngIf="!obj.subscriptionId">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.org">
+                {{obj.org}}
+              </span>
+              <span *ngIf="!obj.org">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.createdOn != '-'">
+                {{obj.createdOn | date:'hh:mm a'}} <br>
+                {{obj.createdOn | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="obj.createdOn == '-'">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.deviceSerialNo">
+                {{obj.deviceSerialNo}}
+              </span>
+              <span *ngIf="!obj.deviceSerialNo">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.activationDate != '-'">
+                {{obj.activationDate | date:'hh:mm a'}} <br>
+                {{obj.activationDate | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="obj.activationDate == '-'">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.expiryDate != '-'">
+                {{obj.expiryDate | date:'hh:mm a'}} <br>
+                {{obj.expiryDate | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="obj.expiryDate == '-'">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle ">
+              <span style=" cursor: pointer;" title="update" >
+                <img src="assets/images/ic-edit.svg" routerLink="/dashboard/subscriptionManagement/{{obj.subscriptionId}}" alt="">
+              </span>
+              <!-- routerLink="/dashboard/Subscription/123456" -->
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span style=" cursor: pointer;" title="delete">
+                <img src="assets/images/ic-delete.svg" data-toggle="modal" (click)="selectedSub(i)" data-target="#exampleModal" alt="">
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="subscriptionArr.length === 0">
+            <td class="align-middle" colspan="10">
+              No Result Found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " style="width: 576px !important;" role="document">
+    <div class="modal-content p-4">
+      <div class="row mb-3">
+        <div class="col-12 ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Delete</span>
+          <div class="row mt-3 d-flex justify-content-center">
+            <div class="col-12" style="text-align: center !important;">
+              <span class="sub-heading">
+                Are you sure you want to delete subscription with ID "{{subscriptionArr[selectedIndex]?.subscriptionId}}"?
+              </span> <br> <br>
+              <span class="sub-heading" style="margin-top: 15px !important;">
+                This action is not reversible.
+              </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-6" style="display: flex; justify-content: center;">
+              <button type="button" mat-stroked-button class="btnStrBasic" style="width:90% ;"
+                data-dismiss="modal">No</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn btn-secondary submitDialog" (click)="deleteSub(subscriptionArr[selectedIndex]?.subscriptionId)" >Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="successModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/ic-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{successMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="errorModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-12 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/icon-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{statusMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

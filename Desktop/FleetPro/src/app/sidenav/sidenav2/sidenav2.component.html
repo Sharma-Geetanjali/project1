@@ -1,0 +1,787 @@
+<div class="mb-3">
+  <div class="d-flex justify-content-center my-3" *ngIf="!login.isExpanded">
+    <img src="{{theme.smallLogo}}" class="hideImg" alt="">
+  </div>
+  <div class="d-flex justify-content-center my-3" *ngIf="login.isExpanded">
+    <div class="mainlogo">
+      <img src="{{theme.biglogo}}" *ngIf="login.isExpanded || login.isShowing" class="openImg" alt="">
+    </div>
+  </div>
+</div>
+
+
+<div class="eol" id="mainDiv" style="overflow: auto !important;">
+  <!-- <div class="sideBarItem d-flex my-2 p-2 "
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 1}"
+    (click)="login.toggleSubmenu(1)">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/grid-grid-big.svg" *ngIf="!(login.subCount === 1)" alt="">
+        <img src="assets/images/dashboard.svg" *ngIf="login.subCount === 1" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 1, 'greyColor' : !(login.subCount == 1)}">
+          Dashboard
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Dashboard
+      </div>
+    </div>
+  </div> -->
+
+
+
+  <div class="sideBarItem d-flex my-2 p-2" *ngIf="global.checkAction('INSIGHT')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded,  'selected': login.subCount === 2}"
+    (click)="login.toggleSubmenu(2)">
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/insights.svg" *ngIf="!(login.subCount === 2)" alt="">
+        <img src="assets/images/insightswhite.svg" *ngIf="login.subCount === 2" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 2, 'greyColor' : !(login.subCount == 2)}">
+          Insights
+        </span>
+      </div>
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 2}">expand_more</mat-icon>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Insights
+      </div>
+      <div class="listContainer">
+        <a class="listSubmeu" routerLink="/dashboard/Vehicle-Dashboard">
+          <span>
+            Dashboard
+          </span></a>
+
+        <a class="listSubmeu" routerLink="/dashboard/Dealer-Dashboard">
+          <span>
+            Dealer Dashboard
+          </span></a>
+
+        <a class="listSubmeu" routerLink="/dashboard/Service-Dashboard">
+          <span>
+            Service Dashboard
+          </span></a>
+      </div>
+    </div>
+  </div>
+  <div class="submenu" [ngClass]="{'expanded' : login.subCount == 2}" *ngIf="login.subCount == 2 && login.isExpanded">
+    <div class="listContainer">
+      <a class="listSubmeu" routerLink="/dashboard/Vehicle-Dashboard">
+        <span>
+          Dashboard
+        </span></a>
+
+      <a class="listSubmeu" routerLink="/dashboard/Dealer-Dashboard">
+        <span>
+          Dealer Dashboard
+        </span></a>
+
+      <a class="listSubmeu" routerLink="/dashboard/Service-Dashboard">
+        <span>
+          Service Dashboard
+        </span></a>
+
+    </div>
+  </div>
+
+
+  <div class="sideBarItem d-flex my-2 p-2 " *ngIf="global.checkAction('DASHBOARD')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 3}"
+    (click)="login.toggleSubmenu(3)" routerLink="/dashboard/vehicles/vehicleList">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/vehicle-grey.svg" *ngIf="!(login.subCount === 3)" alt="">
+        <img src="assets/images/vehicle-white.svg" *ngIf="login.subCount === 3" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 3, 'greyColor' : !(login.subCount == 3)}">
+          Vehicles
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Vehicles
+      </div>
+    </div>
+  </div>
+
+  <div class="sideBarItem d-flex my-2 p-2 " *ngIf="global.checkAction('DEALER_BILLINGS')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 4}"
+    (click)="login.toggleSubmenu(4)" routerLink="/dashboard/consignment">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/consg-grey.svg" *ngIf="!(login.subCount === 4)" alt="">
+        <img src="assets/images/consg-white.svg" *ngIf="login.subCount === 4" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 4, 'greyColor' : !(login.subCount == 4)}">
+          Consignment
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Consignment
+      </div>
+    </div>
+  </div>
+
+  <div class="sideBarItem d-flex my-2 p-2"
+    *ngIf="global.checkAction('MANAGE_ROUTE_MASTERS') || global.checkAction('MANAGE_CONSIGNORS') || global.checkAction('MANAGE_CONSIGNEES')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded,  'selected': login.subCount === 5}"
+    (click)="login.toggleSubmenu(5)">
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/department.svg" *ngIf="!(login.subCount === 5)" alt="">
+        <img src="assets/images/department-white.svg" *ngIf="login.subCount === 5" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 5, 'greyColor' : !(login.subCount == 5)}">
+          Departments
+        </span>
+      </div>
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 5}">expand_more</mat-icon>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Departments
+      </div>
+      <div class="listContainer">
+        <a class="listSubmeu" *ngIf="global.checkAction('MANAGE_ROUTE_MASTERS')" routerLinkActive="listSubmeuWhite"
+          routerLink="/dashboard/departments/routes">
+          <span>
+            Routes
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkAction('MANAGE_CONSIGNORS')" routerLinkActive="listSubmeuWhite"
+          routerLink="/dashboard/departments/consignor">
+          <span>
+            Consignor
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkAction('MANAGE_CONSIGNEES')" routerLinkActive="listSubmeuWhite"
+          routerLink="/dashboard/departments/consignee">
+          <span>
+            Consignee
+          </span></a>
+      </div>
+    </div>
+  </div>
+  <div class="submenu" [ngClass]="{'expanded' : login.subCount == 5}" *ngIf="login.subCount == 5 && login.isExpanded">
+    <div class="listContainer">
+      <a class="listSubmeu" *ngIf="global.checkAction('MANAGE_ROUTE_MASTERS')" routerLinkActive="listSubmeuWhite"
+        routerLink="/dashboard/departments/routes">
+        <span>
+          Routes
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkAction('MANAGE_CONSIGNORS')" routerLinkActive="listSubmeuWhite"
+        routerLink="/dashboard/departments/consignor">
+        <span>
+          Consignor
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkAction('MANAGE_CONSIGNEES')" routerLinkActive="listSubmeuWhite"
+        routerLink="/dashboard/departments/consignee">
+        <span>
+          Consignee
+        </span></a>
+
+    </div>
+  </div>
+
+  <div class="sideBarItem d-flex my-2 p-2 " 
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 6}"
+    (click)="login.toggleSubmenu(6)" routerLink="/dashboard/alerts">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/alerts-grey.svg" *ngIf="!(login.subCount === 6)" alt="">
+        <img src="assets/images/alerts-white.svg" *ngIf="login.subCount === 6" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 6, 'greyColor' : !(login.subCount == 6)}">
+          Alerts
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Alerts
+      </div>
+    </div>
+  </div>
+
+  <div class="sideBarItem d-flex my-2 p-2"
+    *ngIf="global.checkReport('TRIP_DAILY') || global.checkReport('TRIP_SUMMARY') || global.checkReport('DAYWISE_DISTANCE') || global.checkReport('STOPPAGE_REPORT') || global.checkReport('CONSIGNMENT_DETAIL') || global.checkReport('DUTY_REPORTS') || global.checkReport('CONSIGNMENT_SUMMARY') || global.checkReport('DTC_REPORT') || global.checkReport('DTC_MODEL_WISE') || global.checkReport('CONTAINER_TRACKING') || global.checkReport('DAILY_PAYMENT_REPORT') || global.checkReport('VEHICLE_FITNESS_REPORT') || global.checkReport('DAILY_RUNNING') || global.checkReport('VEHICLE_TRACKING') || global.checkReport('CONSIGNMENT_RECONCILIATION') || global.checkReport('COMMODITY_REPORT') || global.checkReport('KPI_VIOLATION_REPORT') || global.checkReport('USER_ACTIVITY')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded,  'selected': login.subCount === 7}"
+    (click)="login.toggleSubmenu(7)">
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/reports-grey.svg" *ngIf="!(login.subCount === 7)" alt="">
+        <img src="assets/images/reports-white.svg" *ngIf="login.subCount === 7" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 7, 'greyColor' : !(login.subCount == 7)}">
+          Reports
+        </span>
+      </div>
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 7}">expand_more</mat-icon>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Reports
+      </div>
+      <div class="listContainer">
+        <a class="listSubmeu" *ngIf="global.checkReport('TRIP_DAILY')">
+          <span>
+            Daily Ignition Report
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('TRIP_SUMMARY')">
+          <span>
+            Trip Summary Report
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('DAYWISE_DISTANCE')">
+          <span>
+            Daywise Distance
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('STOPPAGE_REPORT')">
+          <span>
+            Stoppage Report
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('CONSIGNMENT_DETAIL')"
+          routerLink="/dashboard/reports/consignmentReport">
+          <span>
+            Consignment Report
+          </span></a>
+        <a class="listSubmeu" *ngIf="global.checkReport('DUTY_REPORTS')">
+          <span>
+            Duty Report
+          </span></a>
+        <a class="listSubmeu" *ngIf="global.checkReport('CONSIGNMENT_SUMMARY')">
+          <span>
+            Consignment Summary
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('DTC_REPORT')">
+          <span>
+            DTC Instance Report
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('DTC_MODEL_WISE')">
+          <span>
+            DTC ModelWise Report
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('CONTAINER_TRACKING')">
+          <span>
+            Container Tracking
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('DAILY_PAYMENT_REPORT')">
+          <span>
+            Daily Payment Report
+          </span></a>
+
+        <a class="listSubmeu" *ngIf="global.checkReport('VEHICLE_FITNESS_REPORT')">
+          <span>
+            Vehicle Fitness
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/dailyRunningReport"
+          *ngIf="global.checkReport('DAILY_RUNNING')">
+          <span>
+            Daily Running
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/trackingReport"
+          *ngIf="global.checkReport('VEHICLE_TRACKING')">
+          <span>
+            Tracking Report
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/reconciliationReport"
+          *ngIf="global.checkReport('CONSIGNMENT_RECONCILIATION')">
+          <span>
+            Reconciliation Report
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/commodityReport"
+          *ngIf="global.checkReport('COMMODITY_REPORT')">
+          <span>
+            Commodity Report
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/kpiReport"
+          *ngIf="global.checkReport('KPI_VIOLATION_REPORT')">
+          <span>
+            Kpi Violation Report
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/activityLogReport"
+          *ngIf="global.checkReport('USER_ACTIVITY')">
+          <span>
+            Activity Log
+          </span></a>
+      </div>
+    </div>
+  </div>
+  <div class="submenu" [ngClass]="{'expanded' : login.subCount == 7}" *ngIf="login.subCount == 7 && login.isExpanded">
+    <div class="listContainer">
+      <a class="listSubmeu" *ngIf="global.checkReport('TRIP_DAILY')">
+        <span>
+          Daily Ignition Report
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('TRIP_SUMMARY')">
+        <span>
+          Trip Summary Report
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('DAYWISE_DISTANCE')">
+        <span>
+          Daywise Distance
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('STOPPAGE_REPORT')">
+        <span>
+          Stoppage Report
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('CONSIGNMENT_DETAIL')"
+        routerLink="/dashboard/reports/consignmentReport">
+        <span>
+          Consignment Report
+        </span></a>
+      <a class="listSubmeu" *ngIf="global.checkReport('DUTY_REPORTS')">
+        <span>
+          Duty Report
+        </span></a>
+      <a class="listSubmeu" *ngIf="global.checkReport('CONSIGNMENT_SUMMARY')">
+        <span>
+          Consignment Summary
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('DTC_REPORT')">
+        <span>
+          DTC Instance Report
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('DTC_MODEL_WISE')">
+        <span>
+          DTC ModelWise Report
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('CONTAINER_TRACKING')">
+        <span>
+          Container Tracking
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('DAILY_PAYMENT_REPORT')">
+        <span>
+          Daily Payment Report
+        </span></a>
+
+      <a class="listSubmeu" *ngIf="global.checkReport('VEHICLE_FITNESS_REPORT')">
+        <span>
+          Vehicle Fitness
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/dailyRunningReport"
+        *ngIf="global.checkReport('DAILY_RUNNING')">
+        <span>
+          Daily Running
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/trackingReport"
+        *ngIf="global.checkReport('VEHICLE_TRACKING')">
+        <span>
+          Tracking Report
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/reconciliationReport"
+        *ngIf="global.checkReport('CONSIGNMENT_RECONCILIATION')">
+        <span>
+          Reconciliation Report
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/commodityReport"
+        *ngIf="global.checkReport('COMMODITY_REPORT')">
+        <span>
+          Commodity Report
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/kpiReport"
+        *ngIf="global.checkReport('KPI_VIOLATION_REPORT')">
+        <span>
+          Kpi Violation Report
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/reports/activityLogReport"
+        *ngIf="global.checkReport('USER_ACTIVITY')">
+        <span>
+          Activity Log
+        </span></a>
+    </div>
+  </div>
+
+  <!-- <div class="sideBarItem d-flex my-2 p-2 "
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 8}"
+    (click)="login.toggleSubmenu(8)">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/services-grey.svg" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 8, 'greyColor' : !(login.subCount == 8)}">
+          Service
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Service
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="sideBarItem d-flex my-2 p-2 "
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 9}"
+    (click)="login.toggleSubmenu(9)">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/kpi-grey.svg" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 9, 'greyColor' : !(login.subCount == 9)}">
+          KPI's Dashboard
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        KPI's Dashboard
+      </div>
+    </div>
+  </div> -->
+
+  <!-- <div class="sideBarItem d-flex my-2 p-2 "
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 10}"
+    (click)="login.toggleSubmenu(9)">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/basic-settings.svg" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 10, 'greyColor' : !(login.subCount == 10)}">
+          Settings
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Settings
+      </div>
+    </div>
+  </div> -->
+
+  <div class="sideBarItem d-flex my-2 p-2"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded,  'selected': login.subCount === 11}"
+    (click)="login.toggleSubmenu(11)" *ngIf="global.checkAction('EOL')">
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/eol.svg" *ngIf="!(login.subCount === 11)" alt="">
+        <img src="assets/images/eol-white.svg" *ngIf="login.subCount === 11" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 11, 'greyColor' : !(login.subCount == 11)}">
+          EOL
+        </span>
+      </div>
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 11}">expand_more</mat-icon>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        EOL
+      </div>
+      <div class="listContainer">
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/testing">
+          <span>
+            EOL Testing
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/report">
+          <span>
+            EOL Report
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/tkm/testing">
+          <span>
+            TKM EOL Testing
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/tkm/report">
+          <span>
+            TKM EOL Report
+          </span></a>
+      </div>
+    </div>
+  </div>
+  <div class="submenu" [ngClass]="{'expanded' : login.subCount == 11}" *ngIf="login.subCount == 11 && login.isExpanded">
+    <div class="listContainer">
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/testing">
+        <span>
+          EOL Testing
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/report">
+        <span>
+          EOL Report
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/tkm/testing">
+        <span>
+          TKM EOL Testing
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/eol/tkm/report">
+        <span>
+          TKM EOL Report
+        </span></a>
+    </div>
+  </div>
+
+  <div class="sideBarItem d-flex my-2 p-2" *ngIf="global.checkAction('MANAGE_DEVICE')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded,  'selected': login.subCount === 12}"
+    (click)="login.toggleSubmenu(12)">
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/Device-management-grey.png" *ngIf="!(login.subCount === 12)" alt="">
+        <img src="assets/images/Device-management-white.png" *ngIf="login.subCount === 12" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 12, 'greyColor' : !(login.subCount == 12)}">
+          Device Management
+        </span>
+      </div>
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 12}">expand_more</mat-icon>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Device Management
+      </div>
+      <div class="listContainer">
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/add-device">
+          <span>
+            Add Device
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/map-device">
+          <span>
+            Map Sim & Device
+          </span></a>
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/Manage-device">
+          <span>
+            Manage Device
+          </span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+  <div class="submenu" [ngClass]="{'expanded' : login.subCount == 12}" *ngIf="login.subCount == 12 && login.isExpanded">
+    <div class="listContainer">
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/add-device">
+        <span>
+          Add Device
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/map-device">
+        <span>
+          Map Sim & Device
+        </span></a>
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/device/Manage-device">
+        <span>
+          Manage Device
+        </span>
+      </a>
+    </div>
+  </div>
+
+
+
+  <div class="sideBarItem d-flex my-2 p-2" *ngIf="global.checkAction('MARKETING_PORTAL')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded,  'selected': login.subCount === 13}"
+    (click)="login.toggleSubmenu(13)">
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/Device-management-grey.png" *ngIf="!(login.subCount === 13)" alt="">
+        <img src="assets/images/Device-management-white.png" *ngIf="login.subCount === 13" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 13, 'greyColor' : !(login.subCount == 13)}">
+          App Marketing
+        </span>
+      </div>
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+        <mat-icon class="menu-button" [ngClass]="{'rotated' : login.subCount == 13}">expand_more</mat-icon>
+      </div>
+    </div>
+
+
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        App Marketing
+      </div>
+      <div class="listContainer">
+        <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/Buzz-List">
+          <span>
+            Marketing Portal
+          </span></a>
+
+      </div>
+    </div>
+  </div>
+  <div class="submenu" [ngClass]="{'expanded' : login.subCount == 13}" *ngIf="login.subCount == 13 && login.isExpanded">
+    <div class="listContainer">
+      <a class="listSubmeu" routerLinkActive="listSubmeuWhite" routerLink="/dashboard/Buzz-List">
+        <span>
+          Marketing Portal
+        </span></a>
+
+    </div>
+  </div>
+
+  <div class="sideBarItem d-flex my-2 p-2 " *ngIf="global.checkAction('ADMIN_SUBSCRIPTION_MANAGEMENT')"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-start': login.isExpanded, 'selected': login.subCount === 14}"
+    (click)="login.toggleSubmenu(14)" routerLink="/dashboard/subscriptionManagement/search">
+
+    <div class="parentNavContainer">
+      <div class="imgContainer">
+        <img src="assets/images/subscription_grey.svg" *ngIf="!(login.subCount === 14)" alt="">
+        <img src="assets/images/subscription.svg" *ngIf="login.subCount === 14" alt="">
+      </div>
+
+      <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+        <span class="content p-2"
+          [ngClass]="{'whiteColor' : login.subCount == 14, 'greyColor' : !(login.subCount == 14)}">
+          Subscription Management
+        </span>
+      </div>
+
+      <div class="arrowContainer" *ngIf="login.isExpanded || login.isShowing">
+      </div>
+    </div>
+
+    <div *ngIf="!(login.isExpanded)" class="visibleOnHover">
+      <div class="content2 py-3 px-2">
+        Subscription Management
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="sideBarItem d-flex my-2 p-2 mt-5" *ngIf="login.isExpanded"
+    [ngClass]="{'justify-content-center' : !login.isExpanded, 'justify-content-center': login.isExpanded}">
+
+    <div class="parentNavContainer"></div>
+    <mat-slide-toggle></mat-slide-toggle>
+
+    <div class=" d-flex textContainer align-items-center" *ngIf="login.isExpanded || login.isShowing">
+      <span class="content p-2" [ngClass]="{'whiteColor' : login.subCount == 1, 'greyColor' : !(login.subCount == 1)}">
+        Receiver mode
+      </span>
+    </div>
+
+  </div> -->
+
+</div>
+
+
+<div class="poweredBy">
+  <div class=" d-flex justify-content-center align-items-center p-2" *ngIf="login.isExpanded">
+    <span class="span1">
+      Powered by
+    </span>
+    <span class="span2">
+      &nbsp; Minda iConnect Pvt.Ltd.
+    </span>
+  </div>
+</div>

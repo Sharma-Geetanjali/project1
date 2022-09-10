@@ -1,0 +1,293 @@
+<mat-toolbar class="header">
+  <!-- <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search Chassis Number"
+      (keyup.enter)="search()">
+  </div> -->
+  <!-- <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+            class="badgedisplay1">filter_list</mat-icon>
+        <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+      <span style="display: block; line-height: 0.8;"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Serial Number</span>
+
+      <input placeholder="Serial Number" formControlName="serialNmmber" class="filterInput">
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Chassis Number</span>
+
+      <input placeholder="Chassis Number" formControlName="chassisNumber" class="filterInput">
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 75px !important;">
+      <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+        <span>
+          <button mat-stroked-button class="btnStrBasic" (click)="reomveFilter()">Clear All</button>
+        </span>
+        <span style="float: right !important;">
+          <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+            Apply
+          </button>
+        </span>
+      </span>
+    </span>
+
+  </mat-menu> -->
+
+  <span class="spacer"></span>
+
+
+  <div class="badgedisplay">
+    <div class="FilterIcon" style="margin-right: 40px; padding: 1px;">
+      <button mat-icon-button
+      data-toggle="modal" data-target="#addDeviceModal"
+        style="outline: none !important; padding: 1px !important; width: 45%;">
+        <mat-icon class="badgedisplay" style="align-self: center;">add</mat-icon>
+        <span style="display: block; line-height: 0.9;"> Create Buzz </span>
+      </button>
+    </div>
+
+    <!-- <div class="FilterIcon">
+      <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+        aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+        <span style="display: block; line-height: 0.9;"> More </span>
+
+      </button>
+      <mat-menu #menu3="matMenu">
+        <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+          Upload Excel
+          <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+        </button>
+        <button mat-menu-item style="outline: none !important;" (click)="downloadSampleExcel()">
+          Download Sample Excel
+          <img src="assets/images/download.png" style="margin-left: 4px;">
+        </button>
+      </mat-menu>
+    </div> -->
+  </div>
+<!--
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style=" outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+        Upload Excel
+        <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+      </button>
+      <button mat-menu-item style="outline: none !important;" (click)="downloadSampleExcel()">
+        Download Sample Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </mat-menu>
+  </div> -->
+
+</mat-toolbar>
+
+
+<div>
+  <div class="container-fluid smallScreen eol">
+    <div class="row mobiletable" style="padding-left: 10px !important;">
+      <div class="col-lg-12 table-responsive eol"
+        [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+        style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px;" infiniteScroll
+        [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false">
+
+        <table class="table table-bordered bordered rounded" style="background-color: white;">
+          <thead>
+            <tr class="thead-dark">
+              <th scope="col" style="width: 60px;">S.No</th>
+              <th scope="col" style="width: 120px;">Type</th>
+              <th scope="col" style="width: 150px;">Title</th>
+              <th scope="col" style="width: 260px;">Description</th>
+              <th scope="col" style="width: 120px;">Media Type</th>
+              <th scope="col" style="width: 260px;">Link</th>
+              <th scope="col" style="width: 120px; z-index: 99;">Action</th>
+            </tr>
+          </thead>
+
+          <tbody class="eol">
+
+            <tr *ngFor="let obj of buzzListArr; index as i">
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{i+1}}</td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.type">
+                  {{obj.type}}
+                </span>
+                <span *ngIf="!obj.type">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.title">
+                  {{obj.title}}
+                </span>
+                <span *ngIf="!obj.title">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="word-break: break-all;">
+                <span *ngIf="obj.description">
+                  {{obj.description}}
+                </span>
+                <span *ngIf="!obj.description">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.mediaType">
+                  {{obj.mediaType}}
+                </span>
+                <span *ngIf="!obj.mediaType">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="word-break: break-all;">
+                <span *ngIf="obj.mediaLink">
+                  <a href="{{obj.mediaLink}}" target="_blank" style="color: blue;">{{obj.mediaLink}}</a>
+                </span>
+                <span *ngIf="!obj.mediaLink">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <button mat-stroked-button class="btnStrBasic"  *ngIf="obj.status=='UNPUBLISHED'"
+                (click)="updateBuzz(obj,'PUBLISHED')">Publish</button>
+
+                <span>
+                  <button mat-stroked-button class="btnStrBasic" *ngIf="obj.status=='PUBLISHED'"
+                  (click)="updateBuzz(obj,'UNPUBLISHED')" >UnPublish</button>
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="buzzListArr.length == 0">
+              <td class="align-middle" colspan="7">
+                No Result Found
+
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<div class="modal fade " id="addDeviceModal" tabindex="-1" role="dialog" aria-labelledby="addDeviceModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+    <div class="modal-content">
+      <div class="row mb-5" [formGroup]="addDeviceForm">
+        <div class="col-11 pr-0 pt-3  ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="addDeviceModalLabel"> Create Buzz</span>
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row mt-1">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Type</span> <br>
+                  <span class="reportIssue">
+                    <mat-form-field appearance="outline" style="width: 100% !important;">
+                      <mat-select placeholder="Choose Type" #singleSelect
+                        style="padding-left: 21px !important; z-index: 2 !important;" formControlName="type">
+                        <mat-option value="BUZZ">Buzz</mat-option>
+                        <mat-option value="DIY_VIDEO">DIY Video</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Tilte</span> <br>
+                  <span>
+                    <input type="text" placeholder="Enter Tilte" formControlName="title"
+                      class="filterInput">
+                    <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="title.errors?.required && title.touched">Title is mandatory</mat-error>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;"> Description</span> <br>
+                  <span>
+                    <textarea class="filterTextArea" formControlName="description"></textarea>
+                    <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="description.errors?.required && description.touched">Description is mandatory</mat-error>
+
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Type</span> <br>
+                  <span class="reportIssue">
+                    <mat-form-field appearance="outline" style="width: 100% !important;">
+                      <mat-select placeholder="Choose Type" #singleSelect
+                        style="padding-left: 21px !important; z-index: 2 !important;" formControlName="mediaType">
+                        <mat-option value="IMAGE">Image</mat-option>
+                        <mat-option value="IMAGE">GIF</mat-option>
+                        <mat-option value="VIDEO">YouTube Video</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </span>
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="padding-left: 42px;">
+                  <span style="font-size: 12px; font-weight: 400;">Tilte</span> <br>
+                  <div *ngIf="!linkFlag">
+                    <label for="file-input" style="cursor: pointer; border: 1px solid var(--clor); color: black; padding: 0 15px; font-size: 14px; line-height: 34px; font-weight: 500; box-sizing: border-box; border-radius: 4px;"  >Browse</label>
+                    <input type="file" id="file-input" style="visibility: hidden; width: 0px;" (change)="fileChange($event.target)" >
+                    <span
+                    style=" color: black; padding: 0 15px; font-size: 14px; line-height: 34px; font-weight: 500; box-sizing: border-box;">
+                    {{fileName}}
+                    </span>
+                  </div>
+
+                  <span *ngIf="linkFlag">
+                    <input type="text" placeholder="Enter Tilte" formControlName="link"
+                      class="filterInput">
+                    <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="link.errors?.required && link.touched">Link is mandatory</mat-error>
+                  </span>
+
+                </div>
+              </div>
+              <div class="row mt-4">
+                <div class="col-12 " style="padding-left: 42px;">
+                  <button type="button" class="btn btn-secondary submitDialog" data-dismiss="modal" [disabled]="!this.addDeviceForm.valid || !fileFlag"
+                 (click)="createBuzz()"  >Submit Request</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="col-1 pl-0">
+          <mat-icon class="pt-3" style="margin-left: -16px !important; cursor: pointer;" data-dismiss="modal">clear
+          </mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,440 @@
+<div class="container-fluid p-0">
+  <div class="mapRow">
+    <div class="cardWidth">
+      <div class="d-flex p-2 " style="overflow: hidden;">
+        <div class="col-12">
+          <div class="row mt-3 ">
+            <div class="col-12">
+              <button type="button" mat-stroked-button class="mapBtn"
+              (click)="back()">
+    <img src="assets/images/back_icon.svg"
+      style="margin-right: 6px !important; padding-bottom: 2px !important;">
+    Go Back
+  </button>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-12">
+              <span class="congCode">
+                {{consignmentArr?.vehicle?.name}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Current Location
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus">
+                {{consignmentArr?.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}
+              </span>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <span class="liveStatus">
+                {{consignmentArr?.lastReportedLocation?.address}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Consignment Code
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{consignmentArr?.consignmentCode}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Transporter Name
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{consignmentArr?.transporter?.name}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Dispatcher
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{consignmentArr?.consignor?.name}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Dispatcher District
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{consignmentArr?.departmentGroupName}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Receiver
+              </span>
+            </div>
+            <div class="col-7 ">
+              <span class="liveStatus ">
+                {{consignmentArr?.metas[0].targetDepartmentName}}
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                Speed
+              </span>
+            </div>
+            <div class="col-7">
+              <span class="liveStatus ">
+                {{consignmentArr?.vehicle?.speed}} km/hr
+              </span>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-5">
+              <span class="currStatusMap">
+                KPI
+              </span>
+            </div>
+            <div class="col-7" [formGroup]="kpiForm">
+              <!-- <span > -->
+              <!-- <span class="liveStatus" *ngFor=" let kpi of consignmentArr?.kpi">
+                {{kpi?.desc}}({{kpi?.count}})
+              </span> -->
+              <mat-radio-group aria-label="Select an option"  class="liveStatus" *ngFor=" let kpi of consignmentArr?.kpi" formControlName="kpiValue">
+                <mat-radio-button #button value={{kpi.name}} (click)="checkState($event,button)"> {{kpi?.desc}}({{kpi?.count}})</mat-radio-button>
+              </mat-radio-group>
+              <!-- </span> -->
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12">
+              <span class="currStatusMap">
+                <mat-checkbox (change)="toggle($event)" >Auto center ON/OFF</mat-checkbox>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <button  class="recenterMapBtn" (click)="recenterMap()">Recenter Map</button>
+
+    <div class="mapWidth  p-0 m-0">
+      <agm-map #AgmMap [latitude]='28.6139' [longitude]='77.2090' [zoom]='12'  [fitBounds]="boundbool" [fullscreenControl]='true' [mapTypeControl]='true' (mapReady)="mapReady($event)">
+          <agm-marker *ngFor="let item of consignmentArr?.consigneeGeofenceModel | keyvalue"   [latitude]="item.value.latitude" [longitude]="item.value.longitude" (markerClick)="clickedMarker(infoWindowR)"
+          [iconUrl]="{
+            url: theme.receiver,
+            scaledSize: {
+              width: 30,
+              height: 30
+            }
+          }">
+            <agm-info-window #infoWindowR>
+              <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span>
+              <div class="iw-content">
+                <div class="iw-subTitle">
+                  <span class="currStatus">Receiver Name:</span> &nbsp;
+                  <Span class="liveStatus">{{item.value.landmark}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Landmark:</span>&nbsp;
+                  <Span class="liveStatus" > {{item.value.address}}</Span>
+                </div>
+              </div>
+            </agm-info-window>
+
+          </agm-marker>
+          <agm-circle *ngIf="circleflagconsignee"  [latitude]="consigneeCirlceLat" [longitude]="consigneeCirlceLng" [radius]="consigneeCirlceRadius" [fillColor]="theme.Consignorcircle">
+          </agm-circle>
+
+          <agm-polygon *ngIf="!circleflagconsignee" [paths]="paths"  [strokeColor]="theme.polygonColor">
+          </agm-polygon>
+
+
+          <agm-overlay [latitude]="consignmentArr?.lastReportedLocation?.latitude"  [longitude]="consignmentArr?.lastReportedLocation?.longitude"  (markerClick)="clickedMarker(infoWindow)" >
+            <div>
+              <img  [src]="consignmentArr?.icon" style="transform: rotate({{orientation}}deg);" >
+            </div>
+            <agm-info-window #infoWindow>
+              <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span>
+              <div class="iw-content">
+                <div class="iw-subTitle">
+                  <span class="currStatus">Address:</span> &nbsp;
+                  <Span class="liveStatus">{{consignmentArr?.lastReportedLocation?.address}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Time:</span>&nbsp;
+                  <Span class="liveStatus" > {{consignmentArr?.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}</Span>
+                </div>
+              </div>
+            </agm-info-window>
+          </agm-overlay>
+
+          <agm-marker  [latitude]="consignmentArr?.lastReportedLocation?.latitude"  [longitude]="consignmentArr?.lastReportedLocation?.longitude" [agmFitBounds]="boundbool"  [visible]="false"   >
+
+          </agm-marker>
+
+          <agm-marker  [latitude]="pathdraw[0]?.latitude"  [longitude]="pathdraw[0]?.longitude"  [visible]="true"  (markerClick)="clickedMarker(infoWindowStart)"
+          [iconUrl]="{
+            url: 'assets/images/startloc_sm.png',
+            scaledSize: {
+              width: 30,
+              height: 30
+            }
+          }" >
+            <agm-info-window #infoWindowStart>
+              <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span>
+              <div class="iw-content">
+                <div class="iw-subTitle">
+                  <span class="currStatus">Start Address:</span> &nbsp;
+                  <Span class="liveStatus">{{consignmentArr?.lastReportedLocation?.address}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Time:</span>&nbsp;
+                  <Span class="liveStatus" > {{consignmentArr?.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}</Span>
+                </div>
+              </div>
+            </agm-info-window>
+          </agm-marker>
+
+          <agm-marker [latitude]="consignmentArr?.consignorGeofenceModel?.latitude"  [longitude]="consignmentArr?.consignorGeofenceModel?.longitude" (markerClick)="clickedMarker(infoWindowD)" [agmFitBounds]="pointBool"
+          [iconUrl]="{
+            url: theme.dispatcher,
+            scaledSize: {
+              width: 30,
+              height: 30
+            }
+          }">
+            <agm-info-window #infoWindowD>
+              <span style="float: right; cursor: pointer; margin-left: 15px;" (click)="closeInfoWindow()">
+                <mat-icon >close</mat-icon>
+              </span>
+              <div class="iw-content">
+                <div class="iw-subTitle">
+                  <span class="currStatus">Dispatcher Name:</span> &nbsp;
+                  <Span class="liveStatus">{{consignmentArr?.consignorGeofenceModel?.name}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Landmark:</span>&nbsp;
+                  <Span class="liveStatus" > {{consignmentArr?.consignorGeofenceModel?.address}}</Span>
+                </div>
+              </div>
+            </agm-info-window>
+
+          </agm-marker>
+
+          <!-- <agm-marker [latitude]="consignmentArr?.consignorGeofenceModel?.latitude"  [longitude]="consignmentArr?.consignorGeofenceModel?.longitude" (markerClick)="clickedMarker(infoWindowD)" [agmFitBounds]="pointBool"
+          [iconUrl]="{
+            url: theme.dispatcher,
+            scaledSize: {
+              width: 30,
+              height: 30
+            }
+          }">
+            <agm-info-window #infoWindowD>
+              <span style="float: right; cursor: pointer; margin-left: 15px;" (click)="closeInfoWindow()">
+                <mat-icon >close</mat-icon>
+              </span>
+              <div class="iw-content">
+                <div class="iw-subTitle">
+                  <span class="currStatus">Dispatcher Name:</span> &nbsp;
+                  <Span class="liveStatus">{{consignmentArr?.consignorGeofenceModel?.landmark}}</Span>
+                </div>
+                <div class="iw-subTitle">
+                  <span class="currStatus">Landmark:</span>&nbsp;
+                  <Span class="liveStatus" > {{consignmentArr?.consignorGeofenceModel?.address}}</Span>
+                </div>
+              </div>
+            </agm-info-window>
+
+          </agm-marker> -->
+
+        <agm-polyline [clickable]="true" [visible]="true" [strokeWeight]="3" [zIndex]="2" (lineClick)="clickedline($event,infoWindowline)" [strokeColor]="theme.polylineColor" >
+          <agm-polyline-point *ngFor="let coordinate of pathdraw; let i=index"  [latitude]="coordinate.latitude"
+            [longitude]="coordinate.longitude">
+
+          </agm-polyline-point>
+          <agm-info-window #infoWindowline [latitude]="infoLat" [longitude]="infoLng" [disableAutoPan]="false" [isOpen]="infoVisible">
+            <div class="iw-content">
+              <span style="float: right; cursor: pointer; margin-left: 15px;" (click)="closePolyInfoWindow()">
+                <mat-icon >close</mat-icon>
+              </span>
+              <div class="iw-subTitle">
+                <span class="currStatus">Ignition Status:</span>&nbsp;
+                <Span class="liveStatus" *ngIf="infoData?.ignitionStatus" > ON</Span>
+                <Span class="liveStatus" *ngIf="!infoData?.ignitionStatus" > OFF</Span>
+
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Speed:</span>&nbsp;
+                <Span class="liveStatus" > {{infoData?.speed}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Date Time:</span>&nbsp;
+                <Span class="liveStatus" > {{infoData?.timestamp | date:'dd/MM/yyyy hh:mm a'}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Address:</span>&nbsp;
+                <Span class="liveStatus" > {{infoData?.address}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+        </agm-polyline>
+
+        <agm-circle *ngIf="consignorFlagCircle" [latitude]="consignmentArr?.consignorGeofenceModel?.latitude" [longitude]="consignmentArr?.consignorGeofenceModel?.longitude" [radius]="consignmentArr?.consignorGeofenceModel?.radius" [fillColor]="theme.Consignorcircle">
+        </agm-circle>
+
+        <agm-polygon *ngIf="!consignorFlagCircle" [paths]="consignorPath"  [strokeColor]="theme.polygonColor">
+        </agm-polygon>
+
+
+        <agm-polygon [paths]="locationPoints"  [strokeColor]="theme.polygonColor">
+        </agm-polygon>
+
+        <agm-polyline *ngFor="let coordinate of kpiPathArr; let i=index" [visible]="true" [strokeWeight]="10" [strokeColor]="'#ff2600'"  [zIndex]="1"  >
+          <agm-polyline-point *ngFor="let obj of coordinate.path; let i=index" [latitude]="obj.latitude"
+            [longitude]="obj.longitude">
+
+          </agm-polyline-point>
+        </agm-polyline>
+
+        <agm-marker *ngFor="let item of kpiStartLoc" [latitude]="item?.lat" [longitude]="item?.lng"  (markerClick)="clickedMarker(infoWindowKpiS)"
+        [iconUrl]="{
+          url: item.icon,
+          scaledSize: {
+            width: 30,
+            height: 30     }
+        }">
+          <agm-info-window  #infoWindowKpiS>
+            <div class="iw-title">
+              {{item.kpi}}
+              <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span>
+            </div>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Location:</span>&nbsp;
+                <Span class="liveStatus" > {{item.address}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Start Time:</span>&nbsp;
+                <Span class="liveStatus" > {{item.startTime | date:'dd/MM/yyyy hh:mm a'}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Distance Travelled:</span>&nbsp;
+                <Span class="liveStatus" > {{(item.distance )/ 1000}}Kms</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Duration:</span>&nbsp;
+                <Span class="liveStatus" > {{item.duration}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Status:</span>&nbsp;
+                <Span class="liveStatus" > {{item.status}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+        </agm-marker>
+
+        <agm-marker *ngFor="let item of kpiEndLoc" [latitude]="item?.lat" [longitude]="item?.lng"  (markerClick)="clickedMarker(infoWindowEnd)"
+        [iconUrl]="{
+          url: item.icon,
+          scaledSize: {
+            width: 30,
+            height: 30          }
+        }">
+          <agm-info-window #infoWindowEnd>
+            <div class="iw-title">
+              {{item.kpi}}
+              <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                <mat-icon>close</mat-icon>
+              </span>
+            </div>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Location:</span>&nbsp;
+                <Span class="liveStatus" > {{item.address}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">End Time:</span>&nbsp;
+                <Span class="liveStatus" > {{item.endTime | date:'dd/MM/yyyy hh:mm a'}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Distance Travelled:</span>&nbsp;
+                <Span class="liveStatus" > {{(item.distance )/ 1000}}Kms</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Duration:</span>&nbsp;
+                <Span class="liveStatus" > {{item.duration}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Status:</span>&nbsp;
+                <Span class="liveStatus" > {{item.status}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+        </agm-marker>
+
+
+       <!-- marker for waypoints -->
+
+       <agm-marker *ngFor="let item of wayPointList" [latitude]="item.latitude" [longitude]="item.longitude"  (markerClick)="clickedMarker(infoWindowWaypoint)"
+        [iconUrl]="{
+          url: theme.receiver,
+          scaledSize: {
+            width: 30,
+            height: 30  }
+        }">
+          <agm-info-window #infoWindowWaypoint>
+            <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+              <mat-icon>close</mat-icon>
+            </span>
+            <div class="iw-content">
+              <div class="iw-subTitle">
+                <span class="currStatus">Receiver Name:</span> &nbsp;
+                <Span class="liveStatus">{{item.name}}</Span>
+              </div>
+              <div class="iw-subTitle">
+                <span class="currStatus">Landmark:</span>&nbsp;
+                <Span class="liveStatus" > {{item.address}}</Span>
+              </div>
+            </div>
+          </agm-info-window>
+        </agm-marker>
+
+
+
+
+      </agm-map>
+    </div>
+  </div>
+
+</div>

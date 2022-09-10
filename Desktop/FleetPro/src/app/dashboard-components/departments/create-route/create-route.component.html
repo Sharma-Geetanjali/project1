@@ -1,0 +1,224 @@
+<div class="container-fluid p-0">
+  <div class="mapRow">
+    <div class="cardWidth eol" style="height: calc(100vh - 40px); overflow-x:auto;">
+      <div class="d-flex p-2 " style="overflow: hidden;">
+        <div class="col-12">
+          <div class="row mt-2">
+            <div class="col-12">
+              <button type="button" mat-stroked-button class="mapBtn" (click)="back()">
+                <img src="assets/images/back_icon.svg"
+                  style="margin-right: 6px !important; padding-bottom: 2px !important;">
+                Go Back
+              </button>
+            </div>
+          </div>
+          <div class="row mt-3">
+            <div class="col-12">
+              <span class="congCode" *ngIf="!editRouteFlag">
+                Create Route
+              </span>
+              <span class="congCode" *ngIf="editRouteFlag">
+                View Route
+              </span>
+            </div>
+          </div>
+          <div [formGroup]="createRoute">
+            <div class="row mt-2">
+              <div class="col-12" style="padding-left: 25px;">
+                <span style="font-size: 12px; font-weight: 400;" *ngIf="!editRouteFlag">Select Consignor</span>
+                <span style="font-size: 12px; font-weight: 400;" *ngIf="editRouteFlag">Consignor</span>
+
+                 <br>
+                <span class="abcd">
+
+                  <mat-form-field *ngIf="!editRouteFlag" appearance="outline" style="width: 100% !important; margin-top: 12px;">
+                    <mat-select placeholder="Choose Consignor"  #singleSelect style="padding-left: 21px !important;"  (infiniteScroll)="getNextBatch()" [complete]="offset1 === filteredCnorArr.length" msInfiniteScroll formControlName="consignorCode">
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Enter Consignor'" [noEntriesFoundLabel]="'No match found'"
+                        formControlName="consignorCodeFilter" >
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <div *ngFor="let obj of optionsfilter">
+                        <mat-option *ngFor="let obj1 of obj.detail" value="{{obj1.code}}">
+                          {{obj1.name}}
+                        </mat-option>
+                      </div>
+
+
+                    </mat-select>
+                  </mat-form-field>
+
+                  <mat-form-field *ngIf="editRouteFlag" appearance="outline" style="width: 100% !important; margin-top: 12px;">
+                    <input type="text" matInput  formControlName="consignorCode">
+                  </mat-form-field>
+                  <!-- <input placeholder="Enter Address" formControlName="addressForm" class="filterInput" (keydown.enter)="$event.preventDefault()" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search> -->
+                  <!-- <mat-error *ngIf="deviceType.errors?.required && deviceType.touched">Device type is required</mat-error> -->
+                </span>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12" style="padding-left: 25px;">
+                <span style="font-size: 12px; font-weight: 400;" *ngIf="!editRouteFlag">Select Consignee</span>
+                <span style="font-size: 12px; font-weight: 400;" *ngIf="editRouteFlag">Consignee</span>
+
+                <br>
+                <span class="abcd">
+                  <mat-form-field *ngIf="!editRouteFlag" appearance="outline" style="width: 100% !important; margin-top: 12px;">
+                    <mat-select placeholder="Choose Consignee"  #singleSelect style="padding-left: 21px !important;" (infiniteScroll)="getNextConsignee()" [complete]="offset2 === filteredCneeArr.length" msInfiniteScroll   formControlName="consigneeCode" >
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Enter Consignee'" [noEntriesFoundLabel]="'No match found'"
+                        formControlName="consigneeCodeFilter">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <div *ngFor="let objop of options1">
+                        <mat-option *ngFor="let obj2 of objop.detail" value="{{obj2.code}}">
+                          {{obj2.name}}
+                        </mat-option>
+                      </div>
+
+
+                    </mat-select>
+                  </mat-form-field>
+
+
+                  <mat-form-field *ngIf="editRouteFlag" appearance="outline" style="width: 100% !important; margin-top: 12px;">
+                    <input type="text" matInput  formControlName="consigneeCode">
+                  </mat-form-field>
+                  <!-- <input placeholder="Enter Consignee Name" formControlName="consigneeName" class="filterInput"> -->
+                  <!-- <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="consigneeName.errors?.required && consigneeName.touched">consignee Name is mandatory</mat-error> -->
+                </span>
+              </div>
+            </div>
+            <!-- <div class="col" style="margin-top: 12px; padding-left: 25px !important;">
+              <mat-radio-group aria-label="Select an option" formControlName="geofence">
+                <mat-radio-button value="CIRCLE" style="margin-bottom:1.1rem !important;" checked> Circular
+                </mat-radio-button>
+                <mat-radio-button value="POLYGON"> Polygon</mat-radio-button>
+
+              </mat-radio-group>
+            </div> -->
+            <div class="row mt-3" *ngIf="!editRouteFlag">
+              <div class="col-12" style="  padding-left: 15px;">
+                <span style="font-size: 12px; font-weight: 400;">Change Route</span> <br>
+                <div class="col" style="margin-top:12px;">
+              <mat-radio-group aria-label="Select an option" formControlName="changeRoute" >
+                <mat-radio-button value="upload"  > Upload Route
+                </mat-radio-button>
+                <mat-radio-button value="create" style="margin-left:20px !important;"> Create Route</mat-radio-button>
+
+              </mat-radio-group>
+            </div>
+              </div>
+            </div>
+           <div *ngIf="changeRoute.value == 'upload' && !editRouteFlag" class="row mt-3" >
+            <div class="col-12" style="padding-left: 25px;">
+              <label for="file-upload"  class="custom-file-upload">
+                 <span *ngIf="!fileToggle"> Select KML File</span>
+                 <span *ngIf="fileToggle">{{filename}}</span>
+
+             </label>
+
+             <input id="file-upload" style="display:none;" type="file"  accept=".kml, .xml" (change)="onSelectKmlFile($event.target.files);dispalyFileName($event.target.files)"/>
+            </div>
+          </div>
+            <div class="row mt-3">
+              <div class="col-12" style="padding-left: 25px;">
+                <span style="font-size: 12px; font-weight: 400;">Expected Distance (km)</span> <br>
+                <span>
+                  <input type="number" placeholder="Enter distance in km" formControlName="distance" class="filterInput">
+                  <!-- <mat-error style="font-size: 9px; font-weight: 400;" *ngIf="consigneeCode.errors?.required && consigneeCode.touched">consignee code is mandatory</mat-error> -->
+                </span>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-12" style="padding-left: 25px;">
+                <span style="font-size: 12px; font-weight: 400;">Expected Time</span> <br>
+                <span style="padding-right: 10px !important;">
+                  <input type="number" placeholder="Days" style="width: 28.7% !important; padding-left: 6px; padding-right: 6px;" formControlName="Exdays" class="filterInput" >
+                </span>
+                <span style="padding-right: 10px !important; padding-left: 10px;">
+                  <input type="number" placeholder="Hours" style="width: 28.7% !important; padding-left: 6px; padding-right: 6px" formControlName="Exhours" class="filterInput" >
+                </span>
+                <span style="padding-left: 10px !important;">
+                  <input type="number" placeholder="Mins" style="width: 28.7% !important; padding-left: 6px; padding-right: 6px" formControlName="Exmins" class="filterInput" >
+                </span>
+              </div>
+            </div>
+            <div class="row mt-3" *ngIf="!editRouteFlag">
+              <div class="col-12" style="padding-left: 25px;">
+                <span style="font-size: 12px; font-weight: 400;">Buffer Value (Meters)</span> <br>
+                <span>
+                  <input type="number" placeholder="Enter Buffer Value"
+                    class="filterInput" formControlName="bufferValue"></span>
+              </div>
+            </div>
+            <div class="col-12 p-0 d-flex justify-content-center" *ngIf="!editRouteFlag"
+              style="margin-top: 25px; font-size: 15px; color: white;">
+              <button mat-stroked-button class="btnStrBasic"
+                style="width: 100%; height: 40 px; background-color: var(--clor);" (click)="createRouteCall()" [disabled]="!this.createRoute.valid" >Create Route</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="mapWidth  p-0 m-0">
+      <div class="cnsgnmntLiveMapWrap">
+        <div *ngIf="!singleRouteBool" >
+           <label>Available Routes: </label>
+           <select name="selectIndex" [(ngModel)]="selectIndex"  (change)="kmlChangeRoute(selectIndex)">
+              <option *ngFor="let obj of multipleRoutes; index as i" value="{{i}}">
+                 {{obj.name}}
+              </option>
+           </select>
+        </div>
+     </div>
+      <agm-map  [latitude]="latitude" [longitude]="longitude"  [fitBounds]="true" [fullscreenControl]='true' [mapTypeControl]='true'>
+        <!-- <agm-marker *ngIf="loadMarker" [latitude]="latitude" [longitude]="longitude"  ></agm-marker> -->
+        <agm-direction *ngIf="changeRoute.value == 'create' && !editRouteFlag"
+        [origin]="origin"
+        [destination]="destination"
+        [renderOptions]="options"
+        (onChange)="markerDragEnd( $event)"
+      >
+      </agm-direction>
+      <agm-polyline *ngIf="changeRoute.value == 'upload' && !editRouteFlag" [visible]="true" [strokeWeight]="3" [zIndex]="2" [strokeColor]="theme.polylineColor" >
+        <agm-polyline-point *ngFor="let coordinate of pathdraw; let i=index" [latitude]="coordinate.lat"
+          [longitude]="coordinate.lng" [agmFitBounds]="true">
+
+        </agm-polyline-point>
+      </agm-polyline>
+
+      <agm-polyline *ngIf="editRouteFlag"  [visible]="true" [strokeWeight]="3" [zIndex]="2" [strokeColor]="theme.polylineColor" >
+        <agm-polyline-point *ngFor="let coordinate of editRouteMapArr; let i=index" [latitude]="coordinate.latitude"
+          [longitude]="coordinate.longitude">
+
+        </agm-polyline-point>
+      </agm-polyline>
+      <agm-marker *ngIf="editRouteFlag" [latitude]="editStartMarker?.latitude" [longitude]="editStartMarker?.longitude" [agmFitBounds]="true" ></agm-marker>
+      <agm-marker *ngIf="editRouteFlag" [latitude]="editEndMarker?.latitude" [longitude]="editEndMarker?.longitude" [agmFitBounds]="true" ></agm-marker>
+
+      <agm-marker *ngIf="changeRoute.value == 'upload' && !editRouteFlag" [latitude]="startMarkerLat" [longitude]="startMarkerLng" [agmFitBounds]="false" ></agm-marker>
+      <agm-marker *ngIf="changeRoute.value == 'upload' && !editRouteFlag" [latitude]="endMarkerLat" [longitude]="endMarkerLng" [agmFitBounds]="false" ></agm-marker>
+
+      <agm-polygon *ngIf="editRouteFlag" [paths]="paths"  [strokeColor]="theme.polygonColor">
+      </agm-polygon>
+      </agm-map>
+<!--
+      <agm-map *ngIf="editRouteFlag" [latitude]="25.799891" [longitude]="77.268790" [zoom]='6' [fullscreenControl]='true' [mapTypeControl]='true'>
+
+      <agm-polyline  [visible]="true" [strokeWeight]="3" [zIndex]="2" [strokeColor]="theme.polylineColor" >
+        <agm-polyline-point *ngFor="let coordinate of editRouteMapArr; let i=index" [latitude]="coordinate.latitude"
+          [longitude]="coordinate.longitude">
+
+        </agm-polyline-point>
+      </agm-polyline>
+      <agm-marker *ngIf="changeRoute.value == 'upload'" [latitude]="startMarkerLat" [longitude]="startMarkerLng" [agmFitBounds]="false" ></agm-marker>
+      <agm-marker *ngIf="changeRoute.value == 'upload'" [latitude]="endMarkerLat" [longitude]="endMarkerLng" [agmFitBounds]="false" ></agm-marker>
+
+      </agm-map> -->
+
+    </div>
+  </div>
+
+</div>

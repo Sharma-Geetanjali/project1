@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="60" height="60" viewBox="0 0 60 60">
+    <defs>
+        <filter id="nvlnonq9qa" width="137.5%" height="137.5%" x="-18.8%" y="-14.6%" filterUnits="objectBoundingBox">
+            <feMorphology in="SourceAlpha" operator="dilate" radius="2" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur in="shadowOffsetOuter1" result="shadowBlurOuter1" stdDeviation="2"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix in="shadowBlurOuter1" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0"/>
+        </filter>
+        <rect id="90aeenrtbb" width="48" height="48" x="0" y="0" rx="8"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g>
+            <g>
+                <g transform="translate(-137 -205) translate(143 209)">
+                    <use fill="#000" filter="url(#nvlnonq9qa)" xlink:href="#90aeenrtbb"/>
+                    <rect width="50" height="50" x="-1" y="-1" fill="#3E3E3E" stroke="#FDFDFD" stroke-width="2" rx="8"/>
+                </g>
+                <g fill="#FDFDFD">
+                    <path d="M37.382 14.456L30.105 2.721 22.862 2.701 30.138 14.435 22.929 26.129 30.172 26.149z" transform="translate(-137 -205) translate(143 209) translate(3 4) rotate(-35 30.122 14.425)"/>
+                    <path d="M21.447 20.485L14.237 32.178 21.48 32.199 28.69 20.505 21.413 8.771 14.17 8.75z" transform="translate(-137 -205) translate(143 209) translate(3 4) rotate(-35 21.43 20.474)"/>
+                    <path d="M5.478 14.8L12.755 26.534 5.545 38.227 12.788 38.248 19.998 26.555 12.721 14.82z" transform="translate(-137 -205) translate(143 209) translate(3 4) rotate(-35 12.738 26.524)"/>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

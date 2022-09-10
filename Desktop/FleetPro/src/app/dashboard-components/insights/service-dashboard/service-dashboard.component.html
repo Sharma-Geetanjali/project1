@@ -1,0 +1,302 @@
+<mat-toolbar class="header">
+  <!-- <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Search Chassis Number"
+      (keyup.enter)="search()">
+  </div> -->
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+        style="outline: none !important; ">
+        <!-- <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+            class="badgedisplay1">filter_list</mat-icon> -->
+        <!-- <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon> -->
+
+        <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+        <span style="display: block; line-height: 0.8;"> Filter </span>
+    </button>
+</div>
+
+<mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" >
+
+  <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+    <span style="display: block; font-size: 12px;">
+      <span>
+        Status
+      </span>
+      <span style="color: var(--clor); font-size: 14px; float: right !important;">
+        Clear
+      </span>
+    </span>
+    <mat-form-field appearance="outline" style="width: 100% !important;">
+      <mat-select placeholder="Select Status" #singleSelect [(ngModel)]="selectText" >
+        <mat-option  value="">
+       All
+        </mat-option>
+        <mat-option *ngFor="let obj of statusValues" value="{{obj}}">
+          {{obj}}
+        </mat-option>
+
+      </mat-select>
+    </mat-form-field>
+  </span>
+
+</mat-menu>
+
+  <span class="spacer"></span>
+
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style=" outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>
+
+
+<div>
+  <div class="container-fluid smallScreen eol">
+    <div class="row mobiletable" style="padding-left: 10px !important;">
+      <div class="col-lg-12 table-responsive eol"
+        [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+        style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px;" infiniteScroll
+        [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getServiceDashboardData()"
+        [scrollWindow]="false">
+
+        <table class="table table-bordered bordered rounded" style="background-color: white;">
+          <thead>
+            <tr class="thead-dark">
+              <th scope="col" style="width: 60px;">S.No</th>
+              <th scope="col" style="width: 120px;">Ticket Id</th>
+              <th scope="col" style="width: 120px;">Vehicle Name </th>
+              <th scope="col" style="width: 200px;">Time & Date</th>
+              <th scope="col" style="width: 200px;">Dealer Name</th>
+              <th scope="col" style="width: 120px;">SAP Code</th>
+              <th scope="col" style="width: 220px;">Driver Name</th>
+              <th scope="col" style="width: 120px;">Driver Number</th>
+              <th scope="col" style="width: 120px;">Created Using</th>
+              <th scope="col" style="width: 120px;">LAst Update Time</th>
+              <th scope="col" style="width: 260px;">Comments</th>
+              <th scope="col" style="width: 200px;">Status</th>
+              <th scope="col" style="width: 200px;">View Map</th>
+              <th scope="col" style="width: 200px;">View Details</th>
+            </tr>
+          </thead>
+
+          <tbody class="eol">
+
+            <tr *ngFor="let ticket of filterServiceArr | filter:selectText; index as i  ">
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{i+1}}</td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="ticket.id">
+                  {{ticket.id}}
+                </span>
+                <span *ngIf="!ticket.id">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style=" word-break: break-word;font-weight: bold;" >
+                <span *ngIf="ticket.vehicleName">
+                  {{ticket.vehicleName}}
+                </span>
+                <span *ngIf="!ticket.vehicleName">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="ticket.createdOn">
+                  {{ticket.createdOn | date: 'HH:mm,d-M-yy'}}
+                </span>
+                <span *ngIf="!ticket.createdOn">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.dealerName">
+                  {{ticket.dealerName}}
+                </span>
+                <span *ngIf="!ticket.dealerName">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: 500; word-break: break-all;">
+                <span *ngIf="ticket.departmentGroupName">
+                  {{ticket.departmentGroupName}}
+                </span>
+                <span *ngIf="!ticket.departmentGroupName">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.driverName">
+                  {{ticket.driverName}}
+                </span>
+                <span *ngIf="!ticket.driverName">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.driverNumber">
+                  {{ticket.driverNumber}}
+                </span>
+                <span *ngIf="!ticket.driverNumber">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.creationSource == 'SOS_BUTTON'">
+                 Help Button
+                </span>
+                <span *ngIf="ticket.creationSource == 'MOBILE'">
+                  SML Saarthi
+                </span>
+              </td>
+              <td scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.endedOn">
+                  {{ticket.updatedOn | date: 'HH:mm,d-M-yy'}}
+                </span>
+                <span *ngIf="!ticket.endedOn">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.comment">
+                  <span *ngFor="let ticketObj of ticket.commentArray">
+                    [{{ticketObj.commentedBy}} {{ticketObj.createdOn | date: 'HH:mm,d-M-yy' }}] <br />{{ticketObj.content}} <br />
+
+                  </span>
+                </span>
+                <span *ngIf="!ticket.comment">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.status">
+                  {{ticket.status}}
+                </span>
+                <span *ngIf="!ticket.status">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td scope="row" style="font-weight: 500;">
+                <span *ngIf="ticket.status=='OPEN' && ticket.exceedTime!=true">
+                  map
+                </span>
+                <span *ngIf="ticket.status=='OPEN' && ticket.exceedTime==true">
+                  <h1>--</h1>
+                </span>
+                <span *ngIf="ticket.status!='OPEN'">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td scope="row" style="font-weight: 500;">
+                <span >
+                  details
+                </span>
+                <!-- <span *ngIf="!obj.lastKnownLocation">
+                  <h1>--</h1>
+                </span> -->
+              </td>
+            </tr>
+            <tr *ngIf="filterServiceArr.length == 0">
+              <td class="align-middle" colspan="9">
+                No Result Found
+
+              </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+    </div>
+<!--
+
+    <div class="mobileCard eol">
+
+      <div class="d-flex p-2" style="cursor:pointer ; outline: none;" *ngFor="let obj of filterDealerArr">
+        <div class="col-12  mapcard">
+          <div class=" row ">
+            <div class="col-12 vehicleNo">
+              {{obj.vehicleName}}
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-12 lastKnown">
+              Last known loaction
+
+            </div>
+          </div>
+          <div class=" row ">
+            <div class="col-10 address ">
+              {{obj.address}}
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+              <img src="assets/images/back_icon.svg" class="my-auto"
+                style="margin-right: 6px !important; padding-bottom: 2px !important; transform: rotate(180deg)">
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class=" col-5 ">
+              <span class="currStatus">
+                Current Speed
+
+              </span>
+            </div>
+            <div class=" col-7">
+              <span class="liveStatus">
+                {{obj.speed}}
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class=" col-5">
+              <span class="currStatus">
+                Travelled today
+              </span>
+            </div>
+            <div class=" col-7">
+              <span class="liveStatus">
+                {{obj.todayskm}} km
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class="currStatus col-5 ">
+              igntion
+            </div>
+            <div *ngIf="obj.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+              <span style="font-size: 12px; color: var(--black);">
+                ON
+              </span>
+            </div>
+            <div *ngIf="!obj.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+              <span style="font-size: 12px; color: var(--black);">
+                OFF
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0 ">
+            <div class="col-12 d-flex justify-content-end">
+              <span style="font-size: 9px; color: var(--black);">
+                {{obj.date | date: 'hh:mm a dd/MM/yy'}}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div> -->
+  </div>
+
+</div>

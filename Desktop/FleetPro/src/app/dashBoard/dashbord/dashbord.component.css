@@ -1,0 +1,124 @@
+.flex {
+  display: flex;
+  flex-direction: row;
+  /* height: 100vh; */
+  margin: 0px !important;
+  padding: 0px !important;
+  overflow: auto;
+}
+
+.flexitem1 {
+  flex: 0.04;
+  overflow: visible !important;
+  /* background-color: var(--black); */
+}
+
+.container-fluid {
+  display: flex;
+  flex-direction: row;
+  margin: 0px;
+  padding: 0px;
+  overflow: hidden !important;
+}
+
+.sidebarClosed {
+  height: 100vh !important;
+  background-color: var(--sideNav);
+  flex: 0.045 !important;
+  position: relative;
+  /* transition: all 0.5s !important; */
+}
+
+.sidebarOpen {
+  height: 100vh !important;
+  background-color: var(--sideNav);
+  flex: 0.23 !important;
+  position: relative;
+  /* transition: all 0.5s !important; */
+}
+
+.middlecontainer {
+  flex: 1 !important;
+  min-height: 100vh !important;
+  /* position: relative !important; */
+}
+
+.flexitem2 {
+  flex: 1;
+  flex-direction: column !important;
+  /* height: 100vh !important; */
+  /* background-color: yellow; */
+}
+
+.headerMain {
+  max-height: 64px !important;
+}
+
+.roter {
+  height: calc(100vh - 40px);
+  /* overflow-y: auto; */
+  overflow: hidden !important;
+  /* z-index: -100000000 !important; */
+  /* width: calc(100vw - 252px); */
+}
+
+.flex1 {
+  display: flex;
+  flex-direction: row;
+  /* height: 100vh; */
+  margin: 0px !important;
+  padding: 0px !important;
+  overflow: auto !important;
+}
+
+#sidenav2 {
+  display: block;
+  overflow: visible !important;
+}
+
+@media screen and (min-width: 1000px) and (max-width: 2560px) {
+  #sidenav {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 400px) and (max-width: 1000px) {
+  .sidebarClosed {
+    height: 100vh !important;
+    background-color: var(--sideNav);
+    flex: 0 !important;
+    position: relative;
+    display: none;
+    /* transition: ease-in-out 0.3s all; */
+  }
+  .flex1 {
+    display: flex;
+    flex-direction: row;
+    /* height: 100vh; */
+    margin: 0px !important;
+    padding: 0px !important;
+    overflow: hidden !important;
+  }
+}
+
+@media screen and (min-width: 200px) and (max-width: 400px) {
+  .sidebarClosed {
+    height: 100vh !important;
+    background-color: var(--sideNav);
+    flex: 0 !important;
+    position: relative;
+    display: none;
+    /* transition: ease-in-out 0.3s all; */
+  }
+  .flex1 {
+    display: flex;
+    flex-direction: row;
+    /* height: 100vh; */
+    margin: 0px !important;
+    padding: 0px !important;
+    overflow: hidden !important;
+  }
+  .flex {
+    overflow: hidden !important;
+  }
+}

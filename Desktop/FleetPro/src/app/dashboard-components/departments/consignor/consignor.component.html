@@ -1,0 +1,368 @@
+<mat-toolbar class="header">
+  <div [formGroup]="filterForm" class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" formControlName="consignorCode" placeholder="Search Consignor Code"
+      (keyup.enter)="search()">
+  </div>
+
+  <span class="spacer"></span>
+
+
+  <div class="badgedisplay" style="height: 100%; ">
+    <div class="FilterIcon" style="margin-right: 40px; padding: 1px; ">
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+        routerLink="/dashboard/departments/createConsignor"
+        style="outline: none !important; padding: 1px !important; width: 45%;">
+        <mat-icon class="badgedisplay" style="align-self: center; margin-bottom: 0px !important;">add</mat-icon>
+        <span style="display: block; line-height: 0.8; color: var(--headerText)"> Consignor </span>
+      </button>
+    </div>
+
+    <div class="FilterIcon">
+      <button mat-icon-button [matMenuTriggerFor]="menu3" style=" outline: none !important;"
+        aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+        <span style="display: block; line-height: 0.8; color: var(--headerText)"> More </span>
+
+      </button>
+      <mat-menu #menu3="matMenu" class="mor-menu mt-4 mr-3" style=" box-shadow: 0 0 10px 0 #838383; border-radius: 8px;">
+        <button mat-menu-item style="outline: none !important; margin-right: 54px; " (click)="downloadReport()">
+          <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+          <mat-icon style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+          Download Excel
+        </button>
+        <button mat-menu-item style="outline: none !important; font-size: 10px; margin-right: 54px;" (click)="downloadSampleExcel()">
+          <img src="assets/images/sample-download.svg" style="margin-left: 4px;margin-right: 7px;">
+          Download sample Format
+        </button>
+        <button mat-menu-item   matTooltip="You can upload excel here, but make sure it mates the sample formate"
+        matTooltipClass="custom-tooltip"
+        matTooltipPosition="below" style="outline: none !important; margin-right: 54px;" data-toggle="modal"
+          data-target="#exampleModal">
+          <!-- <img src="assets/images/upload-orange.png" style="margin-left: 4px;"> -->
+          <mat-icon style="margin-left: 4px; color: var(--clor); margin-right: 0px;">upload</mat-icon>
+          Upload Excel
+        </button>
+      </mat-menu>
+      <div class="modal fade " id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg " style="width: 576px !important;" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div class="modal-title Drop-zone2">Drop zone</div>
+            </div>
+            <div class="modal-body">
+              <div class="center">
+                <ngx-file-drop contentClassName="Drop-files-here-or-c" dropZoneClassName="my-style"
+                  dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)">
+                  <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+                    <div (click)="openFileSelector()" style="height: 100%; width: 100%;padding: 10%;">
+
+                      <img src="assets/images/upload.png" class="upload">
+                      <p style="cursor: pointer;" *ngIf="dropZoneMessage==0">Drop files here or click to upload</p>
+                      <p style="cursor: pointer;" *ngIf="dropZoneMessage==1">{{files[0].relativePath}}</p>
+                      <p style="cursor: pointer;" *ngIf="dropZoneMessage==2" class="text-danger">Only Excel Files
+                        are
+                        allowed.
+                      </p>
+                    </div>
+
+                  </ng-template>
+                </ngx-file-drop>
+              </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+              <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+              <!-- <button type="button" [disabled]="dropZoneMessage!=1" class="modalUploadButton">Upload</button> -->
+              <button mat-raised-button [disabled]="dropZoneMessage!=1" (click)="uploadExcel()"
+                class="basicRaisedbtn modalUploadButton">Upload</button>
+              <!-- <button mat-menu-item style="outline: none !important; font-size: 10px;">
+                <img src="assets/images/sample-download.svg" style="margin-left: 4px;">
+                Download sample Format
+              </button> -->
+              <!-- <input type="file" name="test" id="" (change)="fileChange($event)"> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade bd-example-modal-sm" data-backdrop="static" id="successModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+          <div class="modal-content">
+            <div class="row">
+              <div class="col-11 pr-0 pt-3 ">
+                <div class="row">
+                  <div class="col-12 pr-5 pl-5 pt-3 ">
+                    <div class="row">
+                      <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                        <img src="assets/images/ic-done.svg" alt="">
+                      </div>
+                    </div>
+                    <div class="row mt-3 mb-4">
+                      <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                        {{successMsg}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- <div class="row mt-2">
+                        <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary"
+                                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                                (click)="closeModal2()">OK</button>
+                        </div>
+                    </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade bd-example-modal-sm" data-backdrop="static" id="errorModal" tabindex="-1" role="dialog"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+          <div class="modal-content">
+            <div class="row">
+              <div class="col-12 pr-0 pt-3 ">
+                <div class="row">
+                  <div class="col-12 pr-5 pl-5 pt-3 ">
+                    <div class="row">
+                      <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                        <img src="assets/images/icon-done.svg" alt="">
+                      </div>
+                    </div>
+                    <div class="row mt-3">
+                      <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                        {{statusMsg}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+                    <button type="button" class="btn btn-secondary"
+                      style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                      data-dismiss="modal">OK</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- </div> -->
+
+  <div class="badgedisplay1">
+    <div class="FilterIcon">
+      <button mat-icon-button [matMenuTriggerFor]="menu5" style=" outline: none !important;"
+        aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+        <span style="display: block; line-height: 0.9; "> More </span>
+
+      </button>
+      <mat-menu #menu5="matMenu">
+        <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+          <!-- <img src="assets/images/download.png" style="margin-left: 4px;"> -->
+          <mat-icon style="margin-left: 4px; color: var(--clor); margin-right: 0px;">download</mat-icon>
+          Download Excel
+        </button>
+        <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+          <!-- <img src="assets/images/upload-orange.png" style="margin-left: 4px;"> -->
+          <mat-icon style="margin-left: 4px; color: var(--clor); margin-right: 0px;">upload</mat-icon>
+          Upload Excel
+        </button>
+
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>
+
+<div class="container-fluid"
+  style=" height:100%; padding-left :36px; padding-top: 12px; padding-right: 50px; background-color: var(--backGround);">
+  <div style="position: relative !important;">
+    <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+      <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+    </ngx-spinner>
+  </div>
+  <div class="row mt-3" style="padding-left: 10px !important;">
+    <div class="col-lg-12 table-responsive eol"
+      [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+      style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; background-color: white;"
+      infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" [scrollWindow]="false"
+      (scrolled)="getConsignor()">
+
+      <table class="table table-bordered bordered rounded">
+        <thead>
+          <tr class="thead-dark">
+            <th scope="col" style="width: 60px !important;">S.No</th>
+            <th scope="col" style="width: 150px !important;">Consignor Name</th>
+            <th scope="col" style="width: 100px !important;">Consignor Code</th>
+            <th scope="col" style="width: 192px !important;">Address</th>
+            <th scope="col" style="width: 80px !important;">Geofence<br>radius in meter</th>
+            <th scope="col" style="width: 80px !important;">Avaliablity Fence<br>radius in meter</th>
+            <th scope="col" style="width: 70px !important;">Loading Time</th>
+            <th scope="col" style="width: 100px !important;">Consignment Type </th>
+            <th scope="col" style="width: 120px !important;">Group</th>
+            <th scope="col" style="width: 100px !important;">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="eol">
+          <tr *ngFor="let obj of consignorArr; index as i">
+            <td class="align-middle" scope="row">{{i+1}}</td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.name">
+                {{obj?.name}}
+              </span>
+              <span *ngIf="!obj.name">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.code">
+                {{obj?.code}}
+              </span>
+              <span *ngIf="!obj.code">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.address">
+                {{obj?.address}}
+              </span>
+              <span *ngIf="!obj.address">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.metas[0].geoFence.radius">
+                {{obj?.metas[0]?.geoFence?.radius}}
+              </span>
+              <span *ngIf="!obj.metas[0].geoFence.radius">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.metas[0].vehicleAvailabilityFence.radius">
+                {{obj?.metas[0]?.vehicleAvailabilityFence?.radius}}
+              </span>
+              <span *ngIf="!obj.metas[0].vehicleAvailabilityFence.radius">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.metas[0].loadingTime">
+                {{obj?.metas[0]?.loadingTime}}
+              </span>
+              <span *ngIf="!obj.metas[0].loadingTime">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.metas[0].consignmentType">
+                {{obj?.metas[0]?.consignmentType}}
+              </span>
+              <span *ngIf="!obj.metas[0].consignmentType">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle" scope="row">
+              <span *ngIf="obj.departmentGroup">
+                {{obj?.departmentGroup}}
+              </span>
+              <span *ngIf="!obj.departmentGroup">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle ">
+              <span style=" cursor: pointer;">
+                <img src="assets/images/ic-edit.svg" routerLink="/dashboard/departments/editConsignor/{{obj.code}}"
+                  alt="">
+              </span>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span style=" cursor: pointer;">
+                <img src="assets/images/ic-delete.svg" (click)="getCode(obj.code,obj.name)" data-toggle="modal"
+                  data-target="#exampleModal1" alt="">
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="consignorArr.length === 0">
+            <td class="align-middle" colspan="10">
+              No Result Found
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade " id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " style="width: 576px !important;" role="document">
+    <div class="modal-content p-4">
+      <div class="row mb-3">
+        <div class="col-12 ">
+          <span class="modal-title d-flex justify-content-center modalHeading" id="exampleModalLabel"> Delete</span>
+          <div class="row mt-3 d-flex justify-content-center">
+            <div class="col-12" style="text-align: center !important;">
+              <span class="sub-heading">
+                Are you sure u want to delete "{{currName}}"?
+              </span> <br> <br>
+              <span class="sub-heading" style="margin-top: 15px !important;">
+                This action is not reversible.
+              </span>
+            </div>
+          </div>
+          <div class="row mt-4">
+            <div class="col-6" style="display: flex; justify-content: center;">
+              <button type="button" mat-stroked-button class="btnStrBasic" style="width:90% ;"
+                data-dismiss="modal">No</button>
+            </div>
+            <div class="col-6">
+              <button type="button" class="btn btn-secondary submitDialog" (click)="deleteConsignor()"
+                data-dismiss="modal">Yes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" id="errorInput" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/ic-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  Deleted Successfully
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                (click)="closeModal()">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

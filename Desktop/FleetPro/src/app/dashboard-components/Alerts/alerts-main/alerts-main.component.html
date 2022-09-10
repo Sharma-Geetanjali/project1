@@ -1,0 +1,379 @@
+<div style="background-color: #F2F2F2; height: 100%;" [formGroup]="filterForm">
+  <mat-toolbar class="header">
+    <div class="searchBox">
+      <mat-icon class="searchIcon">search</mat-icon>
+      <input type="text" class="search_input" name="search" formControlName="filterVehicle" placeholder="Search vehicle"
+        [matAutocomplete]="auto" (keyup.enter)="apply(); ">
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+        <mat-option *ngFor="let option of filterVehicleList" [value]="option.name">
+          {{option.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </div>
+    <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+    <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+      <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+        style="outline: none !important; ">
+        <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+          class="badgedisplay1">filter_list</mat-icon>
+        <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+        <mat-icon class="badgedisplay">filter_list</mat-icon>
+        <span style="display: block; line-height: 0.8; color: var(--headerText)"> Filter </span>
+      </button>
+    </div>
+
+    <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+
+      <span mat-menu-item (click)="$event.stopPropagation();"
+        style="outline: none !important; height: 150px !important; border-top: none !important;">
+        <span style="display: block; font-size: 12px;">
+          <span>
+            Date
+          </span>
+          <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearDate()">
+            Clear
+          </span>
+        </span>
+        <span style="display: block;">
+          <mat-form-field appearance="outline" style="width: 100% !important;">
+            <input matInput [ngxMatDatetimePicker]="pickerFrom" formControlName="fromDate" [max]="maxDate"
+              placeholder="From date & time" (dateChange)="headerS.setStartDate($event.value)" disabled>
+
+            <mat-datepicker-toggle matSuffix [for]="pickerFrom" disabled="false"></mat-datepicker-toggle>
+
+            <ngx-mat-datetime-picker #pickerFrom [enableMeridian]="true" disabled="false"></ngx-mat-datetime-picker>
+          </mat-form-field>
+        </span>
+
+        <span>
+          <mat-form-field appearance="outline" style="width: 100% !important;">
+            <input matInput [ngxMatDatetimePicker]="pickerTo" placeholder="To date & time" [max]="maxDate"
+              formControlName="toDate" (dateChange)="headerS.setEndDate($event.value)" disabled>
+
+            <mat-datepicker-toggle matSuffix [for]="pickerTo" disabled="false"></mat-datepicker-toggle>
+
+            <ngx-mat-datetime-picker #pickerTo [enableMeridian]="true" style="border-top: none !important;"
+              disabled="false"></ngx-mat-datetime-picker>
+          </mat-form-field>
+
+        </span>
+
+      </span>
+
+
+      <mat-divider style="margin-top: 5px;"></mat-divider>
+      <span mat-menu-item (click)="$event.stopPropagation();"
+        style="outline: none !important; height: 75px !important;">
+        <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+          <span>
+            <button mat-stroked-button class="btnStrBasic" (click)="clearAll();">Clear All</button>
+          </span>
+          <span style="float: right !important;">
+            <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filterValues();">
+              Apply
+            </button>
+          </span>
+        </span>
+      </span>
+
+    </mat-menu>
+
+    <!-- <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+    <span>{{numberFilter.length}} Filters</span>
+    <a (click)="reomveFilter()">
+      <img src="assets/images/ic-close.png" height="10px" width="10px"
+        style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+    </a>
+
+
+  </span> -->
+
+
+
+    <span class="spacer"></span>
+
+    <div class="badgedisplay" style="margin-right: 20px;">
+      <button mat-menu-item style="outline: none !important;color: var(--headerText)" (click)="downloadReport()">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+    </div>
+
+    <div class="badgedisplay1">
+      <button mat-icon-button [matMenuTriggerFor]="menu2" style="margin-right: 22px; outline: none !important;"
+        aria-label="Example icon-button with a menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu2="matMenu">
+        <!-- <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+      Upload Excel
+      <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+    </button> -->
+        <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+          Download Excel
+          <img src="assets/images/download.png" style="margin-left: 4px;">
+        </button>
+      </mat-menu>
+    </div>
+
+
+
+  </mat-toolbar>
+
+  <div class="container-fluid" style="padding-left :46px; padding-top: 12px; padding-right: 50px;">
+    <div class="row selectorRow mt-4  d-flex justify-content-around eol"
+      style=" max-width: 90vw; overflow-x: auto !important;">
+      <div class="col-1  m-0 p-2" style="width: 150px !important;"
+        [ngClass]="{'activeLine': subCount === 'OVER_SPEEDING'}" *ngIf="global.checkIf('OVER_SPEEDING')">
+        <div class="row d-flex justify-content-center p-1" (click)="toggleSubmenu('OVER_SPEEDING')">
+          <img src="assets/images/overspeed-o.svg" *ngIf="subCount === 'OVER_SPEEDING'" alt="">
+          <img src="assets/images/overspeed.svg" *ngIf="!(subCount === 'OVER_SPEEDING')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Over speeding
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'IDLE_ENGINE'}"
+        *ngIf="global.checkIf('IDLE_ENGINE')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('IDLE_ENGINE')">
+          <img src="assets/images/idel-o.svg" *ngIf="subCount === 'IDLE_ENGINE'" alt="">
+          <img src="assets/images/group-10.svg" *ngIf="!(subCount === 'IDLE_ENGINE')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Engine Idling
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'HARD_DECELERATION'}"
+        *ngIf="global.checkIf('HARD_DECELERATION')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('HARD_DECELERATION')">
+          <img src="assets/images/harsh-o.svg" *ngIf="subCount === 'HARD_DECELERATION'" alt="">
+          <img src="assets/images/group-11.svg" *ngIf="!(subCount === 'HARD_DECELERATION')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Harsh break
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'HARD_ACCELERATION'}"
+        *ngIf="global.checkIf('HARD_ACCELERATION')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('HARD_ACCELERATION')">
+          <img src="assets/images/high-acc-o.svg" *ngIf="subCount === 'HARD_ACCELERATION'" alt="">
+          <img src="assets/images/high-acc.svg" *ngIf="!(subCount === 'HARD_ACCELERATION')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          High Acceleration
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2 " [ngClass]="{'activeLine': subCount === 'GEO_FENCE_BREACH'}"
+        *ngIf="global.checkIf('GEO_FENCE_BREACH')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('GEO_FENCE_BREACH')">
+          <img src="assets/images/geo-fence-o.svg" *ngIf="subCount === 'GEO_FENCE_BREACH'" alt="">
+          <img src="assets/images/geo-fence.svg" *ngIf="!(subCount === 'GEO_FENCE_BREACH')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Geo Fence
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'IGNITION_ON'}"
+        *ngIf="global.checkIf('IGNITION_ON')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('IGNITION_ON')">
+          <img src="assets/images/engine-on-o.svg" *ngIf="subCount === 'IGNITION_ON'" alt="">
+          <img src="assets/images/engine-on.svg" *ngIf="!(subCount === 'IGNITION_ON')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Engine On
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'IGNITION_OFF'}"
+        *ngIf="global.checkIf('IGNITION_OFF')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('IGNITION_OFF')">
+          <img src="assets/images/eng-off-o.svg" *ngIf="subCount === 'IGNITION_OFF'" alt="">
+          <img src="assets/images/eng-off.svg" *ngIf="!(subCount === 'IGNITION_OFF')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Engine Off
+        </div>
+
+      </div>
+
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'DTC'}" *ngIf="global.checkIf('DTC')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('DTC')">
+          <img src="assets/images/dtc-alert-o.svg" *ngIf="subCount === 'DTC'" alt="">
+          <img src="assets/images/dtc-alert.svg" *ngIf="!(subCount === 'DTC')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          DTC Alert
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'POWER_ON'}"
+        *ngIf="global.checkIf('POWER_ON')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('POWER_ON')">
+          <img src="assets/images/device-plug-o.svg" *ngIf="subCount === 'POWER_ON'" alt="">
+          <img src="assets/images/device-plug.svg" *ngIf="!(subCount === 'POWER_ON')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText" style="text-align: center;">
+          Device Plugged In
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'POWER_OFF'}"
+        *ngIf="global.checkIf('POWER_OFF')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('POWER_OFF')">
+          <img src="assets/images/disconnected-o.svg" *ngIf="subCount === 'POWER_OFF'" alt="">
+          <img src="assets/images/disconnected.svg" *ngIf="!(subCount === 'POWER_OFF')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Disconnected
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'TEMPERATURE_SENSOR'}"
+        *ngIf="global.checkIf('TEMPERATURE_SENSOR')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('TEMPERATURE_SENSOR')">
+          <img src="assets/images/temp-sen-o.svg" *ngIf="subCount === 'TEMPERATURE_SENSOR'" alt="">
+          <img src="assets/images/temp-sen.svg" *ngIf="!(subCount === 'TEMPERATURE_SENSOR')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Temp Sensor
+        </div>
+
+      </div>
+      <div class="col-1  m-0 p-2" [ngClass]="{'activeLine': subCount === 'HIGH_ENGINE_COLLANT_TEMPERATURE'}"
+        *ngIf="global.checkIf('HIGH_ENGINE_COLLANT_TEMPERATURE')">
+        <div class="row d-flex justify-content-center" (click)="toggleSubmenu('HIGH_ENGINE_COLLANT_TEMPERATURE')">
+          <img src="assets/images/cool-temp-o.svg" *ngIf="subCount === 'HIGH_ENGINE_COLLANT_TEMPERATURE'" alt="">
+          <img src="assets/images/cool-temp.svg" *ngIf="!(subCount === 'HIGH_ENGINE_COLLANT_TEMPERATURE')" alt="">
+        </div>
+        <div class="row d-flex justify-content-center headingText " style="text-align: center;">
+          Coolant Temp
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row" style="height: 100%;  overflow: auto;">
+      <app-over-speeding *ngIf="subCount === 'OVER_SPEEDING' " [paramObj]="paramObj"></app-over-speeding>
+      <app-engine-idling *ngIf="subCount === 'IDLE_ENGINE' " [paramObj]="paramObj"></app-engine-idling>
+      <app-harsh-break *ngIf="subCount === 'HARD_DECELERATION'" [paramObj]="paramObj"></app-harsh-break>
+      <app-high-acceleration *ngIf="subCount === 'HARD_ACCELERATION'" [paramObj]="paramObj"></app-high-acceleration>
+      <app-geo-fence *ngIf="subCount === 'GEO_FENCE_BREACH'" [paramObj]="paramObj"></app-geo-fence>
+      <app-engine-on *ngIf="subCount === 'IGNITION_ON'" [paramObj]="paramObj"></app-engine-on>
+      <app-engine-off *ngIf="subCount === 'IGNITION_OFF'" [paramObj]="paramObj"></app-engine-off>
+      <app-dtc-alert *ngIf="subCount === 'DTC'" [paramObj]="paramObj"></app-dtc-alert>
+      <app-device-plugged-in *ngIf="subCount === 'POWER_ON'" [paramObj]="paramObj"></app-device-plugged-in>
+      <app-disconnected *ngIf="subCount === 'POWER_OFF'" [paramObj]="paramObj"></app-disconnected>
+      <app-temp-sensor *ngIf="subCount === 'TEMPERATURE_SENSOR'" [paramObj]="paramObj"></app-temp-sensor>
+      <app-coolent-temp *ngIf="subCount === 'HIGH_ENGINE_COLLANT_TEMPERATURE'" [paramObj]="paramObj"></app-coolent-temp>
+    </div>
+  </div>
+
+</div>
+
+
+
+<div class="modal fade bd-example-modal-sm" data-backdrop="static" id="downloadingModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12 d-flex justify-content-center" style="height: 100px;">
+                  <img src='assets/images/cfpro.gif'
+                    style="margin-bottom: 30px; height: 90px; width: 90px; background-color: white;">
+                </div>
+              </div>
+              <div class="row mt-3 mb-4">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{statusMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                (click)="closeModal()">cancel</button>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" data-backdrop="static" id="successModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-11 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/ic-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3 mb-4">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{successMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row mt-2">
+                        <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+                            <button type="button" class="btn btn-secondary"
+                                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                                (click)="closeModal2()">OK</button>
+                        </div>
+                    </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade bd-example-modal-sm" data-backdrop="static" id="errorModal" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered " role="document">
+    <div class="modal-content">
+      <div class="row">
+        <div class="col-12 pr-0 pt-3 ">
+          <div class="row">
+            <div class="col-12 pr-5 pl-5 pt-3 ">
+              <div class="row">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  <img src="assets/images/icon-done.svg" alt="">
+                </div>
+              </div>
+              <div class="row mt-3">
+                <div class="col-12" style="text-align: center; font-size: 16px !important; font-weight: 500;">
+                  {{statusMsg}}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 pr-5 pl-5 pt-3 pb-3 d-flex justify-content-center">
+              <button type="button" class="btn btn-secondary"
+                style="background-color: var(--clor);  font-weight: 500 !important; width: 45% !important; "
+                data-dismiss="modal">OK</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

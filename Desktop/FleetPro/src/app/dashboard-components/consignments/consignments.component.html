@@ -1,0 +1,887 @@
+<mat-toolbar class="header">
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" placeholder="Consignment Code"
+      (keyup.enter)="search()">
+  </div>
+  <div class="FilterIcon" [matMenuTriggerFor]="menu" #filterMenuTrigger="matMenuTrigger">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon matBadge="{{numberFilter.length}}" *ngIf="numberFilter.length != 0" matBadgeColor="warn"
+        class="badgedisplay1">filter_list</mat-icon>
+      <mat-icon *ngIf="numberFilter.length == 0" class="badgedisplay1">filter_list</mat-icon>
+
+      <mat-icon class="badgedisplay">filter_list</mat-icon>
+
+      <span style="display: block; line-height: 0.8;"> Filter </span>
+    </button>
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu eol" xPosition="before" [formGroup]="filterForm">
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Region</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select Region" #singleSelect formControlName="region"
+          (selectionChange)="onChangeRegion($event.value)">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Select Region'" [noEntriesFoundLabel]="'No match found'"
+              formControlName="regionGroupFilter"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let obj of UnqiueGroupID" value="{{obj}}">
+            {{obj}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Select District</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select District" #singleSelect formControlName="district">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Select District'" formControlName="regionFilter"
+              [noEntriesFoundLabel]="'No match found'">
+            </ngx-mat-select-search>
+          </mat-option>
+
+          <mat-option *ngFor="let obj of filteredArr" value="{{obj.groupId}}"
+            (click)="toSelectConsignmentDeptt(obj.groupName)">
+            {{obj.groupName}}
+          </mat-option>
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Dispatcher Code</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select Dispatcher" #singleSelect formControlName="dispatchCode">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Dispatcher Code'" [noEntriesFoundLabel]="'No match found'"
+              formControlName="dispatchCodeFilter">
+            </ngx-mat-select-search>
+          </mat-option>
+          <div *ngFor="let obj of filteredCnorArr">
+            <mat-option *ngFor="let obj1 of obj.detail" value="{{obj1.code}}">
+              {{obj1.name}}
+            </mat-option>
+          </div>
+
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 100px !important;">
+      <span style="display: block; font-size: 12px;"> Receiver Code</span>
+
+      <mat-form-field appearance="outline" style="width: 100% !important;">
+        <mat-select placeholder="Select Receiver" #singleSelect formControlName="receiverCode">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Receiver Code'" [noEntriesFoundLabel]="'No match found'"
+              formControlName="receiverCodeFilter">
+            </ngx-mat-select-search>
+          </mat-option>
+          <div *ngFor="let obj of filteredCneeArr">
+            <mat-option *ngFor="let obj1 of obj.detail" value="{{obj1.code}}">
+              {{obj1.name}}
+            </mat-option>
+          </div>
+
+
+        </mat-select>
+      </mat-form-field>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 180px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Geofence flag
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearFlag()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="flag">
+        <mat-radio-button value="RED">Red</mat-radio-button>
+        <mat-radio-button value="GREEN">Green</mat-radio-button>
+        <mat-radio-button value="GREY">Grey</mat-radio-button>
+
+      </mat-radio-group>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 170px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          KPI
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearKpi()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="kpi">
+        <mat-radio-button value="ROUTE_DEVIATION">Route Deviation</mat-radio-button>
+        <mat-radio-button value="EN_ROUTE_STOPPAGE">En Route Stoppage</mat-radio-button>
+        <mat-radio-button value="GPS_UP_TIME">Gps Up Time</mat-radio-button>
+
+      </mat-radio-group>
+    </span>
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 80px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Single Stage
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearSingleStage()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="singleStage">
+        <mat-radio-button value="true">Yes</mat-radio-button>
+        <mat-radio-button style="margin-left: 100px;" value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+
+    <span mat-menu-item (click)="$event.stopPropagation();" style="outline: none !important; height: 210px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Vehicle Status
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearStatus()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" class="example-radio-group" formControlName="status">
+        <mat-radio-button value="DISCONNECTED">Disconnected</mat-radio-button>
+        <mat-radio-button value="LOW_VOLTAGE">Low Battery</mat-radio-button>
+        <mat-radio-button value="OVER_SPEEDING">Over Speeding</mat-radio-button>
+        <mat-radio-button value="TAMPER">Tamper</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <span mat-menu-item (click)="$event.stopPropagation();"
+      style="outline: none !important; height: 80px !important;  margin-bottom: 75px !important;">
+      <span style="display: block; font-size: 12px;">
+        <span>
+          Not In Network
+        </span>
+        <span style="color: var(--clor); font-size: 14px; float: right !important;" (click)="clearnotInNetwork()">
+          clear
+        </span>
+      </span>
+
+      <mat-radio-group aria-label="Select an option" formControlName="notInNetwork">
+        <mat-radio-button value="true">Yes</mat-radio-button>
+        <mat-radio-button style="margin-left: 80px;" value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </span>
+
+    <mat-divider style="margin-top: 5px;"></mat-divider>
+    <div style="position:absolute; bottom: 0; background-color: white; width: 100%;">
+      <span mat-menu-item (click)="$event.stopPropagation();"
+        style="outline: none !important; height: 75px !important;">
+        <span style="display: flex; justify-content: space-around; margin-top: 24px;">
+          <span>
+            <button mat-stroked-button class="btnStrBasic" (click)="clearAll()">Clear All</button>
+          </span>
+          <span style="float: right !important;">
+            <button type="submit" mat-raised-button class=" basicRaisedbtn" (click)="filter()">
+              Apply
+            </button>
+          </span>
+        </span>
+      </span>
+    </div>
+
+
+  </mat-menu>
+
+  <span class="filterBox badgedisplay" *ngIf="numberFilter.length != 0">
+    <span>{{numberFilter.length}} Filters</span>
+    <a (click)="reomveFilter()">
+      <img src="assets/images/ic-close.png" height="10px" width="10px"
+        style="margin-left: 17px; cursor: pointer !important;" alt="">
+
+    </a>
+
+
+  </span>
+
+
+
+  <span class="spacer"></span>
+
+  <!-- <button mat-raised-button  class="basicRaisedbtn mapButton">Report</button> -->
+  <div class="badgedisplay" *ngIf="consignmentFlag" style="margin-right: 20px; width: 70px ;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleList()">
+
+      <mat-icon style="color: var(--clor);">list</mat-icon>
+      <span style="display: block; line-height: 0.8;">List View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" *ngIf="!consignmentFlag" style="margin-right: 20px; width: 70px ;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleList()">
+
+      <mat-icon style="color: var(--black);">list</mat-icon>
+      <span style="display: block; line-height: 0.8;">List View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" *ngIf="consignmentFlag" style=" width: 60px ;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleMap()">
+
+      <mat-icon style="color: var(--black);" fontSet="material-icons-outlined">map_outline</mat-icon>
+      <span style="display: block; line-height: 0.8;">Map View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay" *ngIf="!consignmentFlag" style=" width: 60px ;">
+    <button mat-icon-button class="d-flex justify-content-center" style="outline: none !important; "
+      (click)="selectVehicleMap()">
+
+      <mat-icon style="color: var(--clor);" fontSet="material-icons-outlined">map_outline</mat-icon>
+      <span style="display: block; line-height: 0.8;">Map View</span>
+    </button>
+  </div>
+
+  <div class="badgedisplay1">
+    <button mat-icon-button [matMenuTriggerFor]="menu2" style="outline: none !important;"
+      aria-label="Example icon-button with a menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+    <mat-menu #menu2="matMenu">
+      <!-- <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+    Upload Excel
+    <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+  </button> -->
+      <button mat-menu-item style="outline: none !important;" (click)="downloadReport()">
+        Download Excel
+        <img src="assets/images/download.png" style="margin-left: 4px;">
+      </button>
+      <button *ngIf="consignmentFlag" mat-menu-item style="outline: none !important;" (click)="selectVehicleMap()">
+        Consignment Map
+      </button>
+      <button *ngIf="!consignmentFlag" mat-menu-item style="outline: none !important;" (click)="selectVehicleList()">
+        Consignment List
+      </button>
+    </mat-menu>
+  </div>
+
+</mat-toolbar>
+
+<div [class.noneClass]="!consignmentFlag">
+
+
+  <div class="container-fluid smallScreen eol">
+    <div class="row mt-3 mobiletable" style="padding-left: 10px !important;">
+      <div class="col-lg-12 table-responsive eol"
+        [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+        style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px; " infiniteScroll
+        [infiniteScrollDistance]="2" [infiniteScrollThrottle]="40" (scrolled)="nextPageTable()" [scrollWindow]="false">
+
+        <table class="table table-bordered bordered rounded" style="background-color: #FFFFFF;">
+          <thead>
+            <tr class="thead-dark">
+              <th scope="col" style="width: 70px !important;">S.No</th>
+              <th scope="col" style="width: 120px !important;">Creation Flag</th>
+              <th scope="col" style="width: 120px !important;">Ignition Status</th>
+              <th scope="col" style="width: 172px !important;">Registration Number</th>
+              <th scope="col" style="width: 120px !important;">Speed(Kmph)</th>
+              <th scope="col" style="width: 162px !important;">Consignment Code</th>
+              <th scope="col" style="width: 172px !important;">Dispatcher</th>
+              <th scope="col" style="width: 172px !important;">Dispatcher District</th>
+              <th scope="col" style="width: 192px !important;">Receiver</th>
+              <th scope="col" style="width: 112px !important;">Created On</th>
+              <th scope="col" style="width: 112px !important;">Created Inside Geofence </th>
+              <th scope="col" style="width: 112px !important;">Start Time</th>
+              <th scope="col" style="width: 112px !important;">End Time/Last Reported Time </th>
+              <th scope="col" style="width: 300px !important;">Last Known Location</th>
+              <th scope="col" style="width: 132px !important;">Status</th>
+              <th scope="col" style="width: 132px !important;">Distance Travelled</th>
+              <th scope="col" style="width: 132px !important;">Mapped Time</th>
+              <th scope="col" style="width: 132px !important;">Mapped Distance</th>
+              <th scope="col" style="width: 132px !important;">Proximity Status</th>
+              <th scope="col" style="width: 132px !important;">Transporter Name <br>(Mobile No.)</th>
+              <th scope="col" style="width: 132px !important;">Driver Name <br>(Mobile No.)</th>
+              <th scope="col" style="width: 182px !important;">KPI Violations</th>
+            </tr>
+          </thead>
+          <tbody class="eol">
+            <tr *ngFor="let obj of tablePaginatedArray; index as i" id="{{ i }}">
+              <td class="align-middle" scope="row" style="font-weight: 500;">{{i+1}}</td>
+              <td class="align-middle">
+                <span *ngIf="obj.createdInsideGeofence != false && obj.createdInsideGeofence != true">
+                  <img src="assets/images/flag_gray_20.png" style="height: 24px; width: 24px" />
+                </span>
+                <span *ngIf="obj.createdInsideGeofence == true || obj.createdInsideGeofence == false">
+                  <span *ngIf="obj.createdInsideGeofence">
+                    <img src="assets/images/green_flag_mid.png" style="height: 24px; width: 24px" />
+                  </span>
+                  <span *ngIf="!obj.createdInsideGeofence">
+                    <img src="assets/images/red_flag_mid.png" style="height: 24px; width: 24px" />
+                  </span>
+                </span>
+              </td>
+              <td class="align-middle" scope="row">
+                <span *ngIf="obj.vehicle.ignitionStatus" class="GreenCircle" style="font-weight: 500;">&nbsp; &nbsp;
+                  ON</span>
+                <span *ngIf="!obj.vehicle.ignitionStatus" class="RedCircle" style="font-weight: 500;">&nbsp; &nbsp;
+                  OFF</span>
+              </td>
+              <td class="align-middle">
+                <span style="border-bottom: 1px solid #008ce8; color: #008ce8; font-weight: 500; cursor: pointer;"
+                  *ngIf="obj.vehicle.name" routerLink="/dashboard/map/{{obj.consignmentCode}}">
+                  {{obj.vehicle.name}}
+                </span>
+                <span *ngIf="!obj.vehicle.name">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.vehicle.speed">
+                  {{obj.vehicle.speed}}
+                </span>
+                <span *ngIf="!obj.vehicle.speed">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;" *ngIf="!obj.singleStage">
+                <span *ngIf="obj.consignmentCode">
+                  {{obj.consignmentCode}}
+                </span>
+                <span *ngIf="!obj.consignmentCode">
+                  <h1>--</h1>
+                </span>
+
+              </td>
+              <td class="align-middle" style="font-weight: 500;" *ngIf="obj.singleStage" (click)="waypointsToggle(i, obj.groupId)" >
+                <span *ngIf="obj.consignmentCode">
+                  {{obj.consignmentCode}}
+                  <img id="{{ 'object-' + i }}"
+                      src="assets/images/expand.png"
+                      style="height: 24px; width: 24px"
+                  />
+                </span>
+                <span *ngIf="!obj.consignmentCode">
+                  <h1>--</h1>
+                </span>
+
+
+
+
+              </td>
+
+
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.consignor.name">
+                  {{obj.consignor.name}}<br />
+                  (consignor code: {{obj.consignor.code}})
+                </span>
+                <span *ngIf="!obj.consignor.name">
+                  <h1>--</h1>
+                </span>
+
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.departmentGroupName">
+                  {{obj.departmentGroupName}}
+                </span>
+                <span *ngIf="!obj.departmentGroupName">
+                  <h1>--</h1>
+                </span>
+              </td>
+
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.metas[0].targetDepartmentName">
+                  {{obj.metas[0].targetDepartmentName}}<br />
+                  (receiver code: {{obj.metas[0].targetDepartmentCode}})
+                </span>
+                <span *ngIf="!obj.metas[0].targetDepartmentName">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.createdOn">
+                  {{obj.createdOn | date:'hh:mm a'}} <br>
+                  {{obj.createdOn | date:'dd/MM/yyyy'}}
+                </span>
+                <span *ngIf="!obj.createdOn">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.createdInsideGeofence != false && obj.createdInsideGeofence != true">
+                  <h1>--</h1>
+                </span>
+                <span *ngIf="obj.createdInsideGeofence == true || obj.createdInsideGeofence == false">
+                  <span *ngIf="obj.createdInsideGeofence">
+                    Yes
+                  </span>
+                  <span *ngIf="!obj.createdInsideGeofence">
+                    No
+                  </span>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.startTime">
+                  {{obj.startTime | date:'hh:mm a'}} <br>
+                  {{obj.startTime | date:'dd/MM/yyyy'}}
+                </span>
+                <span *ngIf="!obj.startTime">
+                  <h1>--</h1>
+                </span>
+
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.lastReportedTime">
+                  {{obj.lastReportedTime | date:'hh:mm a'}} <br>
+                  {{obj.lastReportedTime | date:'dd/MM/yyyy'}}
+                </span>
+                <span *ngIf="!obj.lastReportedTime">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.lastReportedLocation?.address">
+                  {{obj.lastReportedLocation?.address}}
+                </span>
+                <span *ngIf="!obj.lastReportedLocation?.address">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.currentStatus">
+                  {{obj.currentStatus}}
+                </span>
+                <span *ngIf="!obj.currentStatus">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.distance">
+                  {{obj.distance}}
+                </span>
+                <span *ngIf="!obj.distance">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.metas[0] && obj.metas[0].expectedTravelTime">
+                  {{obj.metas[0].expectedTravelTime}}
+                </span>
+                <span *ngIf="!obj.metas[0] || !obj.metas[0].expectedTravelTime">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.metas[0] && obj.metas[0].expectedDistanceUnit">
+                  <span *ngIf="obj.metas[0].expectedDistanceUnit != 'KILOMETER'">
+                    {{obj.metas[0].expectedDistance/1000}}Km
+                  </span>
+                  <span *ngIf="obj.metas[0].expectedDistanceUnit == 'KILOMETER'">
+                    {{obj.metas[0].expectedDistance}}Km
+                  </span>
+                </span>
+                <span *ngIf="!obj.metas[0] || !obj.metas[0].expectedDistanceUnit">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.proximityStatus">
+                  {{obj.proximityStatus}}
+                </span>
+                <span *ngIf="!obj.proximityStatus">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.transporter?.phone">
+                  {{obj.transporter?.phone}}
+                </span>
+                <span *ngIf="!obj.transporter?.phone">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.driverDetails">
+                  {{obj?.driverDetails[0]?.phone}}
+                </span>
+                <span *ngIf="!obj.driverDetails">
+                  <h1>--</h1>
+                </span>
+              </td>
+              <td class="align-middle" style="font-weight: 500;">
+                <span *ngIf="obj.kpi">
+                  <span *ngFor="let kpiList of obj.kpi">
+                    {{kpiList.desc}} ({{kpiList.count}})
+                  </span>
+                </span>
+                <span *ngIf="!obj.kpi">
+                  <h1>--</h1>
+                </span>
+              </td>
+            </tr>
+            <!-- <tbody> -->
+              <tr>
+                <td colspan="3">
+                    <div id="accordion" class="collapse">Hidden by default</div>
+                </td>
+            </tr>
+            <!-- </tbody> -->
+
+            <tr *ngIf="consignmentArr.length === 0">
+              <td class="align-middle" colspan="11" style="font-weight: 500;">
+                No Result Found
+
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="mobileCard eol" infiniteScroll [infiniteScrollDistance]="2.5" [infiniteScrollThrottle]="40"
+      (scrolled)="nextPage()" [scrollWindow]="false">
+      <div class="d-flex p-2" style="cursor:pointer ; outline: none;" *ngFor="let obj of paginatedArray"
+        routerLink="/dashboard/map/{{obj.consignmentCode}}">
+        <div class="col-12  mapcard">
+          <div class=" row ">
+            <div class="col-12 vehicleNo">
+              {{obj.vehicle.name}}
+            </div>
+          </div>
+          <div class="row ">
+            <div class="col-12 lastKnown">
+              Last known loaction
+
+            </div>
+          </div>
+          <div class=" row ">
+            <div class="col-10 address">
+              {{obj.lastReportedLocation?.address}}
+            </div>
+            <div class="col-2 d-flex justify-content-end">
+              <img src="assets/images/back_icon.svg" class="my-auto"
+                style="margin-right: 6px !important; padding-bottom: 2px !important; transform: rotate(180deg)">
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class=" col-5 ">
+              <span class="currStatus">
+                Current Speed
+
+              </span>
+            </div>
+            <div class=" col-7">
+              <span class="liveStatus">
+                {{obj.vehicle.speed}} km
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class=" col-5">
+              <span class="currStatus">
+                Travelled today
+              </span>
+            </div>
+            <div class=" col-7">
+              <span class="liveStatus">
+                {{obj.distance}}
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0">
+            <div class="currStatus col-5 ">
+              igntion
+            </div>
+            <div *ngIf="obj.vehicle.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+              <span style="font-size: 12px; color: var(--black); font-weight: 500;">
+                ON
+              </span>
+            </div>
+            <div *ngIf="!obj.vehicle.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+              <span style="font-size: 12px; color: var(--black); font-weight: 500;">
+                OFF
+              </span>
+            </div>
+          </div>
+          <div class="row p-0 r-0 ">
+            <div class="col-12 d-flex justify-content-end">
+              <span style="font-size: 9px; color: var(--black); font-weight: 500;">
+                {{obj.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}
+              </span>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+
+<div [class.noneClass]="consignmentFlag ">
+  <div class="container-fluid p-0">
+    <div class="mapRow">
+      <div class="cardWidth eol" infiniteScroll [infiniteScrollDistance]="2.5" [infiniteScrollThrottle]="40"
+        (scrolled)="nextPage()" [scrollWindow]="false">
+        <div class="d-flex p-2" style="cursor:pointer ; outline: none;" *ngFor="let obj of paginatedArray"
+          routerLink="/dashboard/map/{{obj.consignmentCode}}">
+          <div class="col-12  mapcard">
+            <div class=" row ">
+              <div class="col-12 vehicleNo">
+                {{obj.vehicle.name}}
+              </div>
+            </div>
+            <div class="row ">
+              <div class="col-12 lastKnown">
+                Last known loaction
+
+              </div>
+            </div>
+            <div class=" row ">
+              <div class="col-10 address">
+                {{obj.lastReportedLocation?.address}}
+              </div>
+              <div class="col-2 d-flex justify-content-end">
+                <img src="assets/images/back_icon.svg" class="my-auto"
+                  style="margin-right: 6px !important; padding-bottom: 2px !important; transform: rotate(180deg)">
+              </div>
+            </div>
+            <div class="row p-0 r-0">
+              <div class=" col-5 ">
+                <span class="currStatus">
+                  Current Speed
+
+                </span>
+              </div>
+              <div class=" col-7">
+                <span class="liveStatus">
+                  {{obj.vehicle.speed}} km
+                </span>
+              </div>
+            </div>
+            <div class="row p-0 r-0">
+              <div class=" col-5">
+                <span class="currStatus">
+                  Travelled today
+                </span>
+              </div>
+              <div class=" col-7">
+                <span class="liveStatus">
+                  {{obj.distance}}
+                </span>
+              </div>
+            </div>
+            <div class="row p-0 r-0">
+              <div class="currStatus col-5 ">
+                igntion
+              </div>
+              <div *ngIf="obj.vehicle.ignitionStatus" style="letter-spacing: 0 !important" class="GreenCircle col-7">
+                <span style="font-size: 12px; color: var(--black); font-weight: 500;">
+                  ON
+                </span>
+              </div>
+              <div *ngIf="!obj.vehicle.ignitionStatus" style="letter-spacing: 0 !important" class="RedCircle col-7">
+                <span style="font-size: 12px; color: var(--black); font-weight: 500;">
+                  OFF
+                </span>
+              </div>
+            </div>
+            <div class="row p-0 r-0 ">
+              <div class="col-12 d-flex justify-content-end">
+                <span style="font-size: 9px; color: var(--black); font-weight: 500;">
+                  {{obj.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}
+                </span>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+
+      </div>
+      <div class="mapWidth  p-0 m-0">
+        <div style="position: relative !important;">
+          <ngx-spinner size="small" [fullScreen]="false" bdColor="rgba(0,0,0,0.8)">
+            <img src='assets/images/cfpro.gif' style="margin-top: 800px;  height: 90px; width: 90px;">
+          </ngx-spinner>
+        </div>
+        <div class="countCardPosition">
+          <div class="row totalCountCard">
+            <div class="col-4 p-0 d-flex align-self-center">
+              <div class="mapCardIcon d-flex"> <img src="assets/images/Vehicle_card.svg"
+                  class="mx-auto align-self-center"> </div>
+            </div>
+            <div class="col-2 p-0 ">
+              <div class="row p-0">
+                <div class="col-12 pl-0 pt-0 pb-0">
+                  <span class="totalVehcile" *ngIf="totalVehcile" style="font-weight: 500;">{{nonLocationVehicle}}</span>
+                  <span class="totalVehcile" *ngIf="!totalVehcile" style="font-weight: 500;">--</span>
+
+                </div>
+              </div>
+              <div class="row mt-2">
+                <div class="col-12 pl-0 pt-0 pb-0">
+                  <span class="totalVehcileSM" *ngIf="totalVehcile"
+                    style="font-weight: 500;">{{totalVehcile - nonLocationVehicle}}</span>
+                  <span class="totalVehcileSM" *ngIf="!totalVehcile" style="font-weight: 500;">--</span>
+
+                </div>
+              </div>
+              <div class="row mt-1">
+                <div class="col-12 pl-0 pt-0 pb-0">
+                  <span class="totalVehcileSM" *ngIf="totalVehcile" style="font-weight: 500;">{{totalVehcile}}</span>
+                  <span class="totalVehcileSM" *ngIf="!totalVehcile" style="font-weight: 500;">--</span>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-6 p-0 mt-1 ">
+              <div class="row mt-1 mb-1">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM" style="font-size: 10px !important;">Active Vehicles</span>
+                </div>
+              </div>
+              <div class="row mt-2 ">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM" style="font-size: 10px !important;">Unknown Location</span>
+                </div>
+              </div>
+              <div class="row mt-1 ">
+                <div class="col-12 pl-0 pt-0 pb-0 pr-3">
+                  <span class="totalVehcileSM" style="font-size: 10px !important;">Total Vehicles</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+    <!-- <button  class="recenterMapBtn" (click)="recenterMap()">Recenter Map</button> -->
+
+
+        <agm-map #AgmMap  [latitude]="defaultLat" [longitude]="defaultLng" [zoom]='defaultZoom' (centerChange)="centerChange($event)" [fullscreenControl]='true' [mapTypeControl]='true'>
+          <agm-marker-cluster *ngIf="!cardLoadingFlag" imagePath="https://cdn.rawgit.com/googlemaps/js-marker-clusterer/gh-pages/images/m">
+            <agm-marker *ngFor="let marker of mapsdata | async" (markerClick)="clickedMarker(infoWindow)"
+              [latitude]="marker.lastReportedLocation?.latitude" [longitude]="marker.lastReportedLocation?.longitude" [iconUrl]="{
+                    url: marker?.icon,
+                    scaledSize: {
+                      width: 45,
+                      height: 45
+                    }
+            }">
+              <agm-info-window #infoWindow>
+                <div class="iw-title">
+                  {{marker.vehicle.name | uppercase}}
+                  <span style="float: right; cursor: pointer;" (click)="closeInfoWindow()">
+                    <mat-icon>close</mat-icon>
+                  </span>
+                </div>
+                <div class="iw-content">
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Consignment Code:</span> &nbsp;
+                    <Span class="liveStatus">{{marker.consignmentCode}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">District:</span> &nbsp;
+                    <Span class="liveStatus">{{marker.departmentGroupName}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Dispatcher district:</span> &nbsp;
+                    <Span class="liveStatus">{{marker.departmentGroupName}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Ignition Status:</span>&nbsp;
+
+                    <Span class="liveStatus" *ngIf="marker.vehicle.ignitionStatus"> ON</Span>
+                    <Span class="liveStatus" *ngIf="!marker.vehicle.ignitionStatus"> OFF</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Single Stage:</span>&nbsp;
+
+
+                    <Span class="liveStatus" *ngIf="marker.vehicle.singleStage"> Yes</Span>
+                    <Span class="liveStatus" *ngIf="!marker.vehicle.singleStage"> No</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Stoppage:</span>&nbsp;
+                    <!-- <Span class="liveStatus"> {{marker?.kpi[0]?.count}}</Span> -->
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Dispatcher:</span>&nbsp;
+                    <Span class="liveStatus"> {{marker.consignor['name']}}</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Driver Mobile:</span>&nbsp;
+                    <Span class="liveStatus"> {{marker?.driverDetails[0]?.phone}}</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Receiver:</span>&nbsp;
+                    <Span class="liveStatus"> {{marker.metas[0]['targetDepartmentName']}}</Span>
+
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Travelled Today:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker.distance}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Speed:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker.vehicle.speed}}km/hr</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Time:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker.lastReportedTime | date: 'hh:mm a dd/MM/yy'}}</Span>
+                  </div>
+                  <div class="iw-subTitle">
+                    <span class="currStatus">Last Known Location:</span>&nbsp;
+
+                    <Span class="liveStatus">{{marker.address}}</Span>
+                  </div>
+
+                  <div class=" p-0 d-flex justify-content-center"
+                    style="margin-top: 10px; font-size: 15px; color: var(--clor);">
+                    <button mat-stroked-button class="btnStrBasic"
+                      routerLink="/dashboard/map/{{marker.consignmentCode}}">View Details</button>
+                  </div>
+                </div>
+              </agm-info-window>
+
+            </agm-marker>
+          </agm-marker-cluster>
+
+        </agm-map>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<svg width="71" height="71" viewBox="0 0 71 71" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <filter x="-62.9%" y="-57.1%" width="225.7%" height="225.7%" filterUnits="objectBoundingBox" id="a">
+            <feOffset in="SourceAlpha" result="shadowOffsetOuter1"/>
+            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1" result="shadowMatrixOuter1"/>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+        <filter x="-25.7%" y="-20%" width="151.4%" height="151.4%" filterUnits="objectBoundingBox" id="b">
+            <feMorphology radius="2" operator="dilate" in="SourceAlpha" result="shadowSpreadOuter1"/>
+            <feOffset dy="2" in="shadowSpreadOuter1" result="shadowOffsetOuter1"/>
+            <feGaussianBlur stdDeviation="2" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"/>
+            <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1"/>
+        </filter>
+        <path d="M0 8.008A8.005 8.005 0 0 1 8.008 0h18.984A8.005 8.005 0 0 1 35 8.008v18.984A8.005 8.005 0 0 1 26.992 35H0V8.008z" id="c"/>
+        <path id="d" d="M0 0h24v24H0z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g filter="url(#a)" transform="translate(18 16)">
+            <use fill="#000" filter="url(#b)" xlink:href="#c"/>
+            <path stroke="#FDFDFD" stroke-width="2" d="M26.992-1a8.98 8.98 0 0 1 6.37 2.638A8.979 8.979 0 0 1 36 8.008v18.984a8.98 8.98 0 0 1-2.638 6.37A8.979 8.979 0 0 1 26.992 36H-1V8.008a8.98 8.98 0 0 1 2.638-6.37A8.979 8.979 0 0 1 8.008-1z" fill="#E87F00"/>
+        </g>
+        <path d="m36.78 26.05.72 1.45h5c.55 0 1 .45 1 1v8c0 .55-.45 1-1 1h-5.39a1 1 0 0 1-.89-.55l-.72-1.45h-5v6c0 .55-.45 1-1 1s-1-.45-1-1v-15c0-.55.45-1 1-1h6.38c.38 0 .73.21.9.55zm.72 9.45h4v-6h-5l-1-2h-5v6h6l1 2z" fill="#FFF"/>
+    </g>
+</svg>

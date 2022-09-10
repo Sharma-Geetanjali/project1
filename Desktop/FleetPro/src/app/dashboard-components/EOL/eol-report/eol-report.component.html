@@ -1,0 +1,256 @@
+<ngx-spinner  size = "small" bdColor = "rgba(255,255,255,0)" [fullScreen] = "true"> <img src='assets/images/cfpro.gif' style="margin-bottom: 30px; height: 90px; width: 90px; background-color: white;"> </ngx-spinner>
+
+<mat-toolbar class="header">
+  <div class="searchBox">
+    <mat-icon class="searchIcon">search</mat-icon>
+    <input type="text" class="search_input" name="search" [(ngModel)]="searchText" (keyup.enter)="search()"
+      placeholder="Search Device">
+  </div>
+  <!-- <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn ml-5">GO</button> -->
+  <div class="FilterIcon" [matMenuTriggerFor]="menu">
+    <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+      style="outline: none !important; ">
+      <mat-icon>filter_list</mat-icon>
+      <span style="display: block; line-height: 0;"> Filter </span>
+
+    </button>
+
+
+
+
+  </div>
+
+  <mat-menu #menu="matMenu" class="my-menu" xPosition="before">
+
+    <span mat-menu-item [formGroup]="filterForm">
+      <mat-form-field appearance="outline">
+        <!-- <mat-label>Enter a date range</mat-label> -->
+        <mat-date-range-input [rangePicker]="picker" [max]="maxDate">
+          <input matStartDate formControlName="start" placeholder="Start date" formControlName="fromDate">
+          <input matEndDate formControlName="end" placeholder="End date" formControlName="toDate">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker" style="outline: none !important;"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker style="outline: none !important;"></mat-date-range-picker>
+      </mat-form-field>
+      <button mat-raised-button style="outline: none !important; margin: 5px;" (click)="search()"
+        class="basicRaisedbtn">GO</button>
+    </span>
+
+  </mat-menu>
+
+  <span class="spacer"></span>
+
+  <button mat-icon-button [matMenuTriggerFor]="menu2" style="margin-right: 22px; outline: none !important;"
+    aria-label="Example icon-button with a menu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu2="matMenu">
+    <button mat-menu-item data-toggle="modal" data-target="#exampleModal" style=" outline: none !important;">
+      Upload Excel
+      <img src="assets/images/upload-orange.png" style="margin-left: 18px;">
+    </button>
+    <button mat-menu-item (click)="downloadEOL()" style="outline: none !important;">
+      Download Excel
+      <img src="assets/images/download.png" style="margin-left: 4px;">
+    </button>
+  </mat-menu>
+
+  <!-- <div class="dateInput" [formGroup]="filterForm">
+
+
+    <mat-form-field appearance="outline" class="eol1 input-full-width " >
+      <mat-date-range-input [rangePicker]="picker" [max]="maxDate" style="font-size: 16px !important; ">
+        <input matStartDate placeholder="Start date" formControlName="fromDate">
+        <input matEndDate placeholder="End date" formControlName="toDate">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker" class="iconBtn" style="outline: none !important;">
+      </mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+  </div>
+  <div style="margin-left: -50px ">
+
+    <button mat-raised-button style="outline: none !important;" (click)="search()" class="basicRaisedbtn">GO</button>
+  </div> -->
+
+
+
+</mat-toolbar>
+
+<div class="container-fluid" style="padding-left :36px; padding-top: 12px; padding-right: 50px;">
+  <!-- <div class="row">
+    <div class="col-12 header"  >
+      <div class="searchBox">
+        <mat-icon class="searchIcon">search</mat-icon>
+        <input type="text" class="search_input" placeholder="search ">
+      </div>
+    </div>
+  </div> -->
+  <div class="row mt-3" style="padding-left: 10px !important;">
+    <div class="col-lg-12 table-responsive eol"
+      [ngClass]="{'overflow' : !login.isExpanded, 'overflow1': login.isExpanded}"
+      style="padding: 0 !important; border: 1px solid var(--Grey); border-radius: 6px;">
+
+      <table class="table table-bordered bordered rounded">
+        <thead>
+          <tr class="thead-dark">
+            <th scope="col">Sr. No.</th>
+            <th scope="col">Device Id</th>
+            <th scope="col">UIN</th>
+            <th scope="col">Device Mapping</th>
+            <th scope="col">GPRS Status</th>
+            <th scope="col">GPS Status</th>
+            <th scope="col">Ignition Date</th>
+            <th scope="col">Inside Plant</th>
+            <th scope="col">EOL Date</th>
+            <th scope="col">QA Tester</th>
+            <th scope="col">EOL Status</th>
+
+          </tr>
+        </thead>
+        <tbody *ngIf="eolAuditArr" class="eol">
+
+
+          <tr *ngFor="let obj of eolAuditArr; index as i">
+            <td class="align-middle" scope="row">{{i+1}}</td>
+            <td class="align-middle">
+              <span *ngIf="obj.deviceId">
+                {{obj.deviceId}}
+              </span>
+              <span *ngIf="!obj.deviceId">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.uin">
+                {{obj.uin}}
+              </span>
+              <span *ngIf="!obj.uin">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.mappingTimestamp">
+                {{obj.mappingTimestamp | date:'hh:mm a'}} <br>
+                {{obj.mappingTimestamp | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.mappingTimestamp">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.gprsTimestamp">
+                {{obj.gprsTimestamp | date:'hh:mm a'}} <br>
+                {{obj.gprsTimestamp | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.gprsTimestamp">
+                <h1>--</h1>
+              </span>
+
+            </td>
+
+            <td class="align-middle">
+              <span *ngIf="obj.gprsTimestamp">
+                {{obj.gprsTimestamp | date:'hh:mm a'}} <br>
+                {{obj.gprsTimestamp | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.gprsTimestamp">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.ignitionTimestamp">
+                {{obj.ignitionTimestamp | date:'hh:mm a'}} <br>
+                {{obj.ignitionTimestamp | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.ignitionTimestamp">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.vehicleInsidePlant">Yes</span>
+              <span *ngIf="!obj.vehicleInsidePlant">No</span>
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.createdOn">
+                {{obj.createdOn | date:'hh:mm a'}} <br>
+                {{obj.createdOn | date:'dd/MM/yyyy'}}
+              </span>
+              <span *ngIf="!obj.createdOn">
+                <h1>--</h1>
+              </span>
+
+            </td>
+            <td class="align-middle">
+              <span *ngIf="obj.userName">{{obj.userName}}</span>
+              <span *ngIf="!obj.userName">
+                <h1>--</h1>
+              </span>
+            </td>
+            <td class="align-middle">{{obj.status}}</td>
+
+
+          </tr>
+          <tr *ngIf="eolAuditArr.length === 0">
+            <td class="align-middle" colspan="11">
+              No Result Found
+
+            </td>
+          </tr>
+
+
+        </tbody>
+
+
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade bd-example-modal-lg" id="exampleModal" data-backdrop="static" tabindex="-1" role="dialog"
+  aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="modal-title Drop-zone" id="exampleModalLabel">Drop zone</div>
+        <button (click)="modalClose()" type="button" class="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="center">
+          <ngx-file-drop contentClassName="Drop-files-here-or-c" dropZoneClassName="my-style"
+            dropZoneLabel="Drop files here" (onFileDrop)="dropped($event)" (onFileOver)="fileOver($event)"
+            (onFileLeave)="fileLeave($event)">
+            <ng-template ngx-file-drop-content-tmp let-openFileSelector="openFileSelector">
+              <div (click)="openFileSelector()" style="height: 100%; width: 100%;padding: 10%;">
+
+                <img src="assets/images/upload.png" class="upload">
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==0">Drop files here or click to upload</p>
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==1">{{files[0].relativePath}}</p>
+                <p style="cursor: pointer;" *ngIf="dropZoneMessage==2" class="text-danger">Only Excel Files are
+                  allowed.
+                </p>
+              </div>
+
+            </ng-template>
+          </ngx-file-drop>
+        </div>
+      </div>
+      <div class="modal-footer d-flex justify-content-center">
+        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+        <button type="button" (click)="uploadExcel()" [disabled]="dropZoneMessage!=1" class="modalUploadButton"><span
+            class="Upload">Upload</span></button>
+        <!-- <input type="file" name="test" id="" (change)="fileChange($event)"> -->
+      </div>
+    </div>
+  </div>
+</div>
